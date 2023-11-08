@@ -1,3 +1,14 @@
+# mine
+assets
+reference
+pgzero_examples
+pygame_examples
+kenney_platformer*
+activity*.py
+*.md
+p*.py
+p*.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
