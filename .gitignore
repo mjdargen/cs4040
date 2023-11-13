@@ -3,7 +3,7 @@ assets
 reference
 pgzero_examples
 pygame_examples
-kenney_platformer*
+kenney_*
 activity*.py
 *.md
 p*.py
