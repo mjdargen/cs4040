@@ -7,7 +7,7 @@ kenney_*
 activity*.py
 *.md
 p*.py
-p*.csv
+student.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
