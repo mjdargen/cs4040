@@ -40,20 +40,22 @@ def update():
     else:
         velocity_x = 0
 
-    # change y velocity by adding gravity
-    # causes deceleration in the upwards direction
-    # causes acceleration in the downwards direction
-    velocity_y += gravity
-
     # modify robot position by the velocity
     robot.x += velocity_x
     robot.y += velocity_y
 
+    # handle gravity
     # once the robot has returned to the floor, cancel y velocity
     # robot.midbottom[1] gives bottommost part of actor
     if robot.midbottom[1] >= HEIGHT:
         velocity_y = 0
         robot.midbottom = robot.x, HEIGHT
+    # otherwise, continue to add gravity
+    # change y velocity by adding gravity
+    # causes deceleration in the upwards direction
+    # causes acceleration in the downwards direction
+    else:
+        velocity_y += gravity
 
 
 # called when a keyboard button is pressed
@@ -61,7 +63,7 @@ def on_key_down(key):
     global velocity_y
     # change vertical velocity when space or up keys are pressed
     # make sure not previously jumping first
-    if (key == keys.SPACE or key == keys.UP) and velocity_y == 0:
+    if (key == keys.SPACE or key == keys.UP) and robot.midbottom[1] == HEIGHT:
         velocity_y = -10
 
 

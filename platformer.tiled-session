@@ -6,14 +6,19 @@
     "activeFile": "platformer.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "platformer.tmx": {
             "scale": 1.8736111111111111,
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 270.0667160859897,
-                "y": 180.13343217197925
+                "y": 165.72275759822094
             }
+        },
+        "platformer_tilemap_packed.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "tilemap_packed.tsx": {
             "scaleInDock": 1,
@@ -21,19 +26,21 @@
         }
     },
     "last.exportedFilePath": "C:/Users/michael.dargenio/OneDrive - NCSSM/NCSSM/workspace/cs4040",
-    "last.imagePath": "C:/Users/michael.dargenio/Downloads/kenney_pixel-platformer(1)/Tilemap",
+    "last.externalTilesetPath": "C:/Users/michael.dargenio/OneDrive - NCSSM/NCSSM/workspace/cs4040",
+    "last.imagePath": "C:/Users/michael.dargenio/OneDrive - NCSSM/NCSSM/workspace/cs4040/kenney_pixel-platformer/Tilemap",
     "map.lastUsedExportFilter": "CSV files (*.csv)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 18,
     "map.tileWidth": 18,
     "openFiles": [
-        "tilemap_packed.tsx",
-        "platformer.tmx"
+        "platformer.tmx",
+        "platformer_tilemap_packed.tsx"
     ],
     "project": "platformer.tiled-project",
     "recentFiles": [
-        "tilemap_packed.tsx",
-        "platformer.tmx"
+        "platformer_tilemap_packed.tsx",
+        "platformer.tmx",
+        "tilemap_packed.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
