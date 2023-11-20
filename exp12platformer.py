@@ -1,6 +1,6 @@
 # Tutorial: https://pygame-zero.readthedocs.io/en/stable/introduction.html
 import pgzrun  # program must always start with this
-from builder import build
+from platformer import *
 
 # our platformer constants
 TILE_SIZE = 18
@@ -14,7 +14,7 @@ TITLE = "Platformer"
 
 # define Actor
 player = Actor("p_right")
-player.pos = (WIDTH // 2, 0)
+player.bottomleft = (0, HEIGHT)
 # define Actor-specific variables
 player.alive = True
 player.jumping = False
@@ -24,22 +24,32 @@ player.velocity_y = 0
 # global variables
 jump_velocity = -10
 gravity = 1
+win = False
+over = False
 
 # build world
 platforms = build("platformer_platforms.csv", 18)
 obstacles = build("platformer_obstacles.csv", 18)
+mushrooms = build("platformer_mushrooms.csv", 18)
 
 
 # displays the new frame
 def draw():
     screen.clear()  # clears the screen
     screen.fill("lightslateblue")  # fills background color
+    if over:
+        screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
+    if win:
+        screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
     # draw platforms
     for platform in platforms:
         platform.draw()
     # draw obstacles
     for obstacle in obstacles:
         obstacle.draw()
+    # draw mushrooms
+    for mushroom in mushrooms:
+        mushroom.draw()
     # draw the player if still alive
     if player.alive:
         player.draw()
@@ -47,6 +57,13 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
+    # declare scope of global variabels
+    global win, over
+
+    # if game is over, no more updating game state, just return
+    if over or win:
+        return
+
     # handle player left movement
     if keyboard.LEFT and player.midleft[0] > 0:
         player.x -= player.velocity_x
@@ -92,6 +109,16 @@ def update():
     # player collided with obstacle, game over
     if player.collidelist(obstacles) != -1:
         player.alive = False
+        over = True
+
+    # check if player collected mushrooms
+    for mushroom in mushrooms:
+        if player.colliderect(mushroom):
+            mushrooms.remove(mushroom)
+
+    # check if player collected all mushrooms
+    if len(mushrooms) == 0:
+        win = True
 
 
 # keyboard pressed event listener

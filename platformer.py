@@ -1,7 +1,30 @@
+import os
 import time
 import pygame
 from pgzero import game, loaders
+from pgzero.builtins import Actor
 from pgzero.actor import Actor, POS_TOPLEFT, ANCHOR_CENTER, transform_anchor
+
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+
+
+def build(filename, tile_size):
+    with open(f"{DIR_PATH}/{filename}", "r") as f:
+        contents = f.read().splitlines()
+
+    contents = [c.split(",") for c in contents]
+    contents = [[int(col) if col.isdigit() else -1 for col in row] for row in contents]
+
+    items = []
+
+    for row in range(len(contents)):
+        for col in range(len(contents[0])):
+            if contents[row][col] != -1:
+                item = Actor(f"tiles/tile_{contents[row][col]:04d}")
+                item.topleft = (tile_size * col, tile_size * row)
+                items.append(item)
+
+    return items
 
 
 # https://www.pygame.org/wiki/Spritesheet
@@ -36,7 +59,7 @@ class SpriteSheet(object):
 class Sprite(object):
     def __init__(self, filename, rect, count, color_key=None, frames=1):
         self.filename = filename
-        ss = SpriteSheet(f"./images/{filename}")
+        ss = SpriteSheet(f"./images/sprites/{filename}")
         self.images = ss.load_strip(rect, count, color_key)
         self.i = 0
         self.frames = frames
@@ -173,7 +196,7 @@ class SpriteActor(Actor):
         self.fps = 5
         self.direction = 0
         self.sprite = sprite
-        super().__init__(sprite.filename, pos, anchor, **kwargs)
+        super().__init__(f"sprites/{sprite.filename}", pos, anchor, **kwargs)
         self._orig_surf = self.sprite.images[self.sprite.i]
         self._update_pos()
         self._transform_surf()

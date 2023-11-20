@@ -8,6 +8,7 @@ activity*.py
 *.md
 p*.py
 student.py
+!platformer.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,7 +1,7 @@
 # Tutorial: https://pygame-zero.readthedocs.io/en/stable/introduction.html
 # Sprite Source: https://elthen.itch.io/2d-pixel-art-fox-sprites
 import pgzrun  # program must always start with this
-from spriteactor import *  # must download and import spriteactor.py
+from platformer import *  # must download and import spriteactor.py
 
 # set width and height of screen
 WIDTH = 800
