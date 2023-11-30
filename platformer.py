@@ -12,15 +12,35 @@ def build(filename, tile_size):
     with open(f"{DIR_PATH}/{filename}", "r") as f:
         contents = f.read().splitlines()
 
+    # convert to int but check if valid and for negative numbers
     contents = [c.split(",") for c in contents]
-    contents = [[int(col) if col.isdigit() else -1 for col in row] for row in contents]
-
-    items = []
-
     for row in range(len(contents)):
         for col in range(len(contents[0])):
-            if contents[row][col] != -1:
-                item = Actor(f"tiles/tile_{contents[row][col]:04d}")
+            val = contents[row][col]
+            if val.isdigit() or (val[0] == "-" and val[1:].isdigit()):
+                contents[row][col] = int(val)
+
+    # create all items as Actors
+    items = []
+    for row in range(len(contents)):
+        for col in range(len(contents[0])):
+            tile_num = contents[row][col]
+            if tile_num != -1:
+                # https://doc.mapeditor.org/en/stable/reference/global-tile-ids/
+                flipped_h = bool(tile_num & 0x80000000)
+                flipped_v = bool(tile_num & 0x40000000)
+                flipped_d = bool(tile_num & 0x20000000)
+                rotated_hex = bool(tile_num & 0x10000000)
+                tile_num &= 0x0FFFFFFF
+                item = Actor(f"tiles/tile_{tile_num:04d}")
+                if flipped_d:
+                    item.flip_d = True
+                if flipped_h:
+                    item.flip_x = True
+                if flipped_v:
+                    item.flip_y = True
+                if rotated_hex:
+                    pass
                 item.topleft = (tile_size * col, tile_size * row)
                 items.append(item)
 
@@ -78,6 +98,7 @@ class Actor(Actor):
     def __init__(self, image, pos=POS_TOPLEFT, anchor=ANCHOR_CENTER, **kwargs):
         self._flip_x = False
         self._flip_y = False
+        self._flip_d = False
         self._scale = 1
         self._mask = None
         self._animate_counter = 0
@@ -139,6 +160,15 @@ class Actor(Actor):
         self._transform_surf()
 
     @property
+    def flip_d(self):
+        return self._flip_d
+
+    @flip_d.setter
+    def flip_d(self, flip_d):
+        self._flip_d = flip_d
+        self._transform_surf()
+
+    @property
     def sprite(self):
         return self._sprite
 
@@ -166,10 +196,16 @@ class Actor(Actor):
             self._surf = pygame.transform.scale(
                 self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
             )
+        # flip_x - flips horizontally, about y-axis
         if self._flip_x:
             self._surf = pygame.transform.flip(self._surf, True, False)
+        # flip_y - flips vertically, about x-axis
         if self._flip_y:
             self._surf = pygame.transform.flip(self._surf, False, True)
+        # flips diagonally
+        if self._flip_d:
+            self._surf = pygame.transform.rotate(self._surf, 90)
+            self._surf = pygame.transform.flip(self._surf, True, False)
 
         self._surf = pygame.transform.rotate(self._surf, self._angle)
 
