@@ -87,20 +87,20 @@ def draw():
 # updates game state between drawing of each frame
 def update():
     # while left key is pressed and not at edge
-    if keyboard.LEFT and robot.midleft[0] > 0:
+    if keyboard.LEFT and robot.left > 0:
         # show left facing image and change x velocity
         robot.image = "robot_left"
         robot.x += -5
     # while right key is pressed and not at edge
-    elif keyboard.RIGHT and robot.midright[0] < WIDTH:
+    elif keyboard.RIGHT and robot.right < WIDTH:
         # show right facing image and change x velocity
         robot.image = "robot_right"
         robot.x += 5
     # while UP key is pressed and not at edge
-    elif keyboard.UP and robot.midtop[1] > 0:
+    elif keyboard.UP and robot.top > 0:
         robot.y -= velocity
     # while DOWN key is pressed and not at edge
-    elif keyboard.DOWN and robot.midbottom[1] < HEIGHT:
+    elif keyboard.DOWN and robot.bottom < HEIGHT:
         robot.y += velocity
 
     # if collision with coin, add a new coin

@@ -20,8 +20,8 @@ refresh = 10  # refresh rate - updates every 5 frames
 example = Sprite(filename, start, num_frames, color_key, refresh)
 
 # define Sprites
-fox_stand = Sprite("fox.png", (0, 32, 32, 32), 14, color_key, 30)
-fox_walk = Sprite("fox.png", (0, 2 * 32, 32, 32), 8, color_key, 5)
+fox_stand = Sprite("fox.png", (0, 16, 24, 16), 14, color_key, 30)
+fox_walk = Sprite("fox.png", (0, 2 * 16, 24, 16), 8, color_key, 5)
 
 # define SpriteActor
 fox = SpriteActor(fox_stand)
@@ -42,13 +42,13 @@ def draw():
 # updates game state between drawing of each frame
 def update():
     # while left key is pressed and not at edge
-    if keyboard.LEFT and fox.midleft[0] > 0:
+    if keyboard.LEFT and fox.left > 0:
         # flip image and change x velocity
         fox.sprite = fox_walk
         fox.flip_x = True
         fox.velocity_x = -5
     # while right key is pressed and not at edge
-    elif keyboard.RIGHT and fox.midright[0] < WIDTH:
+    elif keyboard.RIGHT and fox.right < WIDTH:
         # flip image and change x velocity
         fox.sprite = fox_walk
         fox.flip_x = False
@@ -65,9 +65,9 @@ def update():
 
     # once the fox has returned to the floor, cancel y velocity
     # fox.midbottom[1] gives bottommost part of actor
-    if fox.midbottom[1] >= HEIGHT:
+    if fox.bottom >= HEIGHT:
         fox.velocity_y = 0
-        fox.midbottom = fox.x, HEIGHT
+        fox.y = HEIGHT - fox.height / 2
     # otherwise, continue to add gravity
     # change y velocity by adding gravity
     # causes deceleration in the upwards direction

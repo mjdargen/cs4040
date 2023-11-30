@@ -57,7 +57,7 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
-    # declare scope of global variabels
+    # declare scope of global variables
     global win, over
 
     # if game is over, no more updating game state, just return
@@ -65,26 +65,26 @@ def update():
         return
 
     # handle player left movement
-    if keyboard.LEFT and player.midleft[0] > 0:
+    if keyboard.LEFT and player.left > 0:
         player.x -= player.velocity_x
         player.image = "p_left"
         # if the movement caused a collision
         if player.collidelist(platforms) != -1:
             # get object that player collided with
-            object = platforms[player.collidelist(platforms)]
+            collided = platforms[player.collidelist(platforms)]
             # use it to calculate position where there is no collision
-            player.x = object.x + (object.width / 2 + player.width / 2)
+            player.x = collided.x + (collided.width / 2 + player.width / 2)
 
     # handle player right movement
-    elif keyboard.RIGHT and player.midright[0] < WIDTH:
+    elif keyboard.RIGHT and player.right < WIDTH:
         player.x += player.velocity_x
         player.image = "p_right"
         # if the movement caused a collision
         if player.collidelist(platforms) != -1:
             # get object that player collided with
-            object = platforms[player.collidelist(platforms)]
+            collided = platforms[player.collidelist(platforms)]
             # use it to calculate position where there is no collision
-            player.x = object.x - (object.width / 2 + player.width / 2)
+            player.x = collided.x - (collided.width / 2 + player.width / 2)
 
     # handle gravity
     player.y += player.velocity_y
@@ -92,17 +92,17 @@ def update():
     # if the movement caused a collision, move position back
     if player.collidelist(platforms) != -1:
         # get object that player collided with
-        object = platforms[player.collidelist(platforms)]
+        collided = platforms[player.collidelist(platforms)]
         # moving down - hit the ground
         if player.velocity_y >= 0:
             # move player up to no collision position
-            player.y = object.y - (object.height / 2 + player.height / 2)
+            player.bottom = collided.top
             # no longer jumping
             player.jumping = False
         # moving up - bumped their head
         else:
             # move player down to no collision position
-            player.y = object.y + (object.height / 2 + player.height / 2)
+            player.top = collided.bottom
         # reset velocity
         player.velocity_y = 0
 

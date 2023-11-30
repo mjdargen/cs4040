@@ -27,12 +27,12 @@ def draw():
 def update():
     global velocity_x, velocity_y
     # while left key is pressed and not at edge
-    if keyboard.LEFT and robot.midleft[0] > 0:
+    if keyboard.LEFT and robot.left > 0:
         # show left facing image and change x velocity
         robot.image = "robot_left"
         velocity_x = -5
     # while right key is pressed and not at edge
-    elif keyboard.RIGHT and robot.midright[0] < WIDTH:
+    elif keyboard.RIGHT and robot.right < WIDTH:
         # show right facing image and change x velocity
         robot.image = "robot_right"
         velocity_x = 5
@@ -46,10 +46,9 @@ def update():
 
     # handle gravity
     # once the robot has returned to the floor, cancel y velocity
-    # robot.midbottom[1] gives bottommost part of actor
-    if robot.midbottom[1] >= HEIGHT:
+    if robot.bottom >= HEIGHT:
         velocity_y = 0
-        robot.midbottom = robot.x, HEIGHT
+        robot.y = HEIGHT - robot.height / 2
     # otherwise, continue to add gravity
     # change y velocity by adding gravity
     # causes deceleration in the upwards direction
@@ -63,7 +62,7 @@ def on_key_down(key):
     global velocity_y
     # change vertical velocity when space or up keys are pressed
     # make sure not previously jumping first
-    if (key == keys.SPACE or key == keys.UP) and robot.midbottom[1] == HEIGHT:
+    if (key == keys.SPACE or key == keys.UP) and robot.bottom == HEIGHT:
         velocity_y = -10
 
 

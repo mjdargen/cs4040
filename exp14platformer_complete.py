@@ -27,8 +27,8 @@ mushrooms = build("platformer_mushrooms.csv", 18)
 # define Sprites
 # Sprite("sprite_image.png", start, num_frames, color_key, refresh)
 color_key = (0, 0, 0)  # leave like this unless background shows up
-fox_stand = Sprite("fox.png", (0, 32, 32, 32), 14, color_key, 30)
-fox_walk = Sprite("fox.png", (0, 2 * 32, 32, 32), 8, color_key, 5)
+fox_stand = Sprite("fox.png", (0, 16, 24, 16), 14, color_key, 30)
+fox_walk = Sprite("fox.png", (0, 2 * 16, 24, 16), 8, color_key, 5)
 
 # define SpriteActor
 fox = SpriteActor(fox_stand)
@@ -44,10 +44,6 @@ fox.velocity_y = 0
 def draw():
     screen.clear()  # clears the screen
     screen.fill("lightslateblue")  # fills background color
-    if over:
-        screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
-    if win:
-        screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
     # draw platforms
     for platform in platforms:
         platform.draw()
@@ -61,10 +57,16 @@ def draw():
     if fox.alive:
         fox.draw()
 
+    # draw messages over top
+    if over:
+        screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
+    if win:
+        screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
+
 
 # updates game state between drawing of each frame
 def update():
-    # declare scope of global variabels
+    # declare scope of global variables
     global win, over
 
     # if game is over, no more updating game state, just return
@@ -72,30 +74,30 @@ def update():
         return
 
     # handle fox left movement
-    if keyboard.LEFT and fox.midleft[0] > 0:
+    if keyboard.LEFT and fox.left > 0:
         fox.x -= fox.velocity_x
-        # flip image and change x velocity
+        # flip image and change sprite
         fox.sprite = fox_walk
         fox.flip_x = True
         # if the movement caused a collision
         if fox.collidelist(platforms) != -1:
             # get object that fox collided with
-            object = platforms[fox.collidelist(platforms)]
+            collided = platforms[fox.collidelist(platforms)]
             # use it to calculate position where there is no collision
-            fox.x = object.x + (object.width / 2 + fox.width / 2)
+            fox.left = collided.right
 
     # handle fox right movement
-    elif keyboard.RIGHT and fox.midright[0] < WIDTH:
+    elif keyboard.RIGHT and fox.right < WIDTH:
         fox.x += fox.velocity_x
-        # flip image and change x velocity
+        # flip image and change sprite
         fox.sprite = fox_walk
         fox.flip_x = False
         # if the movement caused a collision
         if fox.collidelist(platforms) != -1:
             # get object that fox collided with
-            object = platforms[fox.collidelist(platforms)]
+            collided = platforms[fox.collidelist(platforms)]
             # use it to calculate position where there is no collision
-            fox.x = object.x - (object.width / 2 + fox.width / 2)
+            fox.right = collided.left
 
     # handle gravity
     fox.y += fox.velocity_y
@@ -103,17 +105,17 @@ def update():
     # if the movement caused a collision, move position back
     if fox.collidelist(platforms) != -1:
         # get object that fox collided with
-        object = platforms[fox.collidelist(platforms)]
+        collided = platforms[fox.collidelist(platforms)]
         # moving down - hit the ground
         if fox.velocity_y >= 0:
             # move fox up to no collision position
-            fox.y = object.y - (object.height / 2 + fox.height / 2)
+            fox.bottom = collided.top
             # no longer jumping
             fox.jumping = False
         # moving up - bumped their head
         else:
             # move fox down to no collision position
-            fox.y = object.y + (object.height / 2 + fox.height / 2)
+            fox.top = collided.bottom
         # reset velocity
         fox.velocity_y = 0
 

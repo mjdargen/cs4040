@@ -27,26 +27,26 @@ def update():
     # state 0: top horizontal part of square
     if state == 0:
         alien.x += velocity
-        # check rightmost part of Actor aka alien.midright[0]
-        if alien.midright[0] >= WIDTH:
+        # check rightmost part of Actor
+        if alien.right >= WIDTH:
             state = 1
     # state 1: right vertical part of square
     elif state == 1:
         alien.y += velocity
-        # check bottommost part of Actor aka alien.midbottom[0]
-        if alien.midbottom[1] >= HEIGHT:
+        # check bottommost part of Actor
+        if alien.bottom >= HEIGHT:
             state = 2
     # state 2: bottom horizontal part of square
     elif state == 2:
         alien.x -= velocity
-        # check leftmost part of Actor aka alien.midleft[0]
-        if alien.midleft[0] < 0:
+        # check leftmost part of Actor
+        if alien.left < 0:
             state = 3
     # state 3: left vertical part of square
     elif state == 3:
         alien.y -= velocity
-        # check bottommost part of Actor aka alien.midtop[0]
-        if alien.midtop[1] < 0:
+        # check bottommost part of Actor
+        if alien.top < 0:
             state = 0
 
 

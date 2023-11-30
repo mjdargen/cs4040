@@ -9,6 +9,8 @@ activity*.py
 p*.py
 student.py
 !platformer.py
+depr_*.*
+settings.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
