@@ -3,12 +3,13 @@ import pgzrun  # program must always start with this
 from random import randint
 
 # set width and height of screen
-WIDTH, HEIGHT = 500, 500
+WIDTH = 500
+HEIGHT = 500
 
 # global variables towards the top of the program
 # defined outside of functions
 alien = Actor("alien")
-alien.pos = 200, 200
+alien.pos = (200, 200)
 n = 3
 m = 5
 text = "ha"

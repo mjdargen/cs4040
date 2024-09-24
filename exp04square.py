@@ -7,7 +7,7 @@ HEIGHT = 500
 
 # define Actor
 alien = Actor("alien")
-alien.topleft = 0, 0
+alien.topleft = (0, 0)
 
 state = 0
 velocity = 5

@@ -9,7 +9,7 @@ HEIGHT = 500
 # define player Actor
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
 robot = Actor("robot_idle")
-robot.pos = WIDTH // 2, HEIGHT // 2
+robot.pos = (WIDTH // 2, HEIGHT // 2)
 velocity = 5
 
 # create coin Actor

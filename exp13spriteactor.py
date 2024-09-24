@@ -16,7 +16,7 @@ filename = "fox.png"  # name of file, must be stored in "images" folder
 start = (0, 0, 32, 32)  # (x, y, w, h) - x,y of topleft corner, width,height of 1 frame
 num_frames = 8  # number of frames in the sprite
 color_key = (0, 0, 0)  # leave like this unless background shows up
-refresh = 10  # refresh rate - updates every 5 frames
+refresh = 10  # refresh rate - updates every 10 frames
 example = Sprite(filename, start, num_frames, color_key, refresh)
 
 # define Sprites

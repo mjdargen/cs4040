@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "C:/Users/michael.dargenio/Documents/platformer demo/platformer.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -20,8 +20,8 @@
             "scale": 1.8736111111111111,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 270.0667160859897,
-                "y": 179.0659747961453
+                "x": 270.6004447739066,
+                "y": 183.8695329873981
             }
         },
         "C:/Users/michael.dargenio/Documents/platformer demo/tilemap_packed.tsx": {
@@ -34,6 +34,17 @@
             "viewCenter": {
                 "x": 270.0667160859897,
                 "y": 180.13343217197925
+            }
+        },
+        "C:/Users/michael.dargenio/Downloads/Pygames/Pygames/tilemap_packed.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/michael.dargenio/Downloads/Pygames/Pygames/tm1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 325.99999999999994,
+                "y": 566.3333333333333
             }
         },
         "platformer.tmx": {
@@ -53,7 +64,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/michael.dargenio/OneDrive - NCSSM/NCSSM/workspace/cs4040",
+    "last.exportedFilePath": "C:/Users/michael.dargenio/Downloads/Pygames/Pygames",
     "last.externalTilesetPath": "C:/Users/michael.dargenio/OneDrive - NCSSM/NCSSM/workspace/cs4040",
     "last.imagePath": "C:/Users/michael.dargenio/OneDrive - NCSSM/NCSSM/workspace/cs4040/images/sprites",
     "lastUsedTilesetExportFilter": "All Files (*)",
@@ -64,15 +75,14 @@
     "map.tileWidth": 18,
     "map.width": 30,
     "openFiles": [
-        "C:/Users/michael.dargenio/Documents/platformer demo/tilemap_packed.tsx",
-        "C:/Users/michael.dargenio/Documents/platformer demo/platformer.tmx"
     ],
     "project": "platformer.tiled-project",
     "recentFiles": [
+        "C:/Users/michael.dargenio/Documents/platformer demo/platformer.tmx",
+        "C:/Users/michael.dargenio/Documents/platformer demo/tilemap_packed.tsx",
+        "C:/Users/michael.dargenio/Downloads/Pygames/Pygames/tm1.tmx",
         "C:/Users/michael.dargenio/Documents/platformer demo/Basic Charakter Spritesheet.tsx",
         "C:/Users/michael.dargenio/Documents/platformer demo/fox.tsx",
-        "C:/Users/michael.dargenio/Documents/platformer demo/tilemap_packed.tsx",
-        "C:/Users/michael.dargenio/Documents/platformer demo/platformer.tmx",
         "platformer_tilemap_packed.tsx",
         "platformer.tmx",
         "tilemap_packed.tsx"

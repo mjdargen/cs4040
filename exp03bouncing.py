@@ -9,7 +9,7 @@ HEIGHT = 500
 # define Actor
 alien = Actor("alien")
 # start actor at center
-alien.midtop = WIDTH // 2, HEIGHT // 2
+alien.midtop = (WIDTH // 2, HEIGHT // 2)
 
 # choose a random velocity between -5 and 5 that is not zero
 # defined as a tuple -> (x, y)

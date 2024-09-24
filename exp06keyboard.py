@@ -8,7 +8,7 @@ HEIGHT = 300
 # define Actors
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
 robot = Actor("robot_idle")
-robot.midbottom = WIDTH // 2, HEIGHT
+robot.midbottom = (WIDTH // 2, HEIGHT)
 
 # define velocities and gravity
 gravity = 1

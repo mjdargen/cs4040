@@ -8,7 +8,7 @@ TITLE = "Name of Game"
 
 # define Actor
 alien = Actor("alien")
-alien.pos = 200, 200
+alien.pos = (200, 200)
 
 
 # displays the new frame

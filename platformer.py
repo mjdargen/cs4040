@@ -12,13 +12,11 @@ def build(filename, tile_size):
     with open(f"{DIR_PATH}/{filename}", "r") as f:
         contents = f.read().splitlines()
 
-    # convert to int but check if valid and for negative numbers
-    contents = [c.split(",") for c in contents]
-    for row in range(len(contents)):
-        for col in range(len(contents[0])):
-            val = contents[row][col]
-            if val.isdigit() or (val[0] == "-" and val[1:].isdigit()):
-                contents[row][col] = int(val)
+    # convert to int but check for negative numbers
+    contents = [
+        [int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")]
+        for row in contents
+    ]
 
     # create all items as Actors
     items = []
@@ -79,7 +77,7 @@ class SpriteSheet(object):
 class Sprite(object):
     def __init__(self, filename, rect, count, color_key=None, frames=1):
         self.filename = filename
-        ss = SpriteSheet(f"./images/sprites/{filename}")
+        ss = SpriteSheet(f"{DIR_PATH}/images/sprites/{filename}")
         self.images = ss.load_strip(rect, count, color_key)
         self.i = 0
         self.frames = frames

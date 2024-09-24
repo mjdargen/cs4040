@@ -10,27 +10,29 @@ def main():
     # we don't want a full GUI, so keep the root window from appearing
     Tk().withdraw()
     # select file and store filename
-    filename = askopenfilename(
-        initialdir=os.path.dirname(os.path.realpath(__file__)),
-        multiple=False,
-        filetypes=(("PNG or JPG files", "*.png;*.jpg"),),
-        title="Select your tileset or spritesheet image:",
-    )
+    # filename = askopenfilename(
+    #     initialdir=os.path.dirname(os.path.realpath(__file__)),
+    #     multiple=False,
+    #     filetypes=(("PNG or JPG files", "*.png;*.jpg"),),
+    #     title="Select your tileset or spritesheet image:",
+    # )
+    filename = "frog_idle.png"
     # load old sheet
     old_sheet = Image.open(filename)
     old_pixels = old_sheet.load()
 
     # input
-    current, future, tile_margin = get_all_data()
-    tile_width, tile_height = future
-    current_tile_width, current_tile_height = current
+    # current, future, tile_margin = get_all_data()
+    # tile_width, tile_height = future
+    # current_tile_width, current_tile_height = current
 
     # hardcoded
-    # tile_width = 24
-    # tile_height = 16
-    # tile_margin = [4, 4, 16, 0]
-    # current_tile_width = tile_width + tile_margin[0] + tile_margin[1]
-    # current_tile_height = tile_height + tile_margin[2] + tile_margin[3]
+    tile_width = 24
+    tile_height = 16
+    # l r t b
+    tile_margin = [12, 12, 16, 16]
+    current_tile_width = tile_width + tile_margin[0] + tile_margin[1]
+    current_tile_height = tile_height + tile_margin[2] + tile_margin[3]
 
     # create new sheet
     new_sheet = Image.new(
@@ -87,7 +89,6 @@ def get_all_data():
     tile_height = get_int_input("  Height: ")
     future = (tile_width, tile_height)
 
-    # l r t b
     # margins around the tile, order l r u d
     print("What are the margins on each side of the art in the file?")
     left_margin = get_int_input("  Left Margin: ")
