@@ -10,7 +10,7 @@ HEIGHT = 500
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
 robot = Actor("robot_idle")
 robot.pos = (WIDTH // 2, HEIGHT // 2)
-velocity = 5
+robot.velocity = 5
 
 # create coin Actor
 coin = Actor("coin_gold")
@@ -58,18 +58,18 @@ def update():
     if keyboard.LEFT and robot.left > 0:
         # show left facing image and change x velocity
         robot.image = "robot_left"
-        robot.x += -5
+        robot.x -= robot.velocity
     # while right key is pressed and not at edge
     elif keyboard.RIGHT and robot.right < WIDTH:
         # show right facing image and change x velocity
         robot.image = "robot_right"
-        robot.x += 5
+        robot.x += robot.velocity
     # while UP key is pressed and not at edge
     elif keyboard.UP and robot.top > 0:
-        robot.y -= velocity
+        robot.y -= robot.velocity
     # while DOWN key is pressed and not at edge
     elif keyboard.DOWN and robot.bottom < HEIGHT:
-        robot.y += velocity
+        robot.y += robot.velocity
 
     # if collision with coin, add a new coin
     if robot.colliderect(coin):

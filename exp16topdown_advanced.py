@@ -13,8 +13,6 @@ HEIGHT = TILE_SIZE * COLS
 TITLE = "Top-Down Perspective"
 
 # global variables
-jump_velocity = -10
-gravity = 1
 win = False
 over = False
 

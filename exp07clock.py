@@ -8,7 +8,6 @@ HEIGHT = 500
 
 # define Actor
 robot = Actor("robot_idle", (WIDTH // 2, HEIGHT // 2))
-velocity = 5
 coins = []
 timer = 0
 

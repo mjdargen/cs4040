@@ -9,11 +9,11 @@ HEIGHT = 500
 # define Actors, set positions in start()
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
 robot = Actor("robot_idle")
+robot.velocity = 5
 coin = Actor("coin_gold")
 bomb = Actor("bomb")
 
 # global variables
-velocity = 5
 over = False
 timer = 0
 
@@ -21,8 +21,8 @@ timer = 0
 # called at start or restart of game to reinitialize
 def start():
     # include and reset global variables for playing again
-    global velocity, over, timer
-    velocity = 5
+    global over, timer
+    robot.velocity = 5
     over = False
     timer = 0
     # set initial positions
@@ -101,18 +101,18 @@ def update():
     if keyboard.LEFT and robot.left > 0:
         # show left facing image and change x velocity
         robot.image = "robot_left"
-        robot.x += -5
+        robot.x -= robot.velocity
     # while right key is pressed and not at edge
     elif keyboard.RIGHT and robot.right < WIDTH:
         # show right facing image and change x velocity
         robot.image = "robot_right"
-        robot.x += 5
+        robot.x += robot.velocity
     # while UP key is pressed and not at edge
     elif keyboard.UP and robot.top > 0:
-        robot.y -= velocity
+        robot.y -= robot.velocity
     # while DOWN key is pressed and not at edge
     elif keyboard.DOWN and robot.bottom < HEIGHT:
-        robot.y += velocity
+        robot.y += robot.velocity
 
     # if collision with coin, add a new coin
     if robot.colliderect(coin):
