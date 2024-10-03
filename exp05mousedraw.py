@@ -5,17 +5,20 @@ import pgzrun  # program must always start with this
 WIDTH = 500
 HEIGHT = 500
 
-points = []
-clicked = False
-
+# declare global variables
+current_point = (0, 0)
+previous_point = (0, 0)
+clear = True
 
 # displays the new frame
 def draw():
-    screen.clear()
-    screen.fill("white")
+    global clear
+    if clear:
+        screen.clear()
+        screen.fill("white")
+        clear = False
     # between each of the points, draw a black line
-    for i in range(len(points) - 1):
-        screen.draw.line(points[i], points[i + 1], "black")
+    screen.draw.line(previous_point, current_point, "black")
 
 
 # updates game state between drawing of each frame
@@ -23,21 +26,16 @@ def update():
     pass  # pass means do nothing, used because we can't have empty function
 
 
-def on_mouse_down():
-    global clicked
-    clicked = True  # set to true to signal to on_mouse_move
-    points.clear()  # clear list of points
-
-
-def on_mouse_up():
-    global clicked
-    clicked = False  # set to true to signal to on_mouse_move
-
-
-def on_mouse_move(pos):
-    # if mouse is clicked, add positions to be drawn
-    if clicked:
-        points.append(pos)
+# mouse event handler
+def on_mouse_down(pos, button):
+    global current_point, previous_point, clear
+    if button == mouse.LEFT:
+        previous_point = current_point
+        current_point = pos
+    elif button == mouse.RIGHT:
+        clear = True  # signal to draw() to clear the screen
+        current_point = (0, 0)
+        previous_point = (0, 0)
 
 
 pgzrun.go()  # program must always end with this
