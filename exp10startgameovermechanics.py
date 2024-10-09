@@ -86,6 +86,9 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
+    # do not execute update() if game is over
+    if over:
+        return
     # while left key is pressed and not at edge
     if keyboard.LEFT and robot.left > 0:
         # show left facing image and change x velocity
