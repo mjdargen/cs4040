@@ -1,9 +1,9 @@
-# Tutorial: https://pygame-zero.readthedocs.io/en/stable/introduction.html
 import pgzrun  # program must always start with this
 
 # set width and height of screen
 WIDTH = 600
 HEIGHT = 400
+TITLE = "Snowman"
 
 # color reference: https://pygame-zero.readthedocs.io/en/latest/colors_ref.html
 

@@ -1,9 +1,9 @@
-# Tutorial: https://pygame-zero.readthedocs.io/en/stable/introduction.html
 import pgzrun  # program must always start with this
 
 # set width and height of screen
 WIDTH = 600
 HEIGHT = 300
+TITLE = "Keyboard Example"
 
 # define Actors
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))

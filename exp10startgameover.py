@@ -1,9 +1,9 @@
-# Tutorial: https://pygame-zero.readthedocs.io/en/stable/introduction.html
 import pgzrun  # program must always start with this
 
 # set width and height of screen
 WIDTH = 500
 HEIGHT = 500
+TITLE = "Start & Game Over"
 
 # global variables
 over = False

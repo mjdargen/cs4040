@@ -1,10 +1,10 @@
-# Tutorial: https://pygame-zero.readthedocs.io/en/stable/introduction.html
 import pgzrun  # program must always start with this
 from random import randint
 
 # set width and height of screen
 WIDTH = 500
 HEIGHT = 500
+TITLE = "Music and Sounds"
 
 # define Actors, set positions in start()
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))

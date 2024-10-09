@@ -1,4 +1,3 @@
-# Tutorial: https://pygame-zero.readthedocs.io/en/stable/introduction.html
 import pgzrun  # program must always start with this
 from platformer import *
 
