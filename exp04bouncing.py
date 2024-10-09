@@ -9,17 +9,14 @@ HEIGHT = 500
 # define Actor
 alien = Actor("alien")
 # start actor at center
-alien.midtop = (WIDTH // 2, HEIGHT // 2)
+alien.pos = (WIDTH // 2, HEIGHT // 2)
 
-# choose a random velocity between -5 and 5 that is not zero
+# choose a random velocity between 1 and 5
 # defined as a tuple -> (x, y)
 # x -> represents velocity or change in position for x direction
 # y -> represents velocity or change in position for y direction
-alien.velocity_x = randint(-5, 5)
-alien.velocity_y = randint(-5, 5)
-while alien.velocity_x == 0 or alien.velocity_y == 0:
-    alien.velocity_x = randint(-5, 5)
-    alien.velocity_y = randint(-5, 5)
+alien.velocity_x = randint(1, 5)
+alien.velocity_y = randint(1, 5)
 
 
 # displays the new frame
