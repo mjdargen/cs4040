@@ -12,6 +12,7 @@ student.py
 depr_*.*
 settings.json
 *.zip
+_*.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

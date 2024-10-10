@@ -27,9 +27,9 @@ win = False
 over = False
 
 # build world
-platforms = build("platformer_platforms.csv", TILE_SIZE)
-obstacles = build("platformer_obstacles.csv", TILE_SIZE)
-mushrooms = build("platformer_mushrooms.csv", TILE_SIZE)
+platforms = build("platformer_files/platformer_platforms.csv", TILE_SIZE)
+obstacles = build("platformer_files/platformer_obstacles.csv", TILE_SIZE)
+mushrooms = build("platformer_files/platformer_mushrooms.csv", TILE_SIZE)
 
 
 # displays the new frame

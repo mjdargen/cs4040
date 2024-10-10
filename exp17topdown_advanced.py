@@ -16,10 +16,10 @@ win = False
 over = False
 
 # build world
-ground = build("topdown_ground.csv", TILE_SIZE)
-walls = build("topdown_walls.csv", TILE_SIZE)
-obstacles = build("topdown_obstacles.csv", TILE_SIZE)
-hearts = build("topdown_hearts.csv", TILE_SIZE)
+ground = build("top_down_files/topdown_ground.csv", TILE_SIZE)
+walls = build("top_down_files/topdown_walls.csv", TILE_SIZE)
+obstacles = build("top_down_files/topdown_obstacles.csv", TILE_SIZE)
+hearts = build("top_down_files/topdown_hearts.csv", TILE_SIZE)
 
 # define Sprites
 # Sprite("sprite_image.png", start, num_frames, color_key, refresh)
