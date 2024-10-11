@@ -16,7 +16,7 @@ def draw():
     screen.clear()
     screen.fill("darkslateblue")
     robot.draw()
-    screen.draw.text(f"Time: {round(timer, 2)}", center=(WIDTH // 2, 20))
+    screen.draw.text(f"Time: {timer}", center=(WIDTH // 2, 20))
 
 
 # updates game state between drawing of each frame
