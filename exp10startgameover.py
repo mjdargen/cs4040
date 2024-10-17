@@ -54,7 +54,8 @@ def draw():
 # updates game state between drawing of each frame
 def update():
     # once timer has elapsed, call game_over()
-    if countdown_timer == 0:
+    # but must check to make sure it was not already over!
+    if countdown_timer == 0 and not over:
         game_over()
 
 
