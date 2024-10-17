@@ -77,7 +77,7 @@ def update():
         fox.x -= fox.velocity_x
         # flip image and change sprite
         fox.sprite = fox_walk
-        fox.flip_x = True
+        fox.flip_h = True
         # if the movement caused a collision
         if fox.collidelist(platforms) != -1:
             # get object that fox collided with
@@ -90,7 +90,7 @@ def update():
         fox.x += fox.velocity_x
         # flip image and change sprite
         fox.sprite = fox_walk
-        fox.flip_x = False
+        fox.flip_h = False
         # if the movement caused a collision
         if fox.collidelist(platforms) != -1:
             # get object that fox collided with

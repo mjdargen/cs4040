@@ -45,13 +45,13 @@ def update():
     if keyboard.LEFT and fox.left > 0:
         # flip image and change x velocity
         fox.sprite = fox_walk
-        fox.flip_x = True
+        fox.flip_h = True
         fox.velocity_x = -5
     # while right key is pressed and not at edge
     elif keyboard.RIGHT and fox.right < WIDTH:
         # flip image and change x velocity
         fox.sprite = fox_walk
-        fox.flip_x = False
+        fox.flip_h = False
         fox.velocity_x = 5
     # otherwise set x velocity to 0
     else:

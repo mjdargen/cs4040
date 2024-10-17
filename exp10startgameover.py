@@ -27,9 +27,6 @@ def start():
 def decrement_timer():
     global countdown_timer, over
     countdown_timer -= 1  # decrement counter
-    # once timer has elapsed, call game_over()
-    if countdown_timer == 0:
-        game_over()
 
 
 # called during lose condition to trigger game_over and schedule start again
@@ -56,7 +53,9 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
-    pass  # pass means do nothing, used because we can't have empty function
+    # once timer has elapsed, call game_over()
+    if countdown_timer == 0:
+        game_over()
 
 
 start()  # call start just before pgzrun.go()

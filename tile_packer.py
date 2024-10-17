@@ -10,13 +10,13 @@ def main():
     # we don't want a full GUI, so keep the root window from appearing
     Tk().withdraw()
     # select file and store filename
-    # filename = askopenfilename(
-    #     initialdir=os.path.dirname(os.path.realpath(__file__)),
-    #     multiple=False,
-    #     filetypes=(("PNG or JPG files", "*.png;*.jpg"),),
-    #     title="Select your tileset or spritesheet image:",
-    # )
-    filename = "frog_idle.png"
+    filename = askopenfilename(
+        initialdir=os.path.dirname(os.path.realpath(__file__)),
+        multiple=False,
+        filetypes=(("PNG or JPG files", "*.png;*.jpg"),),
+        title="Select your tileset or spritesheet image:",
+    )
+    # filename = "frog_idle.png"
     # load old sheet
     old_sheet = Image.open(filename)
     old_pixels = old_sheet.load()

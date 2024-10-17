@@ -34,9 +34,9 @@ def build(filename, tile_size):
                 if flipped_d:
                     item.flip_d = True
                 if flipped_h:
-                    item.flip_x = True
+                    item.flip_h = True
                 if flipped_v:
-                    item.flip_y = True
+                    item.flip_v = True
                 if rotated_hex:
                     pass
                 item.topleft = (tile_size * col, tile_size * row)
@@ -94,8 +94,8 @@ class Sprite(object):
 
 class Actor(Actor):
     def __init__(self, image, pos=POS_TOPLEFT, anchor=ANCHOR_CENTER, **kwargs):
-        self._flip_x = False
-        self._flip_y = False
+        self._flip_h = False
+        self._flip_v = False
         self._flip_d = False
         self._scale = 1
         self._mask = None
@@ -140,21 +140,21 @@ class Actor(Actor):
         self._transform_surf()
 
     @property
-    def flip_x(self):
-        return self._flip_x
+    def flip_h(self):
+        return self._flip_h
 
-    @flip_x.setter
-    def flip_x(self, flip_x):
-        self._flip_x = flip_x
+    @flip_h.setter
+    def flip_h(self, flip_h):
+        self._flip_h = flip_h
         self._transform_surf()
 
     @property
-    def flip_y(self):
-        return self._flip_y
+    def flip_v(self):
+        return self._flip_v
 
-    @flip_y.setter
-    def flip_y(self, flip_y):
-        self._flip_y = flip_y
+    @flip_v.setter
+    def flip_v(self, flip_v):
+        self._flip_v = flip_v
         self._transform_surf()
 
     @property
@@ -194,11 +194,11 @@ class Actor(Actor):
             self._surf = pygame.transform.scale(
                 self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
             )
-        # flip_x - flips horizontally, about y-axis
-        if self._flip_x:
+        # flip_h - flips horizontally, about y-axis
+        if self._flip_h:
             self._surf = pygame.transform.flip(self._surf, True, False)
-        # flip_y - flips vertically, about x-axis
-        if self._flip_y:
+        # flip_v - flips vertically, about x-axis
+        if self._flip_v:
             self._surf = pygame.transform.flip(self._surf, False, True)
         # flips diagonally
         if self._flip_d:
@@ -222,8 +222,8 @@ class Actor(Actor):
 
 class SpriteActor(Actor):
     def __init__(self, sprite, pos=POS_TOPLEFT, anchor=ANCHOR_CENTER, **kwargs):
-        self._flip_x = False
-        self._flip_y = False
+        self._flip_h = False
+        self._flip_v = False
         self._scale = 1
         self._mask = None
         self._animate_counter = 0
@@ -271,21 +271,21 @@ class SpriteActor(Actor):
         self._transform_surf()
 
     @property
-    def flip_x(self):
-        return self._flip_x
+    def flip_h(self):
+        return self._flip_h
 
-    @flip_x.setter
-    def flip_x(self, flip_x):
-        self._flip_x = flip_x
+    @flip_h.setter
+    def flip_h(self, flip_h):
+        self._flip_h = flip_h
         self._transform_surf()
 
     @property
-    def flip_y(self):
-        return self._flip_y
+    def flip_v(self):
+        return self._flip_v
 
-    @flip_y.setter
-    def flip_y(self, flip_y):
-        self._flip_y = flip_y
+    @flip_v.setter
+    def flip_v(self, flip_v):
+        self._flip_v = flip_v
         self._transform_surf()
 
     @property
@@ -320,9 +320,9 @@ class SpriteActor(Actor):
             self._surf = pygame.transform.scale(
                 self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
             )
-        if self._flip_x:
+        if self._flip_h:
             self._surf = pygame.transform.flip(self._surf, True, False)
-        if self._flip_y:
+        if self._flip_v:
             self._surf = pygame.transform.flip(self._surf, False, True)
 
         self._surf = pygame.transform.rotate(self._surf, self._angle)
