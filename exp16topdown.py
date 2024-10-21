@@ -134,9 +134,9 @@ def update():
         over = True
 
     # check if rabbit collected hearts
-    for heart in hearts:
-        if rabbit.colliderect(heart):
-            hearts.remove(heart)
+    if rabbit.collidelist(hearts) != -1:
+        heart_index = rabbit.collidelist(hearts)
+        hearts.pop(heart_index)
 
     # check if rabbit collected all hearts
     if len(hearts) == 0:

@@ -124,9 +124,9 @@ def update():
         over = True
 
     # check if fox collected mushrooms
-    for mushroom in mushrooms:
-        if fox.colliderect(mushroom):
-            mushrooms.remove(mushroom)
+    if fox.collidelist(mushrooms) != -1:
+        mushroom_index = fox.collidelist(mushrooms)
+        mushrooms.pop(mushroom_index)
 
     # check if fox collected all mushrooms
     if len(mushrooms) == 0:

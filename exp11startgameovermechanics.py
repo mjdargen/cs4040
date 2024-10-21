@@ -44,7 +44,7 @@ def game_over():
     global over
     # set over to True
     over = True
-    # schedule start to run in 2 seconds
+    # schedule start to run in 5 seconds
     clock.schedule_unique(start, 5.0)
     # stop increment counter, will be scheduled again in start
     clock.unschedule(increment_timer)

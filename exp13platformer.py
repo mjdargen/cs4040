@@ -111,9 +111,9 @@ def update():
         over = True
 
     # check if player collected mushrooms
-    for mushroom in mushrooms:
-        if player.colliderect(mushroom):
-            mushrooms.remove(mushroom)
+    if player.collidelist(mushrooms) != -1:
+        mushroom_index = player.collidelist(mushrooms)
+        mushrooms.pop(mushroom_index)
 
     # check if player collected all mushrooms
     if len(mushrooms) == 0:
