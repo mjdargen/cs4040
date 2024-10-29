@@ -8,7 +8,7 @@ from pgzero.actor import Actor, POS_TOPLEFT, ANCHOR_CENTER, transform_anchor
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
-def build(filename, tile_size):
+def build(filename, tile_size, scale=1):
     with open(f"{DIR_PATH}/{filename}", "r") as f:
         contents = f.read().splitlines()
 
@@ -31,6 +31,7 @@ def build(filename, tile_size):
                 rotated_hex = bool(tile_num & 0x10000000)
                 tile_num &= 0x0FFFFFFF
                 item = Actor(f"tiles/tile_{tile_num:04d}")
+                item.scale = scale
                 if flipped_d:
                     item.flip_d = True
                 if flipped_h:
@@ -39,7 +40,7 @@ def build(filename, tile_size):
                     item.flip_v = True
                 if rotated_hex:
                     pass
-                item.topleft = (tile_size * col, tile_size * row)
+                item.topleft = (tile_size * col * scale, tile_size * row * scale)
                 items.append(item)
 
     return items

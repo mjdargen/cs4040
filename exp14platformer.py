@@ -5,31 +5,33 @@ from platformer import *
 TILE_SIZE = 18
 ROWS = 30
 COLS = 20
+SCALE = 2
 
 # Pygame constants
-WIDTH = TILE_SIZE * ROWS
-HEIGHT = TILE_SIZE * COLS
+WIDTH = TILE_SIZE * ROWS * SCALE
+HEIGHT = TILE_SIZE * COLS * SCALE
 TITLE = "Platformer"
 
 # define Actor
 player = Actor("p_right")
+player.scale = SCALE
 player.bottomleft = (0, HEIGHT)
 # define Actor-specific variables
 player.alive = True
 player.jumping = False
-player.velocity_x = 3
+player.velocity_x = 5
 player.velocity_y = 0
 
 # global variables
-jump_velocity = -10
+jump_velocity = -15
 gravity = 1
 win = False
 over = False
 
 # build world
-platforms = build("platformer_files/platformer_platforms.csv", TILE_SIZE)
-obstacles = build("platformer_files/platformer_obstacles.csv", TILE_SIZE)
-mushrooms = build("platformer_files/platformer_mushrooms.csv", TILE_SIZE)
+platforms = build("platformer_files/platformer_platforms.csv", TILE_SIZE, SCALE)
+obstacles = build("platformer_files/platformer_obstacles.csv", TILE_SIZE, SCALE)
+mushrooms = build("platformer_files/platformer_mushrooms.csv", TILE_SIZE, SCALE)
 
 
 # displays the new frame

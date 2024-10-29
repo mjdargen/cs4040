@@ -5,23 +5,24 @@ from platformer import *
 TILE_SIZE = 18
 ROWS = 30
 COLS = 20
+SCALE = 2
 
 # Pygame constants
-WIDTH = TILE_SIZE * ROWS
-HEIGHT = TILE_SIZE * COLS
+WIDTH = TILE_SIZE * ROWS * SCALE
+HEIGHT = TILE_SIZE * COLS * SCALE
 TITLE = "Platformer"
 
 
 # global variables
-jump_velocity = -10
+jump_velocity = -15
 gravity = 1
 win = False
 over = False
 
 # build world
-platforms = build("platformer_files/platformer_platforms.csv", TILE_SIZE)
-obstacles = build("platformer_files/platformer_obstacles.csv", TILE_SIZE)
-mushrooms = build("platformer_files/platformer_mushrooms.csv", TILE_SIZE)
+platforms = build("platformer_files/platformer_platforms.csv", TILE_SIZE, SCALE)
+obstacles = build("platformer_files/platformer_obstacles.csv", TILE_SIZE, SCALE)
+mushrooms = build("platformer_files/platformer_mushrooms.csv", TILE_SIZE, SCALE)
 
 # define Sprites
 # Sprite("sprite_image.png", start, num_frames, color_key, refresh)
@@ -31,11 +32,12 @@ fox_walk = Sprite("fox.png", (0, 2 * 16, 24, 16), 8, color_key, 5)
 
 # define SpriteActor
 fox = SpriteActor(fox_stand)
+fox.scale = scale
 fox.bottomleft = (0, HEIGHT)
 # define Actor-specific variables
 fox.alive = True
 fox.jumping = False
-fox.velocity_x = 3
+fox.velocity_x = 5
 fox.velocity_y = 0
 
 

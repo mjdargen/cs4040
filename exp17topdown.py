@@ -5,10 +5,11 @@ from platformer import *
 TILE_SIZE = 18
 ROWS = 30
 COLS = 20
+SCALE = 2
 
 # Pygame constants
-WIDTH = TILE_SIZE * ROWS
-HEIGHT = TILE_SIZE * COLS
+WIDTH = TILE_SIZE * ROWS * SCALE
+HEIGHT = TILE_SIZE * COLS * SCALE
 TITLE = "Top-Down Perspective"
 
 # global variables
@@ -16,10 +17,10 @@ win = False
 over = False
 
 # build world
-ground = build("top_down_files/topdown_ground.csv", TILE_SIZE)
-walls = build("top_down_files/topdown_walls.csv", TILE_SIZE)
-obstacles = build("top_down_files/topdown_obstacles.csv", TILE_SIZE)
-hearts = build("top_down_files/topdown_hearts.csv", TILE_SIZE)
+ground = build("top_down_files/topdown_ground.csv", TILE_SIZE, SCALE)
+walls = build("top_down_files/topdown_walls.csv", TILE_SIZE, SCALE)
+obstacles = build("top_down_files/topdown_obstacles.csv", TILE_SIZE, SCALE)
+hearts = build("top_down_files/topdown_hearts.csv", TILE_SIZE, SCALE)
 
 # define Sprites
 # Sprite("sprite_image.png", start, num_frames, color_key, refresh)
@@ -32,11 +33,12 @@ walk_right = Sprite("rabbit.png", (0, 7 * 16, 16, 16), 2, color_key, 10)
 
 # define SpriteActor
 rabbit = SpriteActor(idle)
+rabbit.scale = SCALE
 rabbit.bottomleft = (WIDTH / 2, HEIGHT - TILE_SIZE)
 # define Actor-specific variables
 rabbit.alive = True
 rabbit.jumping = False
-rabbit.velocity = 2
+rabbit.velocity = 4
 
 
 # displays the new frame
