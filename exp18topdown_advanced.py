@@ -45,7 +45,6 @@ rabbit.directions = ["idle"]
 # displays the new frame
 def draw():
     screen.clear()  # clears the screen
-    screen.fill("lightslateblue")  # fills background color
 
     # draw ground
     for tile in ground:
@@ -137,8 +136,8 @@ def update():
         over = True
 
     # check if rabbit collected hearts
-    if rabbit.collidelist(hearts) != -1:
-        heart_index = rabbit.collidelist(hearts)
+    heart_index = rabbit.collidelist(hearts)
+    if heart_index != -1:
         hearts.pop(heart_index)
 
     # check if rabbit collected all hearts

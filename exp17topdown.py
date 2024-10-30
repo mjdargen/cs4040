@@ -44,7 +44,6 @@ rabbit.velocity = 4
 # displays the new frame
 def draw():
     screen.clear()  # clears the screen
-    screen.fill("lightslateblue")  # fills background color
 
     # draw ground
     for tile in ground:
@@ -84,9 +83,10 @@ def update():
         # flip image and change x velocity
         rabbit.sprite = walk_left
         # if the movement caused a collision
-        if rabbit.collidelist(walls) != -1:
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
             # get object that rabbit collided with
-            collided = walls[rabbit.collidelist(walls)]
+            collided = walls[collision_index]
             # use it to calculate position where there is no collision
             rabbit.left = collided.right
 
@@ -96,9 +96,10 @@ def update():
         # flip image and change x velocity
         rabbit.sprite = walk_right
         # if the movement caused a collision
-        if rabbit.collidelist(walls) != -1:
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
             # get object that rabbit collided with
-            collided = walls[rabbit.collidelist(walls)]
+            collided = walls[collision_index]
             # use it to calculate position where there is no collision
             rabbit.right = collided.left
 
@@ -108,9 +109,10 @@ def update():
         # flip image and change x velocity
         rabbit.sprite = walk_up
         # if the movement caused a collision
-        if rabbit.collidelist(walls) != -1:
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
             # get object that rabbit collided with
-            collided = walls[rabbit.collidelist(walls)]
+            collided = walls[collision_index]
             # use it to calculate position where there is no collision
             rabbit.top = collided.bottom
 
@@ -120,9 +122,10 @@ def update():
         # flip image and change x velocity
         rabbit.sprite = walk_down
         # if the movement caused a collision
-        if rabbit.collidelist(walls) != -1:
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
             # get object that rabbit collided with
-            collided = walls[rabbit.collidelist(walls)]
+            collided = walls[collision_index]
             # use it to calculate position where there is no collision
             rabbit.bottom = collided.top
 
@@ -136,13 +139,17 @@ def update():
         over = True
 
     # check if rabbit collected hearts
-    if rabbit.collidelist(hearts) != -1:
-        heart_index = rabbit.collidelist(hearts)
+    heart_index = rabbit.collidelist(hearts)
+    if heart_index != -1:
         hearts.pop(heart_index)
 
     # check if rabbit collected all hearts
     if len(hearts) == 0:
         win = True
+        
+def on_key_down(key):
+    if key == keys.T:
+        toggle_fullscreen()
 
 
 pgzrun.go()  # program must always end with this

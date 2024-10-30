@@ -70,9 +70,10 @@ def update():
         player.x -= player.velocity_x
         player.image = "p_left"
         # if the movement caused a collision
-        if player.collidelist(platforms) != -1:
+        collision_index = player.collidelist(platforms)
+        if collision_index != -1:
             # get object that player collided with
-            collided = platforms[player.collidelist(platforms)]
+            collided = platforms[collision_index]
             # use it to calculate position where there is no collision
             player.x = collided.x + (collided.width / 2 + player.width / 2)
 
@@ -81,9 +82,10 @@ def update():
         player.x += player.velocity_x
         player.image = "p_right"
         # if the movement caused a collision
-        if player.collidelist(platforms) != -1:
+        collision_index = player.collidelist(platforms)
+        if collision_index != -1:
             # get object that player collided with
-            collided = platforms[player.collidelist(platforms)]
+            collided = platforms[collision_index]
             # use it to calculate position where there is no collision
             player.x = collided.x - (collided.width / 2 + player.width / 2)
 
@@ -91,9 +93,10 @@ def update():
     player.y += player.velocity_y
     player.velocity_y += gravity
     # if the movement caused a collision, move position back
-    if player.collidelist(platforms) != -1:
+    collision_index = player.collidelist(platforms)
+    if collision_index != -1:
         # get object that player collided with
-        collided = platforms[player.collidelist(platforms)]
+        collided = platforms[collision_index]
         # moving down - hit the ground
         if player.velocity_y >= 0:
             # move player up to no collision position

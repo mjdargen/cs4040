@@ -32,7 +32,7 @@ fox_walk = Sprite("fox.png", (0, 2 * 16, 24, 16), 8, color_key, 5)
 
 # define SpriteActor
 fox = SpriteActor(fox_stand)
-fox.scale = scale
+fox.scale = SCALE
 fox.bottomleft = (0, HEIGHT)
 # define Actor-specific variables
 fox.alive = True
@@ -81,9 +81,10 @@ def update():
         fox.sprite = fox_walk
         fox.flip_h = True
         # if the movement caused a collision
-        if fox.collidelist(platforms) != -1:
+        collision_index = fox.collidelist(platforms)
+        if collision_index != -1:
             # get object that fox collided with
-            collided = platforms[fox.collidelist(platforms)]
+            collided = platforms[collision_index]
             # use it to calculate position where there is no collision
             fox.left = collided.right
 
@@ -94,9 +95,10 @@ def update():
         fox.sprite = fox_walk
         fox.flip_h = False
         # if the movement caused a collision
-        if fox.collidelist(platforms) != -1:
+        collision_index = fox.collidelist(platforms)
+        if collision_index != -1:
             # get object that fox collided with
-            collided = platforms[fox.collidelist(platforms)]
+            collided = platforms[collision_index]
             # use it to calculate position where there is no collision
             fox.right = collided.left
 
@@ -104,9 +106,10 @@ def update():
     fox.y += fox.velocity_y
     fox.velocity_y += gravity
     # if the movement caused a collision, move position back
-    if fox.collidelist(platforms) != -1:
+    collision_index = fox.collidelist(platforms)
+    if collision_index != -1:
         # get object that fox collided with
-        collided = platforms[fox.collidelist(platforms)]
+        collided = platforms[collision_index]
         # moving down - hit the ground
         if fox.velocity_y >= 0:
             # move fox up to no collision position
