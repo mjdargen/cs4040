@@ -146,10 +146,6 @@ def update():
     # check if rabbit collected all hearts
     if len(hearts) == 0:
         win = True
-        
-def on_key_down(key):
-    if key == keys.T:
-        toggle_fullscreen()
 
 
 pgzrun.go()  # program must always end with this
