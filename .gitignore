@@ -13,6 +13,7 @@ depr_*.*
 settings.json
 *.zip
 _*.py
+pgzero
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
