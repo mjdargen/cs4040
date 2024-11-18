@@ -5,14 +5,6 @@ from PIL import Image
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
-prompt = """
-Before you continue, you will need the following information about your spritesheet:
-    - What is the width and height of the tiles, including margins?
-    - What is the width and height of the art in the tile, excluding margins?
-    - What are the margins on each side of the art?
-"""
-
-
 def main():
     # we don't want a full GUI, so keep the root window from appearing
     Tk().withdraw()
@@ -86,13 +78,10 @@ def get_int_input(prompt):
 
 # user input collection for all values with error detection
 def get_all_data(sheet_width, sheet_height):
-    print(prompt)
-    
     # num rows /cols on the sheet
     print("How many rows and columns are there on the spritesheet?")
     num_cols = get_int_input("  Number of columns: ")
     num_rows = get_int_input("  Number of rows: ")
-    # current = (sheet_width // num_cols, sheet_height // num_rows)
     
     # width / height of sheet at start including dimensions
     # print("What are the actual dimensions of the tiles, including margins?")
