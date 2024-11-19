@@ -15,13 +15,14 @@ TITLE = "Top-Down Perspective"
 # global variables
 win = False
 over = False
+level = 1
 
-# build world
+# build world from tile map
 tilesheet = "levels/tilemap_packed.png"
-ground = pgz_map("levels/topdown_ground.csv", tilesheet, TILE_SIZE, scale=SCALE)
-walls = pgz_map("levels/topdown_walls.csv", tilesheet, TILE_SIZE, scale=SCALE)
-obstacles = pgz_map("levels/topdown_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
-hearts = pgz_map("levels/topdown_hearts.csv", tilesheet, TILE_SIZE, scale=SCALE)
+ground = pgz_map("levels/t1_ground.csv", tilesheet, TILE_SIZE, scale=SCALE)
+walls = pgz_map("levels/t1_walls.csv", tilesheet, TILE_SIZE, scale=SCALE)
+obstacles = pgz_map("levels/t1_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
+hearts = pgz_map("levels/t1_hearts.csv", tilesheet, TILE_SIZE, scale=SCALE)
 
 # define Sprites
 # Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
@@ -37,12 +38,11 @@ walk_right = Sprite(filename, frame_width, frame_height, 7, 2, 10)
 # define SpriteActor
 rabbit = SpriteActor(idle)
 rabbit.scale = SCALE
-rabbit.pos = (WIDTH / 2, HEIGHT - TILE_SIZE)
+rabbit.pos = (200, HEIGHT / 2)
 # define Actor-specific variables
 rabbit.alive = True
 rabbit.jumping = False
 rabbit.velocity = 4
-rabbit.directions = ["idle"]
 
 
 # displays the new frame
@@ -82,55 +82,59 @@ def update():
         return
 
     # handle rabbit left movement
-    if rabbit.directions[-1] == "left" and rabbit.left > 0:
+    if keyboard.LEFT:
         rabbit.x -= rabbit.velocity
         # flip image and change x velocity
         rabbit.sprite = walk_left
         # if the movement caused a collision
-        if rabbit.collidelist(walls) != -1:
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
             # get object that rabbit collided with
-            collided = walls[rabbit.collidelist(walls)]
+            collided = walls[collision_index]
             # use it to calculate position where there is no collision
             rabbit.left = collided.right
 
     # handle rabbit right movement
-    if rabbit.directions[-1] == "right" and rabbit.right < WIDTH:
+    elif keyboard.RIGHT:
         rabbit.x += rabbit.velocity
         # flip image and change x velocity
         rabbit.sprite = walk_right
         # if the movement caused a collision
-        if rabbit.collidelist(walls) != -1:
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
             # get object that rabbit collided with
-            collided = walls[rabbit.collidelist(walls)]
+            collided = walls[collision_index]
             # use it to calculate position where there is no collision
             rabbit.right = collided.left
 
     # handle rabbit up movement
-    if rabbit.directions[-1] == "up" and rabbit.top > 0:
+    elif keyboard.UP:
         rabbit.y -= rabbit.velocity
         # flip image and change x velocity
         rabbit.sprite = walk_up
         # if the movement caused a collision
-        if rabbit.collidelist(walls) != -1:
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
             # get object that rabbit collided with
-            collided = walls[rabbit.collidelist(walls)]
+            collided = walls[collision_index]
             # use it to calculate position where there is no collision
             rabbit.top = collided.bottom
 
     # handle rabbit down movement
-    if rabbit.directions[-1] == "down" and rabbit.bottom < HEIGHT:
+    elif keyboard.DOWN:
         rabbit.y += rabbit.velocity
         # flip image and change x velocity
         rabbit.sprite = walk_down
         # if the movement caused a collision
-        if rabbit.collidelist(walls) != -1:
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
             # get object that rabbit collided with
-            collided = walls[rabbit.collidelist(walls)]
+            collided = walls[collision_index]
             # use it to calculate position where there is no collision
             rabbit.bottom = collided.top
 
     # otherwise idle
-    if rabbit.directions[-1] == "idle":
+    else:
         rabbit.sprite = idle
 
     # rabbit collided with obstacle, game over
@@ -145,31 +149,26 @@ def update():
 
     # check if rabbit collected all hearts
     if len(hearts) == 0:
+        level_transition()
+
+
+def level_transition():
+    global level, win, ground, walls, obstacles, hearts
+    # transition to level 2
+    if level == 1 and (rabbit.left < 0 or rabbit.right > WIDTH or rabbit.top < 0 or rabbit.bottom > HEIGHT):
+        # set level and new start position
+        level = 2
+        rabbit.pos = (0, rabbit.y)
+        # import new tilemap to pgzero
+        ground = pgz_map("levels/t2_ground.csv", tilesheet, TILE_SIZE, scale=SCALE)
+        walls = pgz_map("levels/t2_walls.csv", tilesheet, TILE_SIZE, scale=SCALE)
+        obstacles = pgz_map("levels/t2_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
+        hearts = pgz_map("levels/t2_hearts.csv", tilesheet, TILE_SIZE, scale=SCALE)
+    # transition to win
+    elif level == 2:
+        # set level and win
+        level = 3
         win = True
 
-
-# keyboard pressed event listener
-def on_key_down(key):
-    if key == keys.LEFT:
-        rabbit.directions.append("left")
-    elif key == keys.RIGHT:
-        rabbit.directions.append("right")
-    elif key == keys.UP:
-        rabbit.directions.append("up")
-    elif key == keys.DOWN:
-        rabbit.directions.append("down")
-
-
-# called when a keyboard button is released
-def on_key_up(key):
-    if key == keys.LEFT:
-        rabbit.directions.remove("left")
-    elif key == keys.RIGHT:
-        rabbit.directions.remove("right")
-    elif key == keys.UP:
-        rabbit.directions.remove("up")
-    elif key == keys.DOWN:
-        rabbit.directions.remove("down")
-
-
+level_transition()
 pgzrun.go()  # program must always end with this

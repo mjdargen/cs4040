@@ -30,15 +30,9 @@ over = False
 
 # build world from
 tilesheet = "levels/tilemap_packed.png"
-platforms = pgz_map(
-    "levels/platformer_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE
-)
-obstacles = pgz_map(
-    "levels/platformer_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE
-)
-mushrooms = pgz_map(
-    "levels/platformer_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE
-)
+platforms = pgz_map("levels/platformer_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE)
+obstacles = pgz_map("levels/platformer_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
+mushrooms = pgz_map("levels/platformer_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE)
 
 
 # displays the new frame

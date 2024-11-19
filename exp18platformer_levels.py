@@ -18,13 +18,14 @@ jump_velocity = -15
 gravity = 1
 win = False
 over = False
+level = 1
 
 # build world
 # import in tile map
 tilesheet = "levels/tilemap_packed.png"
-platforms = pgz_map("levels/platformer_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE)
-obstacles = pgz_map("levels/platformer_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
-mushrooms = pgz_map("levels/platformer_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE)
+platforms = pgz_map("levels/p1_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE)
+obstacles = pgz_map("levels/p1_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
+mushrooms = pgz_map("levels/p1_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE)
 
 
 # define Sprites
@@ -38,7 +39,7 @@ fox_walk = Sprite(filename, frame_width, frame_height, 2, 8, 10)
 # define SpriteActor
 fox = SpriteActor(fox_stand)
 fox.scale = 2.5
-fox.bottomleft = (0, HEIGHT)
+fox.bottomleft = (0, HEIGHT-40)
 # define Actor-specific variables
 fox.alive = True
 fox.jumping = False
@@ -140,6 +141,24 @@ def update():
 
     # check if fox collected all mushrooms
     if len(mushrooms) == 0:
+        level_transition()
+
+
+def level_transition():
+    global level, win, platforms, obstacles, mushrooms
+    # transition to level 2
+    if level == 1:
+        # set level and new start position
+        level = 2
+        fox.bottomleft = (0, HEIGHT-40)
+        # import new tilemap to pgzero
+        platforms = pgz_map("levels/p2_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE)
+        obstacles = pgz_map("levels/p2_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
+        mushrooms = pgz_map("levels/p2_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE)
+    # transition to win
+    elif level == 2:
+        # set level and win
+        level = 3
         win = True
 
 
