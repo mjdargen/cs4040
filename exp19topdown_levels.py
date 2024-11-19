@@ -170,5 +170,5 @@ def level_transition():
         level = 3
         win = True
 
-level_transition()
+
 pgzrun.go()  # program must always end with this
