@@ -1,7 +1,7 @@
 import pgzrun  # program must always start with this
-from platformer import *
+from pgone import *
 
-# our platformer constants
+# our tile map constants
 TILE_SIZE = 18
 ROWS = 30
 COLS = 20
@@ -28,10 +28,17 @@ gravity = 1
 win = False
 over = False
 
-# build world
-platforms = build("platformer_files/platformer_platforms.csv", TILE_SIZE, SCALE)
-obstacles = build("platformer_files/platformer_obstacles.csv", TILE_SIZE, SCALE)
-mushrooms = build("platformer_files/platformer_mushrooms.csv", TILE_SIZE, SCALE)
+# build world from
+tilesheet = "levels/tilemap_packed.png"
+platforms = pgz_map(
+    "levels/platformer_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE
+)
+obstacles = pgz_map(
+    "levels/platformer_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE
+)
+mushrooms = pgz_map(
+    "levels/platformer_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE
+)
 
 
 # displays the new frame

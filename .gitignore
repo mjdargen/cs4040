@@ -6,14 +6,18 @@ pygame_examples
 kenney_*
 activity*.py
 *.md
-p*.py
+p3.py
+p4*.py
+p5*.py
 student.py
 !platformer.py
 depr_*.*
 settings.json
 *.zip
 _*.py
+_*
 pgzero
+pgzrun.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

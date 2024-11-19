@@ -1,6 +1,6 @@
 # Sprite Source: https://elthen.itch.io/2d-pixel-art-fox-sprites
 import pgzrun  # program must always start with this
-from platformer import *  # must download and import spriteactor.py
+from pgone import *  # must download and import spriteactor.py
 
 # set width and height of screen
 WIDTH = 800
@@ -11,17 +11,20 @@ TITLE = "Sprite Actor"
 gravity = 1
 
 # example sprite
-# Sprite("sprite_image.png", start, num_frames, color_key, refresh)
-filename = "fox.png"  # name of file, must be stored in "images" folder
-start = (0, 0, 32, 32)  # (x, y, w, h) - x,y of topleft corner, width,height of 1 frame
-num_frames = 8  # number of frames in the sprite
-color_key = (0, 0, 0)  # leave like this unless background shows up
-refresh = 10  # refresh rate - updates every 10 frames
-example = Sprite(filename, start, num_frames, color_key, refresh)
+# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+filename = "fox.png"  # Name of file, must be stored in "images" folder
+frame_width = 24  # width of each frame
+frame_height = 16  # height of each frame
+row_number = 1  # row number on the spritesheet
+frame_count = 14  # number of frames in the animation
+fps = 2  # FPS refresh rate: updates every 2 frames
+fox_stand = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
 
-# define Sprites
-fox_stand = Sprite("fox.png", (0, 16, 24, 16), 14, color_key, 30)
-fox_walk = Sprite("fox.png", (0, 2 * 16, 24, 16), 8, color_key, 5)
+# Fox walking animation (walking animation starts at row 2)
+row_number = 2  # row number on the spritesheet
+frame_count = 8  # Number of frames in the walking animation
+fps = 10  # FPS refresh rate: updates every 10 frames
+fox_walk = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
 
 # define SpriteActor
 fox = SpriteActor(fox_stand)
@@ -80,7 +83,7 @@ def update():
 def on_key_down(key):
     # change vertical velocity when space or up keys are pressed
     # make sure not previously jumping first
-    if (key == keys.SPACE or key == keys.UP) and fox.midbottom[1] == HEIGHT:
+    if (key == keys.SPACE or key == keys.UP) and fox.bottom >= HEIGHT:
         fox.velocity_y = -10
 
 

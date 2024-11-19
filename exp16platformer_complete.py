@@ -1,7 +1,7 @@
 import pgzrun  # program must always start with this
-from platformer import *
+from pgone import *
 
-# our platformer constants
+# our tile map constants
 TILE_SIZE = 18
 ROWS = 30
 COLS = 20
@@ -20,19 +20,30 @@ win = False
 over = False
 
 # build world
-platforms = build("platformer_files/platformer_platforms.csv", TILE_SIZE, SCALE)
-obstacles = build("platformer_files/platformer_obstacles.csv", TILE_SIZE, SCALE)
-mushrooms = build("platformer_files/platformer_mushrooms.csv", TILE_SIZE, SCALE)
+# import in tile map
+tilesheet = "levels/tilemap_packed.png"
+platforms = pgz_map(
+    "levels/platformer_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE
+)
+obstacles = pgz_map(
+    "levels/platformer_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE
+)
+mushrooms = pgz_map(
+    "levels/platformer_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE
+)
+
 
 # define Sprites
-# Sprite("sprite_image.png", start, num_frames, color_key, refresh)
-color_key = (0, 0, 0)  # leave like this unless background shows up
-fox_stand = Sprite("fox.png", (0, 16, 24, 16), 14, color_key, 30)
-fox_walk = Sprite("fox.png", (0, 2 * 16, 24, 16), 8, color_key, 5)
+filename = "fox.png"  # Name of file, must be stored in "images" folder
+frame_width = 24  # width of each frame
+frame_height = 16  # height of each frame
+# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+fox_stand = Sprite(filename, frame_width, frame_height, 1, 14, 2)
+fox_walk = Sprite(filename, frame_width, frame_height, 2, 8, 10)
 
 # define SpriteActor
 fox = SpriteActor(fox_stand)
-fox.scale = SCALE
+fox.scale = 2.5
 fox.bottomleft = (0, HEIGHT)
 # define Actor-specific variables
 fox.alive = True

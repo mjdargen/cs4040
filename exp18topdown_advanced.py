@@ -1,7 +1,7 @@
 import pgzrun  # program must always start with this
-from platformer import *
+from pgone import *
 
-# our platformer constants
+# our tile map constants
 TILE_SIZE = 18
 ROWS = 30
 COLS = 20
@@ -17,24 +17,27 @@ win = False
 over = False
 
 # build world
-ground = build("top_down_files/topdown_ground.csv", TILE_SIZE, SCALE)
-walls = build("top_down_files/topdown_walls.csv", TILE_SIZE, SCALE)
-obstacles = build("top_down_files/topdown_obstacles.csv", TILE_SIZE, SCALE)
-hearts = build("top_down_files/topdown_hearts.csv", TILE_SIZE, SCALE)
+tilesheet = "levels/tilemap_packed.png"
+ground = pgz_map("levels/topdown_ground.csv", tilesheet, TILE_SIZE, scale=SCALE)
+walls = pgz_map("levels/topdown_walls.csv", tilesheet, TILE_SIZE, scale=SCALE)
+obstacles = pgz_map("levels/topdown_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
+hearts = pgz_map("levels/topdown_hearts.csv", tilesheet, TILE_SIZE, scale=SCALE)
 
 # define Sprites
-# Sprite("sprite_image.png", start, num_frames, color_key, refresh)
-color_key = (0, 0, 0)  # leave like this unless background shows up
-idle = Sprite("rabbit.png", (0, 0, 16, 16), 2, color_key, 30)
-walk_down = Sprite("rabbit.png", (0, 4 * 16, 16, 16), 2, color_key, 10)
-walk_up = Sprite("rabbit.png", (0, 5 * 16, 16, 16), 2, color_key, 10)
-walk_left = Sprite("rabbit.png", (0, 6 * 16, 16, 16), 2, color_key, 10)
-walk_right = Sprite("rabbit.png", (0, 7 * 16, 16, 16), 2, color_key, 10)
+# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+filename = "rabbit.png"
+frame_width = 16  # width of each frame
+frame_height = 16  # height of each frame
+idle = Sprite(filename, frame_width, frame_height, 0, 2, 3)
+walk_down = Sprite(filename, frame_width, frame_height, 4, 2, 10)
+walk_up = Sprite(filename, frame_width, frame_height, 5, 2, 10)
+walk_left = Sprite(filename, frame_width, frame_height, 6, 2, 10)
+walk_right = Sprite(filename, frame_width, frame_height, 7, 2, 10)
 
 # define SpriteActor
 rabbit = SpriteActor(idle)
 rabbit.scale = SCALE
-rabbit.bottomleft = (WIDTH / 2, HEIGHT - TILE_SIZE)
+rabbit.pos = (WIDTH / 2, HEIGHT - TILE_SIZE)
 # define Actor-specific variables
 rabbit.alive = True
 rabbit.jumping = False

@@ -1,3 +1,10 @@
+#################################################################################
+###                                                                           ###
+###                                                                           ###
+###  Note: This file has been replaced by pgone.py. Left here for reference.  ###
+###                                                                           ###
+###                                                                           ###
+#################################################################################
 import os
 import time
 import pygame
@@ -8,15 +15,17 @@ from pgzero.actor import Actor, POS_TOPLEFT, ANCHOR_CENTER, transform_anchor
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
-def build(filename, tile_size, scale=1):
+def build(filename, tile_size):
     with open(f"{DIR_PATH}/{filename}", "r") as f:
         contents = f.read().splitlines()
 
-    # convert to int but check for negative numbers
-    contents = [
-        [int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")]
-        for row in contents
-    ]
+    # convert to int but check if valid and for negative numbers
+    contents = [c.split(",") for c in contents]
+    for row in range(len(contents)):
+        for col in range(len(contents[0])):
+            val = contents[row][col]
+            if val.isdigit() or (val[0] == "-" and val[1:].isdigit()):
+                contents[row][col] = int(val)
 
     # create all items as Actors
     items = []
@@ -31,16 +40,15 @@ def build(filename, tile_size, scale=1):
                 rotated_hex = bool(tile_num & 0x10000000)
                 tile_num &= 0x0FFFFFFF
                 item = Actor(f"tiles/tile_{tile_num:04d}")
-                item.scale = scale
                 if flipped_d:
                     item.flip_d = True
                 if flipped_h:
-                    item.flip_h = True
+                    item.flip_x = True
                 if flipped_v:
-                    item.flip_v = True
+                    item.flip_y = True
                 if rotated_hex:
                     pass
-                item.topleft = (tile_size * col * scale, tile_size * row * scale)
+                item.topleft = (tile_size * col, tile_size * row)
                 items.append(item)
 
     return items
@@ -78,7 +86,7 @@ class SpriteSheet(object):
 class Sprite(object):
     def __init__(self, filename, rect, count, color_key=None, frames=1):
         self.filename = filename
-        ss = SpriteSheet(f"{DIR_PATH}/images/sprites/{filename}")
+        ss = SpriteSheet(f"./images/sprites/{filename}")
         self.images = ss.load_strip(rect, count, color_key)
         self.i = 0
         self.frames = frames
@@ -95,8 +103,8 @@ class Sprite(object):
 
 class Actor(Actor):
     def __init__(self, image, pos=POS_TOPLEFT, anchor=ANCHOR_CENTER, **kwargs):
-        self._flip_h = False
-        self._flip_v = False
+        self._flip_x = False
+        self._flip_y = False
         self._flip_d = False
         self._scale = 1
         self._mask = None
@@ -141,21 +149,21 @@ class Actor(Actor):
         self._transform_surf()
 
     @property
-    def flip_h(self):
-        return self._flip_h
+    def flip_x(self):
+        return self._flip_x
 
-    @flip_h.setter
-    def flip_h(self, flip_h):
-        self._flip_h = flip_h
+    @flip_x.setter
+    def flip_x(self, flip_x):
+        self._flip_x = flip_x
         self._transform_surf()
 
     @property
-    def flip_v(self):
-        return self._flip_v
+    def flip_y(self):
+        return self._flip_y
 
-    @flip_v.setter
-    def flip_v(self, flip_v):
-        self._flip_v = flip_v
+    @flip_y.setter
+    def flip_y(self, flip_y):
+        self._flip_y = flip_y
         self._transform_surf()
 
     @property
@@ -195,11 +203,11 @@ class Actor(Actor):
             self._surf = pygame.transform.scale(
                 self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
             )
-        # flip_h - flips horizontally, about y-axis
-        if self._flip_h:
+        # flip_x - flips horizontally, about y-axis
+        if self._flip_x:
             self._surf = pygame.transform.flip(self._surf, True, False)
-        # flip_v - flips vertically, about x-axis
-        if self._flip_v:
+        # flip_y - flips vertically, about x-axis
+        if self._flip_y:
             self._surf = pygame.transform.flip(self._surf, False, True)
         # flips diagonally
         if self._flip_d:
@@ -223,8 +231,8 @@ class Actor(Actor):
 
 class SpriteActor(Actor):
     def __init__(self, sprite, pos=POS_TOPLEFT, anchor=ANCHOR_CENTER, **kwargs):
-        self._flip_h = False
-        self._flip_v = False
+        self._flip_x = False
+        self._flip_y = False
         self._scale = 1
         self._mask = None
         self._animate_counter = 0
@@ -272,21 +280,21 @@ class SpriteActor(Actor):
         self._transform_surf()
 
     @property
-    def flip_h(self):
-        return self._flip_h
+    def flip_x(self):
+        return self._flip_x
 
-    @flip_h.setter
-    def flip_h(self, flip_h):
-        self._flip_h = flip_h
+    @flip_x.setter
+    def flip_x(self, flip_x):
+        self._flip_x = flip_x
         self._transform_surf()
 
     @property
-    def flip_v(self):
-        return self._flip_v
+    def flip_y(self):
+        return self._flip_y
 
-    @flip_v.setter
-    def flip_v(self, flip_v):
-        self._flip_v = flip_v
+    @flip_y.setter
+    def flip_y(self, flip_y):
+        self._flip_y = flip_y
         self._transform_surf()
 
     @property
@@ -321,9 +329,9 @@ class SpriteActor(Actor):
             self._surf = pygame.transform.scale(
                 self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
             )
-        if self._flip_h:
+        if self._flip_x:
             self._surf = pygame.transform.flip(self._surf, True, False)
-        if self._flip_v:
+        if self._flip_y:
             self._surf = pygame.transform.flip(self._surf, False, True)
 
         self._surf = pygame.transform.rotate(self._surf, self._angle)
