@@ -29,10 +29,10 @@ filename = "rabbit.png"
 frame_width = 16  # width of each frame
 frame_height = 16  # height of each frame
 idle = Sprite(filename, frame_width, frame_height, 0, 2, 3)
-walk_down = Sprite(filename, frame_width, frame_height, 4, 2, 10)
-walk_up = Sprite(filename, frame_width, frame_height, 5, 2, 10)
-walk_left = Sprite(filename, frame_width, frame_height, 6, 2, 10)
-walk_right = Sprite(filename, frame_width, frame_height, 7, 2, 10)
+walk_down = Sprite(filename, frame_width, frame_height, 4, 4, 10)
+walk_up = Sprite(filename, frame_width, frame_height, 5, 4, 10)
+walk_left = Sprite(filename, frame_width, frame_height, 6, 4, 10)
+walk_right = Sprite(filename, frame_width, frame_height, 7, 4, 10)
 
 # define SpriteActor
 rabbit = SpriteActor(idle)

@@ -377,7 +377,7 @@ class Actor(Actor):
         if self._flip_v:
             self._surf = pygame.transform.flip(self._surf, False, True)
         if self._flip_d:
-            self._surf = pygame.transform.rotate(self._surf, 90)
+            self._surf = pygame.transform.rotate(self._surf, -90)
             self._surf = pygame.transform.flip(self._surf, True, False)
 
         if self._angle != 0:

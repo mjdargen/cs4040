@@ -329,10 +329,16 @@ class SpriteActor(Actor):
             self._surf = pygame.transform.scale(
                 self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
             )
+        # flip_x - flips horizontally, about y-axis
         if self._flip_x:
             self._surf = pygame.transform.flip(self._surf, True, False)
+        # flip_y - flips vertically, about x-axis
         if self._flip_y:
             self._surf = pygame.transform.flip(self._surf, False, True)
+        # flips diagonally
+        if self._flip_d:
+            self._surf = pygame.transform.rotate(self._surf, -90)
+            self._surf = pygame.transform.flip(self._surf, True, False)
 
         self._surf = pygame.transform.rotate(self._surf, self._angle)
 
