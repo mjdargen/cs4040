@@ -15,6 +15,7 @@ and used under CC0.
 # Please see README.md for explanation of options.
 # https://github.com/cosmologicon/pygame-text
 
+# flake8: noqa: E501
 from __future__ import division
 
 from math import ceil, sin, cos, radians
@@ -141,6 +142,7 @@ def wrap(text, fontname=None, fontsize=None, sysfontname=None,
             lines.append(line)
     return lines
 
+
 _fit_cache = {}
 
 
@@ -198,6 +200,7 @@ def _resolveangle(angle):
     angle %= 360
     return int(round(angle / ANGLE_RESOLUTION_DEGREES)) * ANGLE_RESOLUTION_DEGREES
 
+
 # Return the set of points in the circle radius r, using Bresenham's
 # circle algorithm
 _circle_cache = {}
@@ -222,6 +225,7 @@ def _circlepoints(r):
     points += [(x, -y) for x, y in points if y]
     points.sort()
     return points
+
 
 _surf_cache = {}
 _surf_tick_usage = {}
@@ -340,9 +344,9 @@ def getsurf(text, fontname=None, fontsize=None, sysfontname=None, bold=None, ita
                                   background).convert_alpha() for text in texts]
         if gcolor is not None:
             import numpy
-            m = numpy.clip(numpy.arange(
-                lsurfs[0].get_height()) * 2.0 / font.get_ascent() - 1.0, 0, 1)
             for lsurf in lsurfs:
+                m = numpy.clip(numpy.arange(
+                    lsurf.get_height()) * 2.0 / font.get_ascent() - 1.0, 0, 1)
                 array = pygame.surfarray.pixels3d(lsurf)
                 for j in (0, 1, 2):
                     array[:, :, j] = (
@@ -368,6 +372,7 @@ def getsurf(text, fontname=None, fontsize=None, sysfontname=None, bold=None, ita
         _surf_tick_usage[key] = _tick
         _tick += 1
     return surf
+
 
 _default_surf_sentinel = ()
 

@@ -14,6 +14,7 @@ from struct import unpack_from
 
 class MagicReader:
     """Interface to reading the magic numbers in a file's header."""
+
     def __init__(self, path):
         with open(path, 'rb') as f:
             self.bytes = f.read(64 * 1024)
@@ -87,12 +88,7 @@ def riff_walk(f, offset):
 
 def identify(path):
     f = MagicReader(path)
-    magic = f.read_bytes(0)
-
-    if magic == b'OggS':
-        return "Ogg Vorbis"
-
-    if magic != b'RIFF':
+    if f.read_bytes(0) != b'RIFF':
         return 'Unknown format (not RIFF WAVE)'
 
     if f.read_bytes(8) != b'WAVE':

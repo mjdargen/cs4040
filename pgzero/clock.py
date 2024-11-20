@@ -13,6 +13,9 @@ __all__ = [
     'Clock', 'schedule', 'schedule_interval', 'unschedule'
 ]
 
+# This type can't be weakreffed in Python 3.4
+builtin_function_or_method = type(open)
+
 
 def weak_method(method):
     """Quick weak method ref in case users aren't using Python 3.4"""
@@ -32,7 +35,12 @@ def mkref(o):
     if isinstance(o, MethodType):
         return weak_method(o)
     else:
-        return ref(o)
+        try:
+            return ref(o)
+        except TypeError:
+            if isinstance(o, builtin_function_or_method):
+                return lambda: o
+            raise
 
 
 @total_ordering
@@ -42,6 +50,7 @@ class Event:
     Events are ordered by their scheduled execution time.
 
     """
+
     def __init__(self, time, cb, repeat=None):
         self.time = time
         self.repeat = repeat
@@ -74,11 +83,17 @@ class Clock:
     scaling dt before passing it to tick().
 
     """
+
     def __init__(self):
         self.t = 0
         self.fired = False
         self.events = []
         self._each_tick = []
+
+    def clear(self):
+        """Remove all handlers from this clock."""
+        self.events.clear()
+        self._each_tick.clear()
 
     def schedule(self, callback, delay):
         """Schedule callback to be called once, at `delay` seconds from now.
@@ -118,7 +133,11 @@ class Clock:
         If scheduled multiple times all instances will be unscheduled.
 
         """
-        self.events = [e for e in self.events if e.callback != callback and e.callback is not None]
+        self.events = [
+            e for e in self.events
+            if e.callback != callback
+            if e.callback is not None
+        ]
         heapq.heapify(self.events)
         self._each_tick = [e for e in self._each_tick if e() != callback]
 

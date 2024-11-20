@@ -22,13 +22,16 @@ class Keyboard:
     _pressed = set()
 
     def __getattr__(self, kname):
-        if DEPRECATED_KEY_RE.match(kname):
-            warn(
-                "Uppercase keyboard attributes (eg. keyboard.%s) are "
-                "deprecated." % kname,
-                DeprecationWarning,
-                2
-            )
+        # return is a reserved word, so alias enter to return
+        if kname == 'enter':
+            kname = 'return'
+        elif DEPRECATED_KEY_RE.match(kname):
+            # warn(
+            #     "Uppercase keyboard attributes (eg. keyboard.%s) are "
+            #     "deprecated." % kname,
+            #     DeprecationWarning,
+            #     2
+            # )
             kname = PREFIX_RE.sub('', kname)
         try:
             key = keys[kname.upper()]
@@ -55,6 +58,9 @@ class Keyboard:
                 2
             )
             return getattr(self, k)
+
+    def __repr__(self):
+        return "<Keyboard pressed={}>".format(self._pressed)
 
 
 keyboard = Keyboard()

@@ -1,7 +1,7 @@
+import os
 import os.path
 import sys
 
-from types import ModuleType
 import pygame.image
 import pygame.mixer
 
@@ -31,6 +31,7 @@ def set_root(path):
 
 class InvalidCase(Exception):
     """Indicate case errors early so they don't bite cross-platform users."""
+
 
 try:
     import win32api
@@ -85,26 +86,27 @@ class ResourceLoader:
     Dotted paths can be used to traverse directories.
 
     """
+
     def __init__(self, subpath):
-        self.subpath = subpath
-        self.cache = {}
-        self.have_root = False
+        self._subpath = subpath
+        self._cache = {}
+        self._have_root = False
 
     def validate_root(self, name):
         r = self._root()
-        self.have_root = os.path.exists(r)
-        if self.have_root:
+        self._have_root = os.path.exists(r)
+        if self._have_root:
             validate_compatible_path(r)
         else:
             raise KeyError(
                 "No '{subpath}' directory found to load {type} "
                 "'{name}'.".format(
-                    subpath=self.subpath, type=self.TYPE, name=name
+                    subpath=self._subpath, type=self.TYPE, name=name
                 )
             )
 
     def _root(self):
-        return os.path.join(root, self.subpath)
+        return os.path.join(root, self._subpath)
 
     @staticmethod
     def cache_key(name, args, kwargs):
@@ -113,10 +115,10 @@ class ResourceLoader:
 
     def load(self, name, *args, **kwargs):
         key = self.cache_key(name, args, kwargs)
-        if key in self.cache:
-            return self.cache[key]
+        if key in self._cache:
+            return self._cache[key]
 
-        if not self.have_root:
+        if not self._have_root:
             self.validate_root(name)
         p = os.path.join(self._root(), name)
 
@@ -135,13 +137,21 @@ class ResourceLoader:
                 )
 
         validate_compatible_path(p)
-        res = self.cache[key] = self._load(p, *args, **kwargs)
+        res = self._cache[key] = self._load(p, *args, **kwargs)
         return res
+
+    def unload(self, name, *args, **kwargs):
+        key = self.cache_key(name, args, kwargs)
+        if key in self._cache:
+            del self._cache[key]
+
+    def unload_all(self):
+        self._cache.clear()
 
     def __getattr__(self, name):
         p = os.path.join(self._root(), name)
         if os.path.isdir(p):
-            resource = self.__class__(os.path.join(self.subpath, name))
+            resource = self.__class__(os.path.join(self._subpath, name))
         else:
             try:
                 resource = self.load(name)
@@ -151,6 +161,15 @@ class ResourceLoader:
         setattr(self, name, resource)
         return resource
 
+    def __dir__(self):
+        standard_attributes = [key for key in self.__dict__.keys()
+                               if not key.startswith("_")]
+        resources = os.listdir(self._root())
+        resource_names = [os.path.splitext(r) for r in resources]
+        loadable_names = [name for name, ext in resource_names
+                          if name.isidentifier() and ext[1:] in self.EXTNS]
+        return standard_attributes + loadable_names
+
 
 class ImageLoader(ResourceLoader):
     EXTNS = ['png', 'gif', 'jpg', 'jpeg', 'bmp']
@@ -158,6 +177,9 @@ class ImageLoader(ResourceLoader):
 
     def _load(self, path):
         return pygame.image.load(path).convert_alpha()
+
+    def __repr__(self):
+        return "<Images images={}>".format(self.__dir__())
 
 
 class UnsupportedFormat(Exception):
@@ -171,7 +193,9 @@ class SoundLoader(ResourceLoader):
     def _load(self, path):
         try:
             return pygame.mixer.Sound(path)
-        except pygame.error:
+        except pygame.error as err:
+            if not err.args[0].startswith('Unable to open file'):
+                raise
             from .soundfmt import identify
             try:
                 fmt = identify(path)
@@ -185,13 +209,19 @@ It appears to be:
 
     {1}
 
-Pygame supports uncompressed WAV files (PCM or ADPCM), compressed Ogg Vorbis
-files, or MP3s, depending on the codecs installed. Try re-encoding the sound
-file, for example using Audacity:
+Pygame supports only uncompressed WAV files (PCM or ADPCM) and compressed
+Ogg Vorbis files. Try re-encoding the sound file, for example using Audacity:
 
     http://audacityteam.org/
 """.format(path, fmt).strip()) from None
             raise
+
+    def __repr__(self):
+        try:
+            sound_list = self.__dir__()
+        except OSError:
+            sound_list = []
+        return "<Sounds sounds={}>".format(sound_list)
 
 
 class FontLoader(ResourceLoader):
@@ -205,6 +235,7 @@ class FontLoader(ResourceLoader):
 images = ImageLoader('images')
 sounds = SoundLoader('sounds')
 fonts = FontLoader('fonts')
+
 
 def getfont(
         fontname=None,

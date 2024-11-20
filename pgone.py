@@ -50,7 +50,8 @@ def build(csv_path, tile_size, scale=1):
 
     # Convert CSV contents to a 2D list of integers, handling negative numbers
     contents = [
-        [int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")]
+        [int(col) if col[0] != "-" else -int(col[1:])
+         for col in row.split(",")]
         for row in contents
     ]
 
@@ -79,7 +80,8 @@ def build(csv_path, tile_size, scale=1):
                 if rotated_hex:
                     pass  # Reserved for additional transformations
                 # Set the position of the tile
-                item.topleft = (tile_size * col * scale, tile_size * row * scale)
+                item.topleft = (tile_size * col * scale,
+                                tile_size * row * scale)
                 items.append(item)
 
     return items
@@ -128,7 +130,8 @@ def pgz_map(
 
     # Convert to int but check for negative numbers
     contents = [
-        [int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")]
+        [int(col) if col[0] != "-" else -int(col[1:])
+         for col in row.split(",")]
         for row in contents
     ]
 
@@ -369,7 +372,8 @@ class Actor(Actor):
         if self._scale != 1:
             size = self._orig_surf.get_size()
             self._surf = pygame.transform.scale(
-                self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
+                self._surf, (int(size[0] * self.scale),
+                             int(size[1] * self.scale))
             )
 
         if self._flip_h:

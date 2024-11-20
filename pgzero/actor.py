@@ -45,6 +45,8 @@ SYMBOLIC_POSITIONS = set((
 POS_TOPLEFT = None
 ANCHOR_CENTER = None
 
+MAX_ALPHA = 255  # Based on pygame's max alpha.
+
 
 def transform_anchor(ax, ay, w, h, angle):
     """Transform anchor based upon a rotation of a surface of size w x h."""
@@ -71,16 +73,58 @@ def transform_anchor(ax, ay, w, h, angle):
     )
 
 
+def _set_angle(actor, current_surface):
+    if actor._angle % 360 == 0:
+        # No changes required for default angle.
+        return current_surface
+    return pygame.transform.rotate(current_surface, actor._angle)
+
+
+def _set_opacity(actor, current_surface):
+    alpha = int(actor.opacity * MAX_ALPHA + 0.5)  # +0.5 for rounding up.
+
+    if alpha == MAX_ALPHA:
+        # No changes required for fully opaque surfaces (corresponds to the
+        # default opacity of the current_surface).
+        return current_surface
+
+    alpha_img = pygame.Surface(current_surface.get_size(), pygame.SRCALPHA)
+    alpha_img.fill((255, 255, 255, alpha))
+    alpha_img.blit(
+        current_surface,
+        (0, 0),
+        special_flags=pygame.BLEND_RGBA_MULT
+    )
+    return alpha_img
+
+
 class Actor:
     EXPECTED_INIT_KWARGS = SYMBOLIC_POSITIONS
-    DELEGATED_ATTRIBUTES = [a for a in dir(rect.ZRect) if not a.startswith("_")]
+    DELEGATED_ATTRIBUTES = [
+        a for a in dir(rect.ZRect) if not a.startswith("_")
+    ]
 
+    function_order = [_set_opacity, _set_angle]
     _anchor = _anchor_value = (0, 0)
     _angle = 0.0
+    _opacity = 1.0
+
+    def _build_transformed_surf(self):
+        cache_len = len(self._surface_cache)
+        if cache_len == 0:
+            last = self._orig_surf
+        else:
+            last = self._surface_cache[-1]
+        for f in self.function_order[cache_len:]:
+            new_surf = f(self, last)
+            self._surface_cache.append(new_surf)
+            last = new_surf
+        return self._surface_cache[-1]
 
     def __init__(self, image, pos=POS_TOPLEFT, anchor=ANCHOR_CENTER, **kwargs):
         self._handle_unexpected_kwargs(kwargs)
 
+        self._surface_cache = []
         self.__dict__["_rect"] = rect.ZRect((0, 0), (0, 0))
         # Initialise it at (0, 0) for size (0, 0).
         # We'll move it to the right place and resize it later
@@ -105,13 +149,29 @@ class Actor:
     def __iter__(self):
         return iter(self._rect)
 
+    def __repr__(self):
+        return '<{} {!r} pos={!r}>'.format(
+            type(self).__name__,
+            self._image_name,
+            self.pos
+        )
+
+    def __dir__(self):
+        standard_attributes = [
+            key
+            for key in self.__dict__.keys()
+            if not key.startswith("_")
+        ]
+        return standard_attributes + self.__class__.DELEGATED_ATTRIBUTES
+
     def _handle_unexpected_kwargs(self, kwargs):
         unexpected_kwargs = set(kwargs.keys()) - self.EXPECTED_INIT_KWARGS
         if not unexpected_kwargs:
             return
 
-        for found, suggested in spellcheck.compare(
-                unexpected_kwargs, self.EXPECTED_INIT_KWARGS):
+        typos, _ = spellcheck.compare(
+            unexpected_kwargs, self.EXPECTED_INIT_KWARGS)
+        for found, suggested in typos:
             raise TypeError(
                 "Unexpected keyword argument '{}' (did you mean '{}'?)".format(
                     found, suggested))
@@ -128,7 +188,10 @@ class Actor:
             # No positional information given, use sensible top-left default
             self.topleft = (0, 0)
         elif pos and symbolic_pos_args:
-            raise TypeError("'pos' argument cannot be mixed with 'topleft', 'topright' etc. argument.")
+            raise TypeError(
+                "'pos' argument cannot be mixed with 'topleft', "
+                "'topright' etc. argument."
+            )
         elif pos:
             self.pos = pos
         else:
@@ -136,12 +199,26 @@ class Actor:
 
     def _set_symbolic_pos(self, symbolic_pos_dict):
         if len(symbolic_pos_dict) == 0:
-            raise TypeError("No position-setting keyword arguments ('topleft', 'topright' etc) found.")
+            raise TypeError(
+                "No position-setting keyword arguments ('topleft', "
+                "'topright' etc) found."
+            )
         if len(symbolic_pos_dict) > 1:
-            raise TypeError("Only one 'topleft', 'topright' etc. argument is allowed.")
+            raise TypeError(
+                "Only one 'topleft', 'topright' etc. argument is allowed."
+            )
 
         setter_name, position = symbolic_pos_dict.popitem()
         setattr(self, setter_name, position)
+
+    def _update_transform(self, function):
+        if function in self.function_order:
+            i = self.function_order.index(function)
+            del self._surface_cache[i:]
+        else:
+            raise IndexError(
+                "function {!r} does not have a registered order."
+                "".format(function))
 
     @property
     def anchor(self):
@@ -170,13 +247,38 @@ class Actor:
     @angle.setter
     def angle(self, angle):
         self._angle = angle
-        self._surf = pygame.transform.rotate(self._orig_surf, angle)
-        p = self.pos
-        self.width, self.height = self._surf.get_size()
         w, h = self._orig_surf.get_size()
+
+        ra = radians(angle)
+        sin_a = sin(ra)
+        cos_a = cos(ra)
+        self.height = abs(w * sin_a) + abs(h * cos_a)
+        self.width = abs(w * cos_a) + abs(h * sin_a)
         ax, ay = self._untransformed_anchor
+        p = self.pos
         self._anchor = transform_anchor(ax, ay, w, h, angle)
         self.pos = p
+        self._update_transform(_set_angle)
+
+    @property
+    def opacity(self):
+        """Get/set the current opacity value.
+
+        The allowable range for opacity is any number between and including
+        0.0 and 1.0. Values outside of this will be clamped to the range.
+
+        * 0.0 makes the image completely transparent (i.e. invisible).
+        * 1.0 makes the image completely opaque (i.e. fully viewable).
+
+        Values between 0.0 and 1.0 will give varying levels of transparency.
+        """
+        return self._opacity
+
+    @opacity.setter
+    def opacity(self, opacity):
+        # Clamp the opacity to the allowable range.
+        self._opacity = min(1.0, max(0.0, opacity))
+        self._update_transform(_set_opacity)
 
     @property
     def pos(self):
@@ -189,6 +291,14 @@ class Actor:
         px, py = pos
         ax, ay = self._anchor
         self.topleft = px - ax, py - ay
+
+    def rect(self):
+        """Get a copy of the actor's rect object.
+
+        This allows Actors to duck-type like rects in Pygame rect operations,
+        and is not expected to be used in user code.
+        """
+        return self._rect.copy()
 
     @property
     def x(self):
@@ -215,17 +325,19 @@ class Actor:
     @image.setter
     def image(self, image):
         self._image_name = image
-        self._orig_surf = self._surf = loaders.images.load(image)
+        self._orig_surf = loaders.images.load(image)
+        self._surface_cache.clear()  # Clear out old image's cache.
         self._update_pos()
 
     def _update_pos(self):
         p = self.pos
-        self.width, self.height = self._surf.get_size()
+        self.width, self.height = self._orig_surf.get_size()
         self._calc_anchor()
         self.pos = p
 
     def draw(self):
-        game.screen.blit(self._surf, self.topleft)
+        s = self._build_transformed_surf()
+        game.screen.blit(s, self.topleft)
 
     def angle_to(self, target):
         """Return the angle from this actors position to target, in degrees."""
@@ -248,3 +360,6 @@ class Actor:
         dx = tx - myx
         dy = ty - myy
         return sqrt(dx * dx + dy * dy)
+
+    def unload_image(self):
+        loaders.images.unload(self._image_name)

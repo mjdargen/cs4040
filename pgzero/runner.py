@@ -1,17 +1,17 @@
+from . import storage
+from . import clock
+from . import loaders
+from .game import PGZeroGame, DISPLAY_FLAGS
+from types import ModuleType
+from argparse import ArgumentParser
+import warnings
+import sys
+import os
 import pygame
+from contextlib import contextmanager
 pygame.mixer.pre_init(frequency=22050, size=-16, channels=2)
 pygame.init()
-
-
-import os
-import sys
-import warnings
-from optparse import OptionParser
-from types import ModuleType
-
-from .game import PGZeroGame, DISPLAY_FLAGS
-from . import loaders
-from . import builtins
+pygame.display.set_mode((100, 100), DISPLAY_FLAGS)
 
 
 def _check_python_ok_for_pygame():
@@ -63,17 +63,32 @@ def main():
     if not _check_python_ok_for_pygame():
         _substitute_full_framework_python()
 
-    parser = OptionParser()
-    options, args = parser.parse_args()
-
-    if len(args) != 1:
-        parser.error("You must specify which module to run.")
+    parser = ArgumentParser()
+    parser.add_argument(
+        '--fps',
+        action='store_true',
+        help="Print periodic FPS measurements on the terminal."
+    )
+    parser.add_argument(
+        'program',
+        help="The Pygame Zero program to run."
+    )
+    args = parser.parse_args()
 
     if __debug__:
         warnings.simplefilter('default', DeprecationWarning)
-    path = args[0]
 
-    with open(path) as f:
+    load_and_run(args.program, fps=args.fps)
+
+
+def load_and_run(path, *, fps: bool = False):
+    """Load and run the given Python file as the main PGZero game module.
+
+    Note that the 'import pgzrun' IDE mode doesn't pass through this entry
+    point, as the module is already loaded.
+
+    """
+    with open(path, 'rb') as f:
         src = f.read()
 
     code = compile(src, os.path.basename(path), 'exec', dont_inherit=True)
@@ -89,25 +104,78 @@ def main():
     sys._pgzrun = True
 
     prepare_mod(mod)
-    exec(code, mod.__dict__)
-    run_mod(mod)
+    with temp_window():
+        exec(code, mod.__dict__)
+
+    pygame.display.init()
+    PGZeroGame.show_default_icon()
+    try:
+        run_mod(mod, fps=fps)
+    finally:
+        # Clean some of the state we created, useful in testing
+        pygame.display.quit()
+        clock.clock.clear()
+        del sys.modules[name]
+
+
+@contextmanager
+def temp_window():
+    """Create a temporary hidden window for the duration of the context.
+
+    Several Pygame surface operations access the state of the screen as a
+    global:
+
+    * Surface.convert_alpha() without arguments converts a surface for fast
+      blitting to the display.
+    * Surface() without flags creates a surface identical to the display
+      format.
+
+    There's no good API to expose what the display format is until we create
+    a window, so we create a temporary window, which let us use these
+    functions. The expectation is that when we create a real window this will
+    have the same display format and blits etc will still be fast.
+
+    After the initial load we dispose of this window and start again. Resizing
+    the initial window has a problem: it doesn't recenter the window on the
+    screen.
+
+    """
+    # An icon needs to exist before the window is created.
+    PGZeroGame.show_default_icon()
+    pygame.display.set_mode(
+        (100, 100),
+        flags=(DISPLAY_FLAGS & ~pygame.SHOWN) | pygame.HIDDEN,
+    )
+    try:
+        yield
+    finally:
+        pygame.display.quit()
 
 
 def prepare_mod(mod):
-    """Prepare a module to run as a Pygame Zero program.
+    """Prepare to execute the module code for Pygame Zero.
 
-    mod is a loaded module object.
+    To allow the module to load assets, we configure the loader path to
+    load relative to the module's __file__ path.
 
-    This sets up things like screen, loaders and builtins, which need to be
-    set before the module globals are run.
+    When executing the module some things need to already exist:
+
+    * Our extra builtins need to be defined (by copying them into Python's
+      `builtins` module)
+    * A screen needs to be created (because we use convert_alpha() to convert
+      Sprite surfaces for blitting to the screen).
 
     """
+    storage.storage._set_filename_from_path(mod.__file__)
     loaders.set_root(mod.__file__)
-    PGZeroGame.show_default_icon()
-    pygame.display.set_mode((100, 100), DISPLAY_FLAGS)
-    mod.__dict__.update(builtins.__dict__)
+
+    # Copy pgzero builtins into system builtins
+    from . import builtins as pgzero_builtins
+    import builtins as python_builtins
+    for k, v in vars(pgzero_builtins).items():
+        python_builtins.__dict__.setdefault(k, v)
 
 
-def run_mod(mod):
+def run_mod(mod, **kwargs):
     """Run the module."""
-    PGZeroGame(mod).run()
+    PGZeroGame(mod, **kwargs).run()

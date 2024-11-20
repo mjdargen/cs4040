@@ -5,6 +5,7 @@
 from math import sin, pow, pi
 
 from .clock import each_tick, unschedule
+from .spellcheck import suggest
 
 TWEEN_FUNCTIONS = {}
 
@@ -48,6 +49,7 @@ def in_elastic(n):
     q -= 1.0
     return -(pow(2, 10 * q) * sin((q - s) * (2 * pi) / p))
 
+
 @tweener
 def out_elastic(n):
     p = .3
@@ -56,6 +58,7 @@ def out_elastic(n):
     if q == 1:
         return 1.0
     return pow(2, -10 * q) * sin((q - s) * (2 * pi) / p) + 1.0
+
 
 @tweener
 def in_out_elastic(n):
@@ -115,9 +118,9 @@ def tween(n, start, end):
 
 def tween_attr(n, start, end):
     if isinstance(start, tuple):
-        return tuple(tween(n, a, b) for a,b in zip(start, end))
+        return tuple(tween(n, a, b) for a, b in zip(start, end))
     elif isinstance(start, list):
-        return [tween(n, a, b) for a,b in zip(start, end)]
+        return [tween(n, a, b) for a, b in zip(start, end)]
     else:
         return tween(n, start, end)
 
@@ -136,7 +139,7 @@ class Animation:
     the duration of the animation.
 
     """
-    animations = []
+    animations = []  # Stores strong references to objects being animated.
 
     # Animations are stored in _animation_dict under (object id, target
     # attribute) keys. Objects may not be hashable, so the id, rather than
@@ -151,18 +154,30 @@ class Animation:
     def __init__(self, object, tween='linear', duration=1, on_finished=None,
                  **targets):
         self.targets = targets
-        self.function = TWEEN_FUNCTIONS[tween]
+        try:
+            self.function = TWEEN_FUNCTIONS[tween]
+        except KeyError:
+            suggested_tween = suggest(tween, TWEEN_FUNCTIONS.keys())
+            if len(suggested_tween) > 0:
+                raise KeyError(
+                    'No tween called %s found, did you mean %s?'
+                    % (tween, suggested_tween[0])
+                )
+            else:
+                raise KeyError('No tween called %s found.' % tween)
         self.duration = duration
         self.on_finished = on_finished
         self.t = 0
         self.object = object
         self.initial = {}
-        self.running = True
+        self._running = True
         for k in self.targets:
             try:
                 a = getattr(object, k)
             except AttributeError:
-                raise ValueError('object %r has no attribute %s to animate' % (object, k))
+                raise ValueError(
+                    'object %r has no attribute %s to animate' % (object, k)
+                )
             self.initial[k] = a
             key = id(object), k
             previous_animation = self._animation_dict.get(key)
@@ -171,6 +186,15 @@ class Animation:
             self._animation_dict[key] = self
         each_tick(self.update)
         self.animations.append(self)
+
+    @property
+    def running(self):
+        """Running state of the animation.
+
+        True if the animation is running.
+        False if the duration has elapsed or the stop() method was called.
+        """
+        return self._running
 
     def update(self, dt):
         self.t += dt
@@ -195,7 +219,11 @@ class Animation:
             targets will be set to some value between the start and
             end values.
         """
-        self.running = False
+        if not self._running:
+            # Don't do anything if already stopped.
+            return
+
+        self._running = False
         if complete:
             for k in self.targets:
                 setattr(self.object, k, self.targets[k])

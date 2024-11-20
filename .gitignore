@@ -15,6 +15,7 @@ depr_*.*
 *.zip
 _*.py
 !__*__.py
+pgzero - Copy
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

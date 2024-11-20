@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import pygame.rect
+import operator
 
 
 class Rect(pygame.rect.Rect):
@@ -26,6 +27,7 @@ class Rect(pygame.rect.Rect):
             if suggestions:
                 msg += "; did you mean {!r}?".format(suggestions[0])
             raise AttributeError(msg) from None
+
 
 Rect.__doc__ = pygame.rect.Rect.__doc__
 
@@ -69,7 +71,10 @@ class ZRect:
         elif len(args) == 1:
             self.x, self.y, self.w, self.h = args[0]
         else:
-            raise TypeError("%s should be called with one, two or four arguments" % (cls.__name__))
+            raise TypeError(
+                "%s should be called with one, two or four arguments"
+                % (self.__class__.__name__)
+            )
 
         self.rect = self
 
@@ -108,7 +113,8 @@ class ZRect:
         return arg
 
     def __repr__(self):
-        return "<%s (x: %s, y: %s, w: %s, h: %s)>" % (self.__class__.__name__, self.x, self.y, self.w, self.h)
+        return "<%s (x: %s, y: %s, w: %s, h: %s)>" % (
+            self.__class__.__name__, self.x, self.y, self.w, self.h)
 
     def __reduce__(self):
         return self.__class__, (self.x, self.y, self.w, self.h)
@@ -181,60 +187,70 @@ class ZRect:
 
     def _get_width(self):
         return self.w
+
     def _set_width(self, width):
         self.w = width
     width = property(_get_width, _set_width)
 
     def _get_height(self):
         return self.h
+
     def _set_height(self, height):
         self.h = height
     height = property(_get_height, _set_height)
 
     def _get_top(self):
         return self.y
+
     def _set_top(self, top):
         self.y = top
     top = property(_get_top, _set_top)
 
     def _get_left(self):
         return self.x
+
     def _set_left(self, left):
         self.x = left
     left = property(_get_left, _set_left)
 
     def _get_right(self):
         return self.x + self.w
+
     def _set_right(self, right):
         self.x = right - self.w
     right = property(_get_right, _set_right)
 
     def _get_bottom(self):
         return self.y + self.h
+
     def _set_bottom(self, bottom):
         self.y = bottom - self.h
     bottom = property(_get_bottom, _set_bottom)
 
     def _get_centerx(self):
         return self.x + (self.w / 2)
+
     def _set_centerx(self, centerx):
         self.x = centerx - (self.w / 2)
     centerx = property(_get_centerx, _set_centerx)
 
     def _get_centery(self):
         return self.y + (self.h / 2)
+
     def _set_centery(self, centery):
         self.y = centery - (self.h / 2)
     centery = property(_get_centery, _set_centery)
 
     def _get_topleft(self):
         return self.x, self.y
+
     def _set_topleft(self, topleft):
         self.x, self.y = topleft
     topleft = property(_get_topleft, _set_topleft)
 
     def _get_topright(self):
         return self.x + self.w, self.y
+
     def _set_topright(self, topright):
         x, y = topright
         self.x = x - self.w
@@ -243,6 +259,7 @@ class ZRect:
 
     def _get_bottomleft(self):
         return self.x, self.y + self.h
+
     def _set_bottomleft(self, bottomleft):
         x, y = bottomleft
         self.x = x
@@ -251,6 +268,7 @@ class ZRect:
 
     def _get_bottomright(self):
         return self.x + self.w, self.y + self.h
+
     def _set_bottomright(self, bottomright):
         x, y = bottomright
         self.x = x - self.w
@@ -259,6 +277,7 @@ class ZRect:
 
     def _get_midtop(self):
         return self.x + self.w / 2, self.y
+
     def _set_midtop(self, midtop):
         x, y = midtop
         self.x = x - self.w / 2
@@ -267,6 +286,7 @@ class ZRect:
 
     def _get_midleft(self):
         return self.x, self.y + self.h / 2
+
     def _set_midleft(self, midleft):
         x, y = midleft
         self.x = x
@@ -275,6 +295,7 @@ class ZRect:
 
     def _get_midbottom(self):
         return self.x + self.w / 2, self.y + self.h
+
     def _set_midbottom(self, midbottom):
         x, y = midbottom
         self.x = x - self.w / 2
@@ -283,6 +304,7 @@ class ZRect:
 
     def _get_midright(self):
         return self.x + self.w, self.y + self.h / 2
+
     def _set_midright(self, midright):
         x, y = midright
         self.x = x - self.w
@@ -291,6 +313,7 @@ class ZRect:
 
     def _get_center(self):
         return self.x + self.w / 2, self.y + self.h / 2
+
     def _set_center(self, center):
         x, y = center
         self.x = x - self.w / 2
@@ -299,6 +322,7 @@ class ZRect:
 
     def _get_size(self):
         return self.w, self.h
+
     def _set_size(self, size):
         self.w, self.h = size
     size = property(_get_size, _set_size)
@@ -492,7 +516,8 @@ class ZRect:
                 return k, v
 
     def collidedictall(self, dict, use_values=True):
-        return [(k, v) for (k, v) in dict.items() if self.colliderect(v if use_values else k)]
+        val = operator.itemgetter(1 if use_values else 0)
+        return [i for i in dict.items() if self.colliderect(val(i))]
 
 
 RECT_CLASSES = (pygame.rect.Rect, ZRect)

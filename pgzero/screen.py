@@ -1,14 +1,23 @@
+import numpy as np
 import pygame
 import pygame.draw
+
 from . import ptext
-from .rect import RECT_CLASSES
+from .rect import RECT_CLASSES, ZRect
 from . import loaders
 
 
 def round_pos(pos):
     """Round a tuple position so it can be used for drawing."""
-    x, y = pos
-    return round(x), round(y)
+    try:
+        x, y = pos
+    except TypeError:
+        raise TypeError(
+            "Coordinate must be a tuple (not {!r})".format(pos)) from None
+    try:
+        return round(x), round(y)
+    except TypeError:
+        raise TypeError("Coordinate values must be numbers (not {!r})".format(pos)) from None  # noqa
 
 
 def make_color(arg):
@@ -18,7 +27,7 @@ def make_color(arg):
 
 
 class SurfacePainter:
-    """Interface to pygame.draw that is bound to a surface with alpha support."""
+    """Interface to pygame.draw that is bound to a surface."""
 
     def __init__(self, screen):
         self._screen = screen
@@ -29,49 +38,100 @@ class SurfacePainter:
 
     def _apply_alpha_drawing(self, draw_fn, *args, **kwargs):
         """Helper function to handle drawing with alpha support."""
-        temp_surface = pygame.Surface(self._surf.get_size(), flags=pygame.SRCALPHA)
+        temp_surface = pygame.Surface(
+            self._surf.get_size(), flags=pygame.SRCALPHA)
         temp_surface = temp_surface.convert_alpha()
         draw_fn(temp_surface, *args, **kwargs)
         self._surf.blit(temp_surface, (0, 0))
 
-    def line(self, start, end, color):
-        """Draw a line from start to end with alpha support."""
+    def line(self, start, end, color, width=1):
+        """Draw a line from start to end."""
         start = round_pos(start)
         end = round_pos(end)
-        self._apply_alpha_drawing(pygame.draw.line, make_color(color), start, end, 1)
+        self._apply_alpha_drawing(
+            pygame.draw.line, make_color(color), start, end, width)
 
-    def circle(self, pos, radius, color):
-        """Draw a circle with alpha support."""
+    def circle(self, pos, radius, color, width=1):
+        """Draw a circle."""
         pos = round_pos(pos)
-        self._apply_alpha_drawing(pygame.draw.circle, make_color(color), pos, radius, 1)
+        self._apply_alpha_drawing(
+            pygame.draw.circle, make_color(color), pos, radius, width)
 
     def filled_circle(self, pos, radius, color):
-        """Draw a filled circle with alpha support."""
+        """Draw a filled circle."""
         pos = round_pos(pos)
-        self._apply_alpha_drawing(pygame.draw.circle, make_color(color), pos, radius, 0)
+        self._apply_alpha_drawing(
+            pygame.draw.circle, make_color(color), pos, radius, 0)
 
-    def rect(self, rect, color):
-        """Draw a rectangle with alpha support."""
+    def polygon(self, points, color):
+        """Draw a polygon."""
+        try:
+            iter(points)
+        except TypeError:
+            raise TypeError("screen.draw.filled_polygon() requires an iterable of points to draw") from None  # noqa
+        points = [round_pos(point) for point in points]
+        self._apply_alpha_drawing(
+            pygame.draw.polygon, make_color(color), points, 1)
+
+    def filled_polygon(self, points, color):
+        """Draw a filled polygon."""
+        try:
+            iter(points)
+        except TypeError:
+            raise TypeError("screen.draw.filled_polygon() requires an iterable of points to draw") from None  # noqa
+        points = [round_pos(point) for point in points]
+        self._apply_alpha_drawing(
+            pygame.draw.polygon, make_color(color), points, 0)
+
+    def rect(self, rect, color, width=1):
+        """Draw a rectangle."""
         if not isinstance(rect, RECT_CLASSES):
             raise TypeError("screen.draw.rect() requires a rect to draw")
-        self._apply_alpha_drawing(pygame.draw.rect, make_color(color), rect, 1)
+
+        if width <= 1:
+            self._apply_alpha_drawing(
+                pygame.draw.rect, make_color(color), rect, width)
+            return
+
+        c = make_color(color)
+
+        hw = width / 2
+        l, t, w, h = rect
+        l1, l2 = round(l - hw), round(l + hw)
+        r1, r2 = round(l + w - hw), round(l + w + hw)
+        t1, t2 = round(t - hw), round(t + hw)
+        b1, b2 = round(t + h - hw), round(t + h + hw)
+
+        def r(x1, y1, x2, y2):
+            r = pygame.Rect(x1, y1, x2 - x1, y2 - y1)
+            self._apply_alpha_drawing(pygame.draw.rect, c, r, 0)
+
+        r(l1, t1, r2, t2)  # top inclusive
+        r(l1, t2, l2, b1)  # left exclusive
+        r(r1, t2, r2, b1)  # right exclusive
+        r(l1, b1, r2, b2)  # bottom inclusive
 
     def filled_rect(self, rect, color):
-        """Draw a filled rectangle with alpha support."""
+        """Draw a filled rectangle."""
         if not isinstance(rect, RECT_CLASSES):
-            raise TypeError("screen.draw.filled_rect() requires a rect to draw")
+            raise TypeError(
+                "screen.draw.filled_rect() requires a rect to draw")
         self._apply_alpha_drawing(pygame.draw.rect, make_color(color), rect, 0)
 
     def text(self, *args, **kwargs):
-        """Draw text to the screen with alpha support."""
-        temp_surface = pygame.Surface(self._surf.get_size(), flags=pygame.SRCALPHA)
+        """Draw text to the screen."""
+        # FIXME: expose ptext parameters, for autocompletion and autodoc
+        temp_surface = pygame.Surface(
+            self._surf.get_size(), flags=pygame.SRCALPHA)
         temp_surface = temp_surface.convert_alpha()
         ptext.draw(*args, surf=temp_surface, **kwargs)
         self._surf.blit(temp_surface, (0, 0))
 
     def textbox(self, *args, **kwargs):
-        """Draw text wrapped in a box to the screen with alpha support."""
-        temp_surface = pygame.Surface(self._surf.get_size(), flags=pygame.SRCALPHA)
+        """Draw text to the screen, wrapped to fit a box"""
+        # FIXME: expose ptext parameters, for autocompletion and autodoc
+        temp_surface = pygame.Surface(
+            self._surf.get_size(), flags=pygame.SRCALPHA)
         temp_surface = temp_surface.convert_alpha()
         ptext.drawbox(*args, surf=temp_surface, **kwargs)
         self._surf.blit(temp_surface, (0, 0))
@@ -80,17 +140,32 @@ class SurfacePainter:
 class Screen:
     """Interface to the screen."""
 
-    def __init__(self, surface):
+    def _set_surface(self, surface):
         self.surface = surface
         self.width, self.height = surface.get_size()
+
+    def bounds(self):
+        """Return a Rect representing the bounds of the screen."""
+        return ZRect((0, 0), (self.width, self.height))
 
     def clear(self):
         """Clear the screen to black."""
         self.fill((0, 0, 0))
 
-    def fill(self, color):
+    def fill(self, color, gcolor=None):
         """Fill the screen with a colour."""
-        self.surface.fill(make_color(color))
+        if gcolor:
+            start = make_color(color)
+            stop = make_color(gcolor)
+            pixs = pygame.surfarray.pixels3d(self.surface)
+            h = self.height
+
+            gradient = np.dstack(
+                [np.linspace(a, b, h) for a, b in zip(start, stop)][:3]
+            )
+            pixs[...] = gradient
+        else:
+            self.surface.fill(make_color(color))
 
     def blit(self, image, pos):
         """Draw a sprite onto the screen.
@@ -110,8 +185,14 @@ class Screen:
         """
         if isinstance(image, str):
             image = loaders.images.load(image)
-        self.surface.blit(image, pos)
+        self.surface.blit(image, pos, None, pygame.BLEND_ALPHA_SDL2)
 
     @property
     def draw(self):
         return SurfacePainter(self)
+
+    def __repr__(self):
+        return "<Screen width={} height={}>".format(self.width, self.height)
+
+
+screen_instance = Screen()
