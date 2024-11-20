@@ -1,5 +1,6 @@
 # Sprite Source: https://elthen.itch.io/2d-pixel-art-fox-sprites
-import pgzrun  # program must always start with this
+import pgzrun
+from pgzero.builtins import *
 from pgone import *  # must download and import spriteactor.py
 
 # set width and height of screen

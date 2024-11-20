@@ -1,4 +1,5 @@
-import pgzrun  # program must always start with this
+import pgzrun
+from pgzero.builtins import *
 from pgone import *
 
 # our tile map constants

@@ -1,23 +1,20 @@
 # mine
+.vscode
 assets
 reference
 pgzero_examples
 pygame_examples
 kenney_*
-activity*.py
+_tests
 *.md
+activity*.py
 p3.py
 p4*.py
 p5*.py
-student.py
-!platformer.py
 depr_*.*
-settings.json
 *.zip
 _*.py
-_*
-pgzero
-pgzrun.py
+!__*__.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

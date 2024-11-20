@@ -1,4 +1,5 @@
-import pgzrun  # program must always start with this
+import pgzrun
+from pgzero.builtins import *
 from random import randint
 
 # set width and height of screen

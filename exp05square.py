@@ -1,4 +1,5 @@
-import pgzrun  # program must always start with this
+import pgzrun
+from pgzero.builtins import *
 
 # set width and height of screen
 WIDTH = 500

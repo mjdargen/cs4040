@@ -1,5 +1,6 @@
-# Tutorial: https://pygame-zero.readthedocs.io/en/stable/introduction.html
-import pgzrun  # program must always start with this
+# program must start with these two lines
+import pgzrun
+from pgzero.builtins import *
 
 # Pygame Constants
 WIDTH = 500
