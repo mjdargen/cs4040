@@ -68,7 +68,6 @@ def update():
     # handle gravity
 
     # once the fox has returned to the floor, cancel y velocity
-    # fox.midbottom[1] gives bottommost part of actor
     if fox.bottom >= HEIGHT:
         fox.velocity_y = 0
         fox.y = HEIGHT - fox.height / 2
