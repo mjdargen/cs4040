@@ -4,6 +4,7 @@ import pygame
 from pgzero import game, loaders
 from pgzero.builtins import Actor
 from pgzero.actor import Actor, POS_TOPLEFT, ANCHOR_CENTER, transform_anchor
+from pgzero import rect
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -50,8 +51,7 @@ def build(csv_path, tile_size, scale=1):
 
     # Convert CSV contents to a 2D list of integers, handling negative numbers
     contents = [
-        [int(col) if col[0] != "-" else -int(col[1:])
-         for col in row.split(",")]
+        [int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")]
         for row in contents
     ]
 
@@ -80,8 +80,7 @@ def build(csv_path, tile_size, scale=1):
                 if rotated_hex:
                     pass  # Reserved for additional transformations
                 # Set the position of the tile
-                item.topleft = (tile_size * col * scale,
-                                tile_size * row * scale)
+                item.topleft = (tile_size * col * scale, tile_size * row * scale)
                 items.append(item)
 
     return items
@@ -130,8 +129,7 @@ def pgz_map(
 
     # Convert to int but check for negative numbers
     contents = [
-        [int(col) if col[0] != "-" else -int(col[1:])
-         for col in row.split(",")]
+        [int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")]
         for row in contents
     ]
 
@@ -207,7 +205,14 @@ class Actor(Actor):
         angle (float): Rotation angle of the actor's image in degrees.
     """
 
-    def __init__(self, image, pos=POS_TOPLEFT, anchor=ANCHOR_CENTER, **kwargs):
+    def __init__(
+        self,
+        image,
+        pos=POS_TOPLEFT,
+        anchor=ANCHOR_CENTER,
+        collision_rect=None,
+        **kwargs,
+    ):
         """
         Initializes the actor with an image, position, and optional transformations.
 
@@ -228,6 +233,7 @@ class Actor(Actor):
         self._image_name = None
         self._orig_surf = None
         self._surf = None
+        self._collision_rect_spec = collision_rect
 
         if isinstance(image, pygame.Surface):
             self._orig_surf = self._surf = image
@@ -236,6 +242,8 @@ class Actor(Actor):
             self._orig_surf = self._surf = loaders.images.load(image)
 
         super().__init__(image, pos, anchor, **kwargs)
+
+        self._update_collision_rect()
 
     @property
     def images(self):
@@ -372,8 +380,7 @@ class Actor(Actor):
         if self._scale != 1:
             size = self._orig_surf.get_size()
             self._surf = pygame.transform.scale(
-                self._surf, (int(size[0] * self.scale),
-                             int(size[1] * self.scale))
+                self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
             )
 
         if self._flip_h:
@@ -400,10 +407,93 @@ class Actor(Actor):
         self._mask = None
 
     def draw(self):
-        """
-        Draws the actor on the screen using its current transformed image.
-        """
+        """Draws the actor on the screen using its current transformed image."""
+        self._update_collision_rect()
         game.screen.blit(self._surf, self._rect.topleft)
+
+    def colliderect(self, other):
+        """Override collision detection to use custom collision rectangle"""
+        if hasattr(other, "_collision_rect"):
+            return self._collision_rect.colliderect(other._collision_rect)
+        else:
+            return self._collision_rect.colliderect(other)
+
+    def collidepoint(self, *args):
+        """Override point collision detection to use custom collision rectangle"""
+        return self._collision_rect.collidepoint(*args)
+
+    def _update_collision_rect(self):
+        """
+        Updates the collision rectangle based on the provided specification.
+        Supports two formats:
+        1. (width, height): The collision box is centered on the actor.
+        2. (top, right, bottom, left): Defines distances from the actor's center to each edge.
+        """
+        if self._collision_rect_spec is None:
+            # Default to full image size
+            self._collision_rect = rect.ZRect(*self._rect)
+        elif len(self._collision_rect_spec) == 2:
+            # Format: (width, height)
+            cw, ch = self._collision_rect_spec
+            cx, cy = self.center  # Actor's center
+            # Apply scaling
+            cw *= self._scale
+            ch *= self._scale
+            # compute top left
+            tlx = cx - cw / 2
+            tly = cy - ch / 2
+            self._collision_rect = rect.ZRect(tlx, tly, cw, ch)
+        elif len(self._collision_rect_spec) == 4:
+            # Format: (top, right, bottom, left)
+            top, right, bottom, left = self._collision_rect_spec
+            cx, cy = self.center  # Actor's center
+            tlx = cx - left
+            tly = cy - top
+            cw = left + right
+            ch = top + bottom
+            # Apply scaling
+            cw *= self._scale
+            ch *= self._scale
+            self._collision_rect = rect.ZRect(tlx, tly, cw, ch)
+        else:
+            raise ValueError(
+                "Invalid collision_rect_spec format. Use (width, height) or (top, right, bottom, left)."
+            )
+
+    def draw_collision_rect(self):
+        """Draw a red outline around the collision rectangle for debugging."""
+        pygame.draw.rect(
+            game.screen,
+            (255, 0, 0),  # Bright red color
+            (
+                self._collision_rect.x,
+                self._collision_rect.y,
+                self._collision_rect.w,
+                self._collision_rect.h,
+            ),
+            2,  # 2-pixel thick outline
+        )
+
+    @property
+    def collision_rect(self):
+        """
+        ZRect: Returns the collision rectangle of the actor.
+        This rectangle is used for collision detection.
+        """
+        return self._collision_rect
+
+    @collision_rect.setter
+    def collision_rect(self, value):
+        """
+        Sets the collision rectangle specification.
+
+        Args:
+            value (tuple or None): A tuple (x_offset, y_offset, width, height) to
+                                define the collision rectangle relative to the
+                                actor's position, or None to reset to default.
+        """
+        self._collision_rect_spec = value
+        self._update_collision_rect()  # Recalculate the collision rectangle
 
 
 class SpriteSheet(object):
@@ -518,16 +608,12 @@ class Sprite(object):
         self.frame_count = frame_count
         self.fps = fps
         self.last_update_time = pygame.time.get_ticks()  # Track time in milliseconds
-        ss = SpriteSheet(f"{DIR_PATH}/images/sprites/{image_filename}")
-        # self.images = ss.load_strip(rect, count, color_key)
+        self.i = 0  # Current frame index
 
         # Load sprite sheet and extract frames
-        # ss = SpriteSheet(f"{DIR_PATH}/images/sprites/{image_filename}")
-        # self.images = self._extract_frames(ss)
+        ss = SpriteSheet(f"{DIR_PATH}/images/sprites/{image_filename}")
         frame_rect = (0, frame_height * row_number, frame_width, frame_height)
         self.images = ss.load_strip(frame_rect, frame_count, transparent_color)
-
-        self.i = 0  # Current frame index
 
     def _extract_frames(self, sprite_sheet):
         """
@@ -603,9 +689,6 @@ class SpriteActor(Actor):
         self.fps = 5  # Target frames per second
         self.direction = 0
         self.sprite = sprite_instance
-        self._last_frame_time = (
-            pygame.time.get_ticks()
-        )  # Track last update time in milliseconds
         super().__init__(
             f"sprites/{sprite_instance.filename}", position, anchor_point, **kwargs
         )
@@ -632,8 +715,6 @@ class SpriteActor(Actor):
         """
         Draws the sprite actor to the screen, updating its animation based on the current time.
         """
-        current_time = pygame.time.get_ticks()  # Get current time in milliseconds
-
         # Update sprite's frame based on elapsed time
         self._orig_surf = self.sprite.next()
         self._update_pos()

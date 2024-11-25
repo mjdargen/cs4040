@@ -8,18 +8,18 @@ from . import spellcheck
 
 
 ANCHORS = {
-    'x': {
-        'left': 0.0,
-        'center': 0.5,
-        'middle': 0.5,
-        'right': 1.0,
+    "x": {
+        "left": 0.0,
+        "center": 0.5,
+        "middle": 0.5,
+        "right": 1.0,
     },
-    'y': {
-        'top': 0.0,
-        'center': 0.5,
-        'middle': 0.5,
-        'bottom': 1.0,
-    }
+    "y": {
+        "top": 0.0,
+        "center": 0.5,
+        "middle": 0.5,
+        "bottom": 1.0,
+    },
 }
 
 
@@ -28,18 +28,24 @@ def calculate_anchor(value, dim, total):
         try:
             return total * ANCHORS[dim][value]
         except KeyError:
-            raise ValueError(
-                '%r is not a valid %s-anchor name' % (value, dim)
-            )
+            raise ValueError("%r is not a valid %s-anchor name" % (value, dim))
     return float(value)
 
 
 # These are methods (of the same name) on pygame.Rect
-SYMBOLIC_POSITIONS = set((
-    "topleft", "bottomleft", "topright", "bottomright",
-    "midtop", "midleft", "midbottom", "midright",
-    "center",
-))
+SYMBOLIC_POSITIONS = set(
+    (
+        "topleft",
+        "bottomleft",
+        "topright",
+        "bottomright",
+        "midtop",
+        "midleft",
+        "midbottom",
+        "midright",
+        "center",
+    )
+)
 
 # Provides more meaningful default-arguments e.g. for display in IDEs etc.
 POS_TOPLEFT = None
@@ -67,10 +73,7 @@ def transform_anchor(ax, ay, w, h, angle):
     rax = cax * costheta - cay * sintheta
     ray = cax * sintheta + cay * costheta
 
-    return (
-        tw * 0.5 + rax,
-        th * 0.5 + ray
-    )
+    return (tw * 0.5 + rax, th * 0.5 + ray)
 
 
 def _set_angle(actor, current_surface):
@@ -90,19 +93,13 @@ def _set_opacity(actor, current_surface):
 
     alpha_img = pygame.Surface(current_surface.get_size(), pygame.SRCALPHA)
     alpha_img.fill((255, 255, 255, alpha))
-    alpha_img.blit(
-        current_surface,
-        (0, 0),
-        special_flags=pygame.BLEND_RGBA_MULT
-    )
+    alpha_img.blit(current_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
     return alpha_img
 
 
 class Actor:
     EXPECTED_INIT_KWARGS = SYMBOLIC_POSITIONS
-    DELEGATED_ATTRIBUTES = [
-        a for a in dir(rect.ZRect) if not a.startswith("_")
-    ]
+    DELEGATED_ATTRIBUTES = [a for a in dir(rect.ZRect) if not a.startswith("_")]
 
     function_order = [_set_opacity, _set_angle]
     _anchor = _anchor_value = (0, 0)
@@ -150,17 +147,13 @@ class Actor:
         return iter(self._rect)
 
     def __repr__(self):
-        return '<{} {!r} pos={!r}>'.format(
-            type(self).__name__,
-            self._image_name,
-            self.pos
+        return "<{} {!r} pos={!r}>".format(
+            type(self).__name__, self._image_name, self.pos
         )
 
     def __dir__(self):
         standard_attributes = [
-            key
-            for key in self.__dict__.keys()
-            if not key.startswith("_")
+            key for key in self.__dict__.keys() if not key.startswith("_")
         ]
         return standard_attributes + self.__class__.DELEGATED_ATTRIBUTES
 
@@ -169,20 +162,20 @@ class Actor:
         if not unexpected_kwargs:
             return
 
-        typos, _ = spellcheck.compare(
-            unexpected_kwargs, self.EXPECTED_INIT_KWARGS)
+        typos, _ = spellcheck.compare(unexpected_kwargs, self.EXPECTED_INIT_KWARGS)
         for found, suggested in typos:
             raise TypeError(
                 "Unexpected keyword argument '{}' (did you mean '{}'?)".format(
-                    found, suggested))
+                    found, suggested
+                )
+            )
 
     def _init_position(self, pos, anchor, **kwargs):
         if anchor is None:
             anchor = ("center", "center")
         self.anchor = anchor
 
-        symbolic_pos_args = {
-            k: kwargs[k] for k in kwargs if k in SYMBOLIC_POSITIONS}
+        symbolic_pos_args = {k: kwargs[k] for k in kwargs if k in SYMBOLIC_POSITIONS}
 
         if not pos and not symbolic_pos_args:
             # No positional information given, use sensible top-left default
@@ -204,9 +197,7 @@ class Actor:
                 "'topright' etc) found."
             )
         if len(symbolic_pos_dict) > 1:
-            raise TypeError(
-                "Only one 'topleft', 'topright' etc. argument is allowed."
-            )
+            raise TypeError("Only one 'topleft', 'topright' etc. argument is allowed.")
 
         setter_name, position = symbolic_pos_dict.popitem()
         setattr(self, setter_name, position)
@@ -217,8 +208,8 @@ class Actor:
             del self._surface_cache[i:]
         else:
             raise IndexError(
-                "function {!r} does not have a registered order."
-                "".format(function))
+                "function {!r} does not have a registered order." "".format(function)
+            )
 
     @property
     def anchor(self):
@@ -232,8 +223,8 @@ class Actor:
     def _calc_anchor(self):
         ax, ay = self._anchor_value
         ow, oh = self._orig_surf.get_size()
-        ax = calculate_anchor(ax, 'x', ow)
-        ay = calculate_anchor(ay, 'y', oh)
+        ax = calculate_anchor(ax, "x", ow)
+        ay = calculate_anchor(ay, "y", oh)
         self._untransformed_anchor = ax, ay
         if self._angle == 0.0:
             self._anchor = self._untransformed_anchor
@@ -347,7 +338,7 @@ class Actor:
             tx, ty = target
         myx, myy = self.pos
         dx = tx - myx
-        dy = myy - ty   # y axis is inverted from mathematical y in Pygame
+        dy = myy - ty  # y axis is inverted from mathematical y in Pygame
         return degrees(atan2(dy, dx))
 
     def distance_to(self, target):
