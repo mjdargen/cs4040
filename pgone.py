@@ -50,10 +50,7 @@ def build(csv_path, tile_size, scale=1):
         contents = f.read().splitlines()
 
     # Convert CSV contents to a 2D list of integers, handling negative numbers
-    contents = [
-        [int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")]
-        for row in contents
-    ]
+    contents = [[int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")] for row in contents]
 
     # Create Actor objects for each tile
     items = []
@@ -114,12 +111,8 @@ def pgz_map(
     tilesheet = pygame.image.load(f"{DIR_PATH}/{tilesheet_path}")
 
     # Calculate the number of tiles per row and column on the tilesheet
-    tilesheet_width = (tilesheet.get_width() - 2 * margin + spacing) // (
-        tile_set_size + spacing
-    )
-    tilesheet_height = (tilesheet.get_height() - 2 * margin + spacing) // (
-        tile_set_size + spacing
-    )
+    tilesheet_width = (tilesheet.get_width() - 2 * margin + spacing) // (tile_set_size + spacing)
+    tilesheet_height = (tilesheet.get_height() - 2 * margin + spacing) // (tile_set_size + spacing)
 
     # Determine the scaling factor for the tiles if tile_map_size is provided
     tile_scale = tile_map_size / tile_set_size if tile_map_size else 1
@@ -128,10 +121,7 @@ def pgz_map(
         contents = f.read().splitlines()
 
     # Convert to int but check for negative numbers
-    contents = [
-        [int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")]
-        for row in contents
-    ]
+    contents = [[int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")] for row in contents]
 
     # Create all items as Actors
     items = []
@@ -147,17 +137,11 @@ def pgz_map(
                 tile_num &= 0x0FFFFFFF
 
                 # Calculate the tile's position on the tilesheet
-                tile_x = margin + (tile_num % tilesheet_width) * (
-                    tile_set_size + spacing
-                )
-                tile_y = margin + (tile_num // tilesheet_width) * (
-                    tile_set_size + spacing
-                )
+                tile_x = margin + (tile_num % tilesheet_width) * (tile_set_size + spacing)
+                tile_y = margin + (tile_num // tilesheet_width) * (tile_set_size + spacing)
 
                 # Crop the tile from the tilesheet
-                tile_surface = tilesheet.subsurface(
-                    (tile_x, tile_y, tile_set_size, tile_set_size)
-                )
+                tile_surface = tilesheet.subsurface((tile_x, tile_y, tile_set_size, tile_set_size))
 
                 # Scale the tile based on tile_scale
                 new_size = (
@@ -379,9 +363,7 @@ class Actor(Actor):
 
         if self._scale != 1:
             size = self._orig_surf.get_size()
-            self._surf = pygame.transform.scale(
-                self._surf, (int(size[0] * self.scale), int(size[1] * self.scale))
-            )
+            self._surf = pygame.transform.scale(self._surf, (int(size[0] * self.scale), int(size[1] * self.scale)))
 
         if self._flip_h:
             self._surf = pygame.transform.flip(self._surf, True, False)
@@ -456,9 +438,7 @@ class Actor(Actor):
             ch *= self._scale
             self._collision_rect = rect.ZRect(tlx, tly, cw, ch)
         else:
-            raise ValueError(
-                "Invalid collision_rect_spec format. Use (width, height) or (top, right, bottom, left)."
-            )
+            raise ValueError("Invalid collision_rect_spec format. Use (width, height) or (top, right, bottom, left).")
 
     def draw_collision_rect(self):
         """Draw a red outline around the collision rectangle for debugging."""
@@ -571,10 +551,7 @@ class SpriteSheet(object):
         Returns:
             list of pygame.Surface: The extracted images in the strip.
         """
-        tups = [
-            (rect[0] + rect[2] * x, rect[1], rect[2], rect[3])
-            for x in range(image_count)
-        ]
+        tups = [(rect[0] + rect[2] * x, rect[1], rect[2], rect[3]) for x in range(image_count)]
         return self.images_at(tups, color_key)
 
 
@@ -624,9 +601,7 @@ class Sprite(object):
         """
         frames = []
         x_offset = 0  # Start at the left edge of the sprite sheet
-        y_offset = (
-            self.row_number * self.frame_height
-        )  # Calculate the y position based on the row number
+        y_offset = self.row_number * self.frame_height  # Calculate the y position based on the row number
 
         for frame_index in range(self.frame_count):
             # Calculate the (x, y) position for each frame in the sprite sheet
@@ -637,9 +612,7 @@ class Sprite(object):
             frame_rect = (x, y, self.frame_width, self.frame_height)
 
             # Use the get_surface method to get the frame
-            frame = sprite_sheet.get_surface(
-                frame_rect
-            )  # Adjust method name accordingly
+            frame = sprite_sheet.get_surface(frame_rect)  # Adjust method name accordingly
             frames.append(frame)
 
         return frames  # Return the requested frames
@@ -656,9 +629,7 @@ class Sprite(object):
 
         # Update frame if enough time has passed
         if current_time - self.last_update_time >= frame_duration_ms:
-            self.i = (self.i + 1) % len(
-                self.images
-            )  # Loop back to the first frame if necessary
+            self.i = (self.i + 1) % len(self.images)  # Loop back to the first frame if necessary
             self.last_update_time = current_time  # Reset the last update time
 
         return self.images[self.i]
@@ -689,9 +660,7 @@ class SpriteActor(Actor):
         self.fps = 5  # Target frames per second
         self.direction = 0
         self.sprite = sprite_instance
-        super().__init__(
-            f"sprites/{sprite_instance.filename}", position, anchor_point, **kwargs
-        )
+        super().__init__(f"sprites/{sprite_instance.filename}", position, anchor_point, **kwargs)
         self._orig_surf = self.sprite.images[self.sprite.i]
         self._update_pos()
         self._transform_surf()
@@ -719,4 +688,4 @@ class SpriteActor(Actor):
         self._orig_surf = self.sprite.next()
         self._update_pos()
         self._transform_surf()
-        game.screen.blit(self._surf, self.topleft)
+        super().draw()

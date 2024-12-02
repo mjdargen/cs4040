@@ -6,8 +6,21 @@ WIDTH = 500
 HEIGHT = 500
 TITLE = "Collision Boc Resizing Demo"
 
+# Define a Sprite and SpriteActor
+filename = "fox.png"  # Name of file, must be stored in "images" folder
+frame_width = 24  # width of each frame
+frame_height = 16  # height of each frame
+row_number = 1  # row number on the spritesheet
+frame_count = 14  # number of frames in the animation
+fps = 2  # FPS refresh rate: updates every 2 frames
+fox_stand = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+
+# define SpriteActor
+player = SpriteActor(fox_stand)
+player.pos = (WIDTH / 2, 300)
+player.scale = 2
+
 # Create two actors with different collision rectangles
-player = Actor("alien_beige", (WIDTH / 2, 300))
 enemy1 = Actor("alien_yellow", (100, 200))
 # specify width and height of new box - centered at image center
 enemy1.collision_rect = (40, 80)

@@ -77,7 +77,7 @@ def update():
             # get object that player collided with
             collided = platforms[collision_index]
             # use it to calculate position where there is no collision
-            player.x = collided.x + (collided.width / 2 + player.width / 2)
+            player.left = collided.right
 
     # handle player right movement
     elif keyboard.RIGHT and player.right < WIDTH:
@@ -89,7 +89,7 @@ def update():
             # get object that player collided with
             collided = platforms[collision_index]
             # use it to calculate position where there is no collision
-            player.x = collided.x - (collided.width / 2 + player.width / 2)
+            player.right = collided.left
 
     # handle gravity
     player.y += player.velocity_y

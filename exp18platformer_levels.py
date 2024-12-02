@@ -40,7 +40,7 @@ fox_walk = Sprite(filename, frame_width, frame_height, 2, 8, 10)
 # define SpriteActor
 fox = SpriteActor(fox_stand)
 fox.scale = 2.5
-fox.bottomleft = (0, HEIGHT-40)
+fox.bottomleft = (0, HEIGHT - 40)
 # define Actor-specific variables
 fox.alive = True
 fox.jumping = False
@@ -151,7 +151,7 @@ def level_transition():
     if level == 1:
         # set level and new start position
         level = 2
-        fox.bottomleft = (0, HEIGHT-40)
+        fox.bottomleft = (0, HEIGHT - 40)
         # import new tilemap to pgzero
         platforms = pgz_map("levels/p2_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE)
         obstacles = pgz_map("levels/p2_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
