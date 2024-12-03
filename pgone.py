@@ -400,6 +400,14 @@ class Actor(Actor):
         else:
             return self._collision_rect.colliderect(other)
 
+    def collidelist(self, others):
+        """Override list collision detection to use custom collision rectangle"""
+        for n, other in enumerate(others):
+            if self.colliderect(other):
+                return n
+        else:
+            return -1
+
     def collidepoint(self, *args):
         """Override point collision detection to use custom collision rectangle"""
         return self._collision_rect.collidepoint(*args)
