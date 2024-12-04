@@ -4,7 +4,7 @@ from pgone import *
 
 WIDTH = 500
 HEIGHT = 500
-TITLE = "Collision Boc Resizing Demo"
+TITLE = "Collision Box Resizing Demo"
 
 # Define a Sprite and SpriteActor
 filename = "fox.png"  # Name of file, must be stored in "images" folder

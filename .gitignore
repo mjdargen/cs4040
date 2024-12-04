@@ -16,6 +16,7 @@ depr_*.*
 _*.py
 !__*__.py
 pgzero - Copy
+!images/sprites/*.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
