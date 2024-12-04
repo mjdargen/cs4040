@@ -33,11 +33,11 @@ filename = "fox.png"  # Name of file, must be stored in "images" folder
 frame_width = 24  # width of each frame
 frame_height = 16  # height of each frame
 # Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-fox_stand = Sprite(filename, frame_width, frame_height, 1, 14, 2)
+fox_idle = Sprite(filename, frame_width, frame_height, 1, 14, 2)
 fox_walk = Sprite(filename, frame_width, frame_height, 2, 8, 10)
 
 # define SpriteActor
-fox = SpriteActor(fox_stand)
+fox = SpriteActor(fox_idle)
 fox.scale = 2.5
 fox.bottomleft = (0, HEIGHT)
 # define Actor-specific variables
@@ -156,7 +156,7 @@ def on_key_down(key):
 def on_key_up(key):
     # change to forward facing image when left/right keys released
     if key == keys.LEFT or key == keys.RIGHT:
-        fox.sprite = fox_stand
+        fox.sprite = fox_idle
 
 
 pgzrun.go()  # program must always end with this

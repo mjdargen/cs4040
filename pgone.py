@@ -421,7 +421,7 @@ class Actor(Actor):
         """
         if self._collision_rect_spec is None:
             # Default to full image size
-            self._collision_rect = rect.ZRect(*self._rect)
+            self._collision_rect = self._rect
         elif len(self._collision_rect_spec) == 2:
             # Format: (width, height)
             cw, ch = self._collision_rect_spec

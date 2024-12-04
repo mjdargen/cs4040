@@ -18,17 +18,17 @@ frame_width = 24  # width of each frame
 frame_height = 16  # height of each frame
 row_number = 1  # row number on the spritesheet
 frame_count = 14  # number of frames in the animation
-fps = 2  # FPS refresh rate: updates every 2 frames
-fox_stand = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+fps = 2  # FPS refresh rate: shows ~2 frames per second
+fox_idle = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
 
 # Fox walking animation (walking animation starts at row 2)
 row_number = 2  # row number on the spritesheet
 frame_count = 8  # Number of frames in the walking animation
-fps = 10  # FPS refresh rate: updates every 10 frames
+fps = 10  # FPS refresh rate: shows ~10 frames per second
 fox_walk = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
 
 # define SpriteActor
-fox = SpriteActor(fox_stand)
+fox = SpriteActor(fox_idle)
 fox.scale = 4  # scales up the Actor size by four
 
 # define Actor-specific variables
@@ -70,7 +70,7 @@ def update():
     # once the fox has returned to the floor, cancel y velocity
     if fox.bottom >= HEIGHT:
         fox.velocity_y = 0
-        fox.y = HEIGHT - fox.height / 2
+        fox.bottom = HEIGHT
     # otherwise, continue to add gravity
     # change y velocity by adding gravity
     # causes deceleration in the upwards direction
@@ -91,7 +91,7 @@ def on_key_down(key):
 def on_key_up(key):
     # change to forward facing image when left/right keys released
     if key == keys.LEFT or key == keys.RIGHT:
-        fox.sprite = fox_stand
+        fox.sprite = fox_idle
 
 
 pgzrun.go()  # program must always end with this
