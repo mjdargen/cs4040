@@ -18,5 +18,4 @@ Read the `.md` files first by clicking the links for the sprite you want below. 
 - [samurai](samurai.md)
 - [santa](santa.md)
 - [tomato](tomato.md)
-- [tomato_simple](tomato_simple.md)
 - [wolf](wolf.md)
