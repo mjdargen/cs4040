@@ -7,19 +7,12 @@
 
 **Animations:**
 - idle_front - row 0 - 2 frames
-
 - idle_back - row 1 - 2 frames
-
 - idle_left - row 2 - 2 frames
-
 - idle_right - row 3 - 2 frames
-
 - walk_front - row 4 - 4 frames
-
 - walk_back - row 5 - 4 frames
-
 - walk_left - row 6 - 4 frames
-
 - wake_right - row 7 - 4 frames
 
 **Code Example:**

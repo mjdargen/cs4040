@@ -67,9 +67,9 @@ def generate_documentation(metadata, output_file):
             doc.write(f"**Number of Animations:** {number_of_animations}\n\n")
             doc.write("**Animations:**\n")
             for i, anim in enumerate(animation_data):
-                doc.write(f"- {anim['name']} - row {i} - {anim['num_frames']} frames\n\n")
+                doc.write(f"- {anim['name']} - row {i} - {anim['num_frames']} frames\n")
 
-            doc.write("**Code Example:**\n```python\n")
+            doc.write("\n**Code Example:**\n```python\n")
             doc.write("# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)\n")
             doc.write("# Note: FPS set to 5 in examples below, adjust as needed)\n")
             doc.write(f'filename = "{filename}.png"\n')
@@ -155,6 +155,5 @@ def camel_to_snake(camel_str):
 
 # Example Usage
 if __name__ == "__main__":
-    aseprite_path = r"C:\Program Files\Aseprite\Aseprite.exe"  # Adjust if necessary
     directory = os.path.dirname(os.path.realpath(__file__))  # Current script directory
-    process_all_files(directory, aseprite_path)
+    process_all_files(directory)

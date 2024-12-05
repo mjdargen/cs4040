@@ -7,13 +7,9 @@
 
 **Animations:**
 - idle - row 0 - 8 frames
-
 - jump - row 1 - 7 frames
-
 - eat - row 2 - 6 frames
-
 - hurt - row 3 - 4 frames
-
 - die - row 4 - 9 frames
 
 **Code Example:**

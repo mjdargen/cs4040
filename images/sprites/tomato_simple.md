@@ -7,11 +7,8 @@
 
 **Animations:**
 - Idle - row 0 - 5 frames
-
 - Jump - row 1 - 8 frames
-
 - Hurt - row 2 - 5 frames
-
 - DeathNoBlood - row 3 - 11 frames
 
 **Code Example:**

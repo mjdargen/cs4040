@@ -7,17 +7,11 @@
 
 **Animations:**
 - idle - row 0 - 5 frames
-
 - long_idle - row 1 - 14 frames
-
 - walk - row 2 - 8 frames
-
 - jump - row 3 - 11 frames
-
 - hurt - row 4 - 5 frames
-
 - sleep - row 5 - 6 frames
-
 - die - row 6 - 7 frames
 
 **Code Example:**

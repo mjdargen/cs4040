@@ -7,11 +7,8 @@
 
 **Animations:**
 - idle_left - row 0 - 2 frames
-
 - idle_right - row 1 - 2 frames
-
 - walk_left - row 2 - 2 frames
-
 - walk_right - row 3 - 2 frames
 
 **Code Example:**

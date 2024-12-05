@@ -7,7 +7,6 @@
 
 **Animations:**
 - idle - row 0 - 5 frames
-
 - walk - row 1 - 4 frames
 
 **Code Example:**

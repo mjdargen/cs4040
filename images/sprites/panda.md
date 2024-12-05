@@ -7,17 +7,11 @@
 
 **Animations:**
 - 1 - row 0 - 6 frames
-
 - 2 - row 1 - 6 frames
-
 - 3 - row 2 - 8 frames
-
 - 4 - row 3 - 8 frames
-
 - 5 - row 4 - 5 frames
-
 - 6 - row 5 - 8 frames
-
 - 7 - row 6 - 8 frames
 
 **Code Example:**

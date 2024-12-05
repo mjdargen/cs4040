@@ -7,15 +7,10 @@
 
 **Animations:**
 - idle - row 0 - 8 frames
-
 - run - row 1 - 8 frames
-
 - jump - row 2 - 4 frames
-
 - fall - row 3 - 4 frames
-
 - hurt - row 4 - 2 frames
-
 - die - row 5 - 14 frames
 
 **Code Example:**
