@@ -687,6 +687,7 @@ class SpriteActor(Actor):
             sprite_instance (Sprite): The new sprite instance.
         """
         self._sprite = sprite_instance
+        self._sprite.i = 0
 
     def draw(self):
         """
