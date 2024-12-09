@@ -8,6 +8,7 @@ Read the `.md` files first by clicking the links for the sprite you want below. 
 
 - [carrot](carrot.md)
 - [cat](cat.md)
+- [crab](crab.md)
 - [fox](fox.md)
 - [frog](frog.md)
 - [frog_full](frog_full.md)
