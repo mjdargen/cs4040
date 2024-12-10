@@ -665,9 +665,10 @@ class SpriteActor(Actor):
         self._scale = 1
         self._mask = None
         self._animate_counter = 0
+        self._sprite = sprite_instance
+        self._paused = False
         self.fps = 5  # Target frames per second
         self.direction = 0
-        self.sprite = sprite_instance
         super().__init__(f"sprites/{sprite_instance.filename}", position, anchor_point, **kwargs)
         self._orig_surf = self.sprite.images[self.sprite.i]
         self._update_pos()
@@ -686,15 +687,28 @@ class SpriteActor(Actor):
         Args:
             sprite_instance (Sprite): The new sprite instance.
         """
-        self._sprite = sprite_instance
-        self._sprite.i = 0
+        if self._sprite != sprite_instance:
+            self._sprite = sprite_instance
+            self._sprite.i = 0
+
+    def pause(self):
+        """Pauses the sprite animation."""
+        self._paused = True
+
+    def resume(self):
+        """Resumes the sprite animation."""
+        self._paused = False
+
+    def is_paused(self):
+        """Checks if the sprite animation is paused."""
+        return self._paused
 
     def draw(self):
         """
         Draws the sprite actor to the screen, updating its animation based on the current time.
         """
-        # Update sprite's frame based on elapsed time
-        self._orig_surf = self.sprite.next()
+        if not self._paused:
+            self._orig_surf = self.sprite.next()
         self._update_pos()
         self._transform_surf()
         super().draw()
