@@ -1,10 +1,11 @@
 import os
 import time
 import pygame
-from pgzero import game, loaders
+from pgzero import game, loaders, rect
 from pgzero.builtins import Actor
 from pgzero.actor import Actor, POS_TOPLEFT, ANCHOR_CENTER, transform_anchor
-from pgzero import rect
+import xml.etree.ElementTree as ET
+
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -83,93 +84,119 @@ def build(csv_path, tile_size, scale=1):
     return items
 
 
-def pgz_map(
-    csv_path,
-    tilesheet_path,
-    tile_set_size,
-    tile_map_size=None,
-    scale=1,
-    spacing=0,
-    margin=0,
-):
+def load_tile_map_actors(tmx_path, scale=1):
     """
-    Builds a list of Pygame Zero Actors from a tilesheet and a CSV tile map from Tiled.
+    Loads a Tiled TMX map (and referenced TSX tilesets) into a dict of
+    layer_name -> list of Pygame Zero Actor objects.
 
     Args:
-        filename (str): Path to the CSV file defining the tile map.
-        tilesheet_path (str): Path to the tilesheet image.
-        tile_set_size (int): Size of each tile in pixels from the tilesheet.
-        tile_map_size (int): Desired size of each tile in the map (scaled size).
+        tmx_path (str): Path to the TMX map file.
         scale (float): Global scale factor for the tiles.
-        spacing (int): Number of pixels between tiles on the tilesheet.
-        margin (int): Number of pixels around the border of the tilesheet.
 
     Returns:
-        list: A list of Pygame Zero Actor objects representing the tile map.
+        dict: {layer_name: [Actor, Actor, ...]}
     """
-    # Load the tilesheet as a Pygame Surface
-    tilesheet = pygame.image.load(f"{DIR_PATH}/{tilesheet_path}")
+    tree = ET.parse(f"{DIR_PATH}/maps/{tmx_path}")
+    root = tree.getroot()
 
-    # Calculate the number of tiles per row and column on the tilesheet
-    tilesheet_width = (tilesheet.get_width() - 2 * margin + spacing) // (tile_set_size + spacing)
-    tilesheet_height = (tilesheet.get_height() - 2 * margin + spacing) // (tile_set_size + spacing)
+    # Get general map info
+    map_tile_width = int(root.attrib["tilewidth"])
+    map_tile_height = int(root.attrib["tileheight"])
 
-    # Determine the scaling factor for the tiles if tile_map_size is provided
-    tile_scale = tile_map_size / tile_set_size if tile_map_size else 1
+    # Load all tilesets
+    tilesets = {}
+    for ts in root.findall("tileset"):
+        firstgid = int(ts.attrib["firstgid"])
+        source = ts.attrib["source"]
+        ts_tree = ET.parse(f"{DIR_PATH}/maps/{source}")
+        ts_root = ts_tree.getroot()
 
-    with open(f"{DIR_PATH}/{csv_path}", "r") as f:
-        contents = f.read().splitlines()
+        # Extract tileset image info
+        image = ts_root.find("image")
+        tilesheet_path = image.attrib["source"]
+        tilesheet = pygame.image.load(f"{DIR_PATH}/maps/{tilesheet_path}")
+        tile_width = int(ts_root.attrib["tilewidth"])
+        tile_height = int(ts_root.attrib["tileheight"])
+        spacing = int(ts_root.attrib.get("spacing", 0))
+        margin = int(ts_root.attrib.get("margin", 0))
 
-    # Convert to int but check for negative numbers
-    contents = [[int(col) if col[0] != "-" else -int(col[1:]) for col in row.split(",")] for row in contents]
+        sheet_w = (tilesheet.get_width() - 2 * margin + spacing) // (tile_width + spacing)
+        sheet_h = (tilesheet.get_height() - 2 * margin + spacing) // (tile_height + spacing)
 
-    # Create all items as Actors
-    items = []
-    for row in range(len(contents)):
-        for col in range(len(contents[0])):
-            tile_num = contents[row][col]
-            if tile_num != -1:
-                # Decode any flags
-                flipped_h = bool(tile_num & 0x80000000)
-                flipped_v = bool(tile_num & 0x40000000)
-                flipped_d = bool(tile_num & 0x20000000)
-                rotated_hex = bool(tile_num & 0x10000000)
-                tile_num &= 0x0FFFFFFF
+        tilesets[firstgid] = {
+            "image": tilesheet,
+            "tile_width": tile_width,
+            "tile_height": tile_height,
+            "sheet_w": sheet_w,
+            "sheet_h": sheet_h,
+            "spacing": spacing,
+            "margin": margin,
+        }
 
-                # Calculate the tile's position on the tilesheet
-                tile_x = margin + (tile_num % tilesheet_width) * (tile_set_size + spacing)
-                tile_y = margin + (tile_num // tilesheet_width) * (tile_set_size + spacing)
+    # Parse layers
+    layers_dict = {}
+    for layer in root.findall("layer"):
+        name = layer.attrib["name"]
+        width = int(layer.attrib["width"])
+        height = int(layer.attrib["height"])
+        data = layer.find("data")
 
-                # Crop the tile from the tilesheet
-                tile_surface = tilesheet.subsurface((tile_x, tile_y, tile_set_size, tile_set_size))
+        # Tiled encodes data as CSV inside the <data> tag
+        contents = [[int(v) for v in row.split(",") if v.strip() != ""] for row in data.text.strip().splitlines()]
 
-                # Scale the tile based on tile_scale
-                new_size = (
-                    int(tile_set_size * tile_scale),
-                    int(tile_set_size * tile_scale),
+        items = []
+        for row in range(height):
+            for col in range(width):
+                tile_gid = contents[row][col]
+                if tile_gid == 0:
+                    continue  # Empty tile
+
+                # Decode flip flags (same as before)
+                flipped_h = bool(tile_gid & 0x80000000)
+                flipped_v = bool(tile_gid & 0x40000000)
+                flipped_d = bool(tile_gid & 0x20000000)
+                tile_gid &= 0x0FFFFFFF
+
+                # Find the correct tileset for this tile
+                ts_firstgid = max(gid for gid in tilesets.keys() if gid <= tile_gid)
+                tileset = tilesets[ts_firstgid]
+                local_id = tile_gid - ts_firstgid
+
+                # Calculate source position on tilesheet
+                tx = tileset["margin"] + (local_id % tileset["sheet_w"]) * (tileset["tile_width"] + tileset["spacing"])
+                ty = tileset["margin"] + (local_id // tileset["sheet_w"]) * (tileset["tile_height"] + tileset["spacing"])
+
+                # Extract and scale
+                tile_surface = tileset["image"].subsurface((tx, ty, tileset["tile_width"], tileset["tile_height"]))
+
+                # Scale to match the difference between the tileset tile size and the map tile size (tile_scale)
+                tile_scale_x = map_tile_width / tileset["tile_width"]
+                tile_scale_y = map_tile_height / tileset["tile_height"]
+                scaled_size = (
+                    int(tileset["tile_width"] * tile_scale_x),
+                    int(tileset["tile_height"] * tile_scale_y),
                 )
-                tile_surface = pygame.transform.scale(tile_surface, new_size)
+                tile_surface = pygame.transform.scale(tile_surface, scaled_size)
 
-                # Create an Actor with the cropped and scaled tile
-                item = Actor(tile_surface)
-                item.scale = scale
+                # Create actor
+                actor = Actor(tile_surface)
+                actor.scale = scale
                 if flipped_h:
-                    item.flip_h = True
+                    actor.flip_h = True
                 if flipped_v:
-                    item.flip_v = True
+                    actor.flip_v = True
                 if flipped_d:
-                    item.flip_d = True
-                if rotated_hex:
-                    pass
+                    actor.flip_d = True
 
-                # Adjust the position of the Actor based on the scaled map size
-                item.topleft = (
-                    (tile_map_size or tile_set_size) * col * scale,
-                    (tile_map_size or tile_set_size) * row * scale,
+                actor.topleft = (
+                    map_tile_width * col * scale,
+                    map_tile_height * row * scale,
                 )
-                items.append(item)
+                items.append(actor)
 
-    return items
+        layers_dict[name] = items
+
+    return layers_dict
 
 
 class Actor(Actor):

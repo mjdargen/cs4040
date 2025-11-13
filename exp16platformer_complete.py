@@ -20,13 +20,11 @@ gravity = 1
 win = False
 over = False
 
-# build world
-# import in tile map
-tilesheet = "levels/tilemap_packed.png"
-platforms = pgz_map("levels/platformer_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE)
-obstacles = pgz_map("levels/platformer_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
-mushrooms = pgz_map("levels/platformer_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE)
-
+# build world from Tiled tile map
+map_layers = load_tile_map_actors("platformer.tmx", scale=SCALE)
+platforms = map_layers["platforms"]
+obstacles = map_layers["obstacles"]
+mushrooms = map_layers["mushrooms"]
 
 # define Sprites
 filename = "fox.png"  # Name of file, must be stored in "images" folder

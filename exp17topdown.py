@@ -17,12 +17,12 @@ TITLE = "Top-Down Perspective"
 win = False
 over = False
 
-# build world from tile map
-tilesheet = "levels/tilemap_packed.png"
-ground = pgz_map("levels/topdown_ground.csv", tilesheet, TILE_SIZE, scale=SCALE)
-walls = pgz_map("levels/topdown_walls.csv", tilesheet, TILE_SIZE, scale=SCALE)
-obstacles = pgz_map("levels/topdown_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
-hearts = pgz_map("levels/topdown_hearts.csv", tilesheet, TILE_SIZE, scale=SCALE)
+# build world from Tiled tile map
+map_layers = load_tile_map_actors("topdown.tmx", scale=SCALE)
+ground = map_layers["ground"]
+walls = map_layers["walls"]
+obstacles = map_layers["obstacles"]
+hearts = map_layers["hearts"]
 
 # define Sprites
 # Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)

@@ -18,12 +18,12 @@ win = False
 over = False
 level = 1
 
-# build world from tile map
-tilesheet = "levels/tilemap_packed.png"
-ground = pgz_map("levels/t1_ground.csv", tilesheet, TILE_SIZE, scale=SCALE)
-walls = pgz_map("levels/t1_walls.csv", tilesheet, TILE_SIZE, scale=SCALE)
-obstacles = pgz_map("levels/t1_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
-hearts = pgz_map("levels/t1_hearts.csv", tilesheet, TILE_SIZE, scale=SCALE)
+# build world from Tiled tile map
+map_layers = load_tile_map_actors("tl1.tmx", scale=SCALE)
+ground = map_layers["ground"]
+walls = map_layers["walls"]
+obstacles = map_layers["obstacles"]
+hearts = map_layers["hearts"]
 
 # define Sprites
 # Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
@@ -160,11 +160,12 @@ def level_transition():
         # set level and new start position
         level = 2
         rabbit.pos = (0, rabbit.y)
-        # import new tilemap to pgzero
-        ground = pgz_map("levels/t2_ground.csv", tilesheet, TILE_SIZE, scale=SCALE)
-        walls = pgz_map("levels/t2_walls.csv", tilesheet, TILE_SIZE, scale=SCALE)
-        obstacles = pgz_map("levels/t2_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
-        hearts = pgz_map("levels/t2_hearts.csv", tilesheet, TILE_SIZE, scale=SCALE)
+        # build level 2 tile map
+        map_layers = load_tile_map_actors("tl2.tmx", scale=SCALE)
+        ground = map_layers["ground"]
+        walls = map_layers["walls"]
+        obstacles = map_layers["obstacles"]
+        hearts = map_layers["hearts"]
     # transition to win
     elif level == 2:
         # set level and win

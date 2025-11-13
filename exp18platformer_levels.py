@@ -21,13 +21,11 @@ win = False
 over = False
 level = 1
 
-# build world
-# import in tile map
-tilesheet = "levels/tilemap_packed.png"
-platforms = pgz_map("levels/p1_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE)
-obstacles = pgz_map("levels/p1_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
-mushrooms = pgz_map("levels/p1_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE)
-
+# build world from Tiled tile map
+map_layers = load_tile_map_actors("pl1.tmx", scale=SCALE)
+platforms = map_layers["platforms"]
+obstacles = map_layers["obstacles"]
+mushrooms = map_layers["mushrooms"]
 
 # define Sprites
 filename = "fox.png"  # Name of file, must be stored in "images" folder
@@ -152,10 +150,11 @@ def level_transition():
         # set level and new start position
         level = 2
         fox.bottomleft = (0, HEIGHT - 40)
-        # import new tilemap to pgzero
-        platforms = pgz_map("levels/p2_platforms.csv", tilesheet, TILE_SIZE, scale=SCALE)
-        obstacles = pgz_map("levels/p2_obstacles.csv", tilesheet, TILE_SIZE, scale=SCALE)
-        mushrooms = pgz_map("levels/p2_mushrooms.csv", tilesheet, TILE_SIZE, scale=SCALE)
+        # build level 2 tile map
+        map_layers = load_tile_map_actors("pl2.tmx", scale=SCALE)
+        platforms = map_layers["platforms"]
+        obstacles = map_layers["obstacles"]
+        mushrooms = map_layers["mushrooms"]
     # transition to win
     elif level == 2:
         # set level and win
