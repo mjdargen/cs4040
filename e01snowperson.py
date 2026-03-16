@@ -4,7 +4,7 @@ from pgzero.builtins import *
 # set width and height of screen
 WIDTH = 600
 HEIGHT = 400
-TITLE = "Snowman"
+TITLE = "Snowperson"
 
 # color reference: https://pygame-zero.readthedocs.io/en/latest/colors_ref.html
 
@@ -21,7 +21,7 @@ def draw():
     # screen.draw.line((x1, y1), (x2, y2), "color")
     screen.draw.line((0, 300), (WIDTH, 300), "black")
 
-    # draw snowman body
+    # draw snowperson body
     # screen.draw.circle((x,y), radius, color)
     # x, y is the coordinate of the center.
     screen.draw.filled_circle((WIDTH // 2, 275), 75, "white")  # draws filled circle
