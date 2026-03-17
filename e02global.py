@@ -18,11 +18,13 @@ result_text = ""
 words = []
 
 # Rules:
-"""
-Rules for when global keyword is needed:
-- Never need global keyword for objects, lists, dictionaries, etc.
-- Need global keyword for int, float, bool, string, tuple, but if and only if the variables are modified!
-"""
+# When do you need global?
+#  You do NOT need global if:
+#   - You are only reading the variable
+#   - You are modifying something inside the variable (like a list or object)
+#  You DO need global if:
+#   - You are reassigning the variable to a new value
+#   - Common for int, float, bool, string, tuple when changed
 
 
 # displays the new frame
@@ -34,12 +36,12 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
-    # alien is an Object, does not need global keyword
-    # words is a list, does not need global keyword
-    # m is an int and is modified, so it needs the global keyword
-    # result_text is a string and is modified, so it needs the global keyword
-    # n is an int but is not modified, so it does not need the global keyword
-    # text is a string but is not modified, so it does not need the global keyword
+    # alien is an Object and not reassigned, does not need global keyword
+    # words is a list and not reassigned, does not need global keyword
+    # m is an int and is reassigned, so it needs the global keyword
+    # result_text is a string and is reassigned, so it needs the global keyword
+    # n is an int but is only read, so it does not need the global keyword
+    # text is a string but is only read, so it does not need the global keyword
     global m, result_text
     m += n
     result_text += text

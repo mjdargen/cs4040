@@ -21,7 +21,7 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
-    pass  # pass means do nothing, used because we can't have empty function
+    pass  # pass means do nothing, can't have empty function
 
 
 pgzrun.go()  # program must always end with this
