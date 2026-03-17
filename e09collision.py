@@ -1,6 +1,6 @@
 import pgzrun
 from pgzero.builtins import *
-from random import randint
+import random
 
 # set width and height of screen
 WIDTH = 500
@@ -25,23 +25,23 @@ bomb = Actor("bomb")
 # relocates coin to a new location
 def move_coin():
     # randomly generate new position, 20 pixels from edge
-    coin.x = randint(20, WIDTH - 20)
-    coin.y = randint(20, HEIGHT - 20)
+    coin.x = random.randint(20, WIDTH - 20)
+    coin.y = random.randint(20, HEIGHT - 20)
     # while coin is accidentally placed on bomb or robot, try new location
     while coin.colliderect(bomb) or coin.colliderect(robot):
-        coin.x = randint(20, WIDTH - 20)
-        coin.y = randint(20, HEIGHT - 20)
+        coin.x = random.randint(20, WIDTH - 20)
+        coin.y = random.randint(20, HEIGHT - 20)
 
 
 # relocates bomb to a new location
 def move_bomb():
     # randomly generate new position, 20 pixels from edge
-    bomb.x = randint(20, WIDTH - 20)
-    bomb.y = randint(20, HEIGHT - 20)
+    bomb.x = random.randint(20, WIDTH - 20)
+    bomb.y = random.randint(20, HEIGHT - 20)
     # while bomb is accidentally placed on robot or coin, try new location
     while bomb.colliderect(robot) or bomb.colliderect(coin):
-        coin.x = randint(20, WIDTH - 20)
-        coin.y = randint(20, HEIGHT - 20)
+        coin.x = random.randint(20, WIDTH - 20)
+        coin.y = random.randint(20, HEIGHT - 20)
 
 
 # displays the new frame

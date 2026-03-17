@@ -1,6 +1,6 @@
 import pgzrun
 from pgzero.builtins import *
-from random import randint
+import random
 
 # set width and height of screen
 WIDTH = 500
@@ -52,9 +52,9 @@ def increment_timer():
 # spawn coin event handler
 def spawn_coin():
     coin = Actor("coin_gold")
-    coin.x = randint(40, WIDTH - 40)
-    coin.y = randint(40, HEIGHT - 40)
-    coins.append(coin) # add new coin to list
+    coin.x = random.randint(40, WIDTH - 40)
+    coin.y = random.randint(40, HEIGHT - 40)
+    coins.append(coin)  # add new coin to list
 
 
 # displays the new frame
@@ -84,13 +84,13 @@ def update():
         robot.y -= robot.velocity
     elif keyboard.DOWN and robot.bottom < HEIGHT:
         robot.y += robot.velocity
-        
+
     # check for collision between robot and any coins
     collided_index = robot.collidelist(coins)
     if collided_index != -1:
         coins.pop(collided_index)
         score += 1
-        
+
     # once there are more than 5 coins call game over
     if len(coins) > 5 and not over:
         game_over()

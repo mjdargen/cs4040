@@ -1,6 +1,6 @@
 import pgzrun
 from pgzero.builtins import *
-from random import randint
+import random
 
 # set width and height of screen
 WIDTH = 500
@@ -16,8 +16,8 @@ alien.pos = (WIDTH // 2, HEIGHT // 2)
 # defined as a tuple -> (x, y)
 # x -> represents velocity or change in position for x direction
 # y -> represents velocity or change in position for y direction
-alien.velocity_x = randint(1, 5)
-alien.velocity_y = randint(1, 5)
+alien.velocity_x = random.randint(1, 5)
+alien.velocity_y = random.randint(1, 5)
 
 
 # displays the new frame

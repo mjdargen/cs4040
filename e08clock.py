@@ -1,6 +1,6 @@
 import pgzrun
 from pgzero.builtins import *
-from random import randint
+import random
 
 # set width and height of screen
 WIDTH = 500
@@ -33,8 +33,8 @@ def increment_timer():
 
 # scheduled callback for moving character to a random position
 def move_character():
-    robot.x = randint(50, WIDTH - 50)
-    robot.y = randint(50, HEIGHT - 50)
+    robot.x = random.randint(50, WIDTH - 50)
+    robot.y = random.randint(50, HEIGHT - 50)
 
 
 # call just before pgzrun.go() to schedule intervals

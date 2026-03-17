@@ -1,6 +1,5 @@
 import pgzrun
 from pgzero.builtins import *
-from random import randint
 
 # set width and height of screen
 WIDTH = 500
@@ -14,6 +13,7 @@ alien.pos = (WIDTH // 2, HEIGHT // 2)
 
 # declare global variable to keep track of frame
 frame = 0
+
 
 # displays the new frame
 def draw():

@@ -1,6 +1,6 @@
 import pgzrun
 from pgzero.builtins import *
-from random import randint
+import random
 
 # set width and height of screen
 WIDTH = 500
@@ -44,7 +44,7 @@ def update():
     m += n
     result_text += text
     words.append(text)
-    alien.pos = randint(0, WIDTH), randint(0, HEIGHT)
+    alien.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
 
 
 pgzrun.go()  # program must always end with this
