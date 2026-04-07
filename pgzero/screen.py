@@ -1,4 +1,3 @@
-import numpy as np
 import pygame
 import pygame.draw
 
@@ -13,11 +12,14 @@ def round_pos(pos):
         x, y = pos
     except TypeError:
         raise TypeError(
-            "Coordinate must be a tuple (not {!r})".format(pos)) from None
+            "Coordinate must be a tuple (not {!r})".format(pos)
+        ) from None
     try:
         return round(x), round(y)
     except TypeError:
-        raise TypeError("Coordinate values must be numbers (not {!r})".format(pos)) from None  # noqa
+        raise TypeError(
+            "Coordinate values must be numbers (not {!r})".format(pos)
+        ) from None  # noqa
 
 
 def make_color(arg):
@@ -36,52 +38,43 @@ class SurfacePainter:
     def _surf(self):
         return self._screen.surface
 
-    def _apply_alpha_drawing(self, draw_fn, *args, **kwargs):
-        """Helper function to handle drawing with alpha support."""
-        temp_surface = pygame.Surface(
-            self._surf.get_size(), flags=pygame.SRCALPHA)
-        temp_surface = temp_surface.convert_alpha()
-        draw_fn(temp_surface, *args, **kwargs)
-        self._surf.blit(temp_surface, (0, 0))
-
     def line(self, start, end, color, width=1):
         """Draw a line from start to end."""
         start = round_pos(start)
         end = round_pos(end)
-        self._apply_alpha_drawing(
-            pygame.draw.line, make_color(color), start, end, width)
+        pygame.draw.line(self._surf, make_color(color), start, end, width)
 
     def circle(self, pos, radius, color, width=1):
         """Draw a circle."""
         pos = round_pos(pos)
-        self._apply_alpha_drawing(
-            pygame.draw.circle, make_color(color), pos, radius, width)
+        pygame.draw.circle(self._surf, make_color(color), pos, radius, width)
 
     def filled_circle(self, pos, radius, color):
         """Draw a filled circle."""
         pos = round_pos(pos)
-        self._apply_alpha_drawing(
-            pygame.draw.circle, make_color(color), pos, radius, 0)
+        pygame.draw.circle(self._surf, make_color(color), pos, radius, 0)
 
     def polygon(self, points, color):
         """Draw a polygon."""
         try:
             iter(points)
         except TypeError:
-            raise TypeError("screen.draw.filled_polygon() requires an iterable of points to draw") from None  # noqa
+            raise TypeError(
+                "screen.draw.filled_polygon() requires an iterable of points to draw"
+            ) from None  # noqa
         points = [round_pos(point) for point in points]
-        self._apply_alpha_drawing(
-            pygame.draw.polygon, make_color(color), points, 1)
+        pygame.draw.polygon(self._surf, make_color(color), points, 1)
 
     def filled_polygon(self, points, color):
         """Draw a filled polygon."""
         try:
             iter(points)
         except TypeError:
-            raise TypeError("screen.draw.filled_polygon() requires an iterable of points to draw") from None  # noqa
+            raise TypeError(
+                "screen.draw.filled_polygon() requires an iterable of points to draw"
+            ) from None  # noqa
         points = [round_pos(point) for point in points]
-        self._apply_alpha_drawing(
-            pygame.draw.polygon, make_color(color), points, 0)
+        pygame.draw.polygon(self._surf, make_color(color), points, 0)
 
     def rect(self, rect, color, width=1):
         """Draw a rectangle."""
@@ -89,14 +82,13 @@ class SurfacePainter:
             raise TypeError("screen.draw.rect() requires a rect to draw")
 
         if width <= 1:
-            self._apply_alpha_drawing(
-                pygame.draw.rect, make_color(color), rect, width)
+            pygame.draw.rect(self._surf, make_color(color), rect, width)
             return
 
         c = make_color(color)
 
         hw = width / 2
-        l, t, w, h = rect
+        l, t, w, h = rect  # noqa: E741
         l1, l2 = round(l - hw), round(l + hw)
         r1, r2 = round(l + w - hw), round(l + w + hw)
         t1, t2 = round(t - hw), round(t + hw)
@@ -104,7 +96,7 @@ class SurfacePainter:
 
         def r(x1, y1, x2, y2):
             r = pygame.Rect(x1, y1, x2 - x1, y2 - y1)
-            self._apply_alpha_drawing(pygame.draw.rect, c, r, 0)
+            pygame.draw.rect(self._surf, c, r, 0)
 
         r(l1, t1, r2, t2)  # top inclusive
         r(l1, t2, l2, b1)  # left exclusive
@@ -114,27 +106,106 @@ class SurfacePainter:
     def filled_rect(self, rect, color):
         """Draw a filled rectangle."""
         if not isinstance(rect, RECT_CLASSES):
-            raise TypeError(
-                "screen.draw.filled_rect() requires a rect to draw")
-        self._apply_alpha_drawing(pygame.draw.rect, make_color(color), rect, 0)
+            raise TypeError("screen.draw.filled_rect() requires a rect to draw")
+        pygame.draw.rect(self._surf, make_color(color), rect, 0)
 
     def text(self, *args, **kwargs):
         """Draw text to the screen."""
         # FIXME: expose ptext parameters, for autocompletion and autodoc
-        temp_surface = pygame.Surface(
-            self._surf.get_size(), flags=pygame.SRCALPHA)
-        temp_surface = temp_surface.convert_alpha()
-        ptext.draw(*args, surf=temp_surface, **kwargs)
-        self._surf.blit(temp_surface, (0, 0))
+        ptext.draw(*args, surf=self._surf, **kwargs)
 
     def textbox(self, *args, **kwargs):
         """Draw text to the screen, wrapped to fit a box"""
         # FIXME: expose ptext parameters, for autocompletion and autodoc
-        temp_surface = pygame.Surface(
-            self._surf.get_size(), flags=pygame.SRCALPHA)
-        temp_surface = temp_surface.convert_alpha()
-        ptext.drawbox(*args, surf=temp_surface, **kwargs)
-        self._surf.blit(temp_surface, (0, 0))
+        ptext.drawbox(*args, surf=self._surf, **kwargs)
+
+    def rectangle(self, pos, size, color, width=1):
+        """Draw a rectangle using (x, y) and (width, height)."""
+        try:
+            x, y = pos
+            w, h = size
+        except Exception:
+            raise TypeError(
+                "rectangle() requires (x, y) and (width, height)"
+            ) from None
+
+        try:
+            x, y, w, h = float(x), float(y), float(w), float(h)
+        except Exception:
+            raise TypeError("rectangle() values must be numeric") from None
+
+        r = pygame.Rect(round(x), round(y), round(w), round(h))
+
+        if width <= 1:
+            pygame.draw.rect(self._surf, make_color(color), r, width)
+            return
+
+        # match existing thick-border behavior
+        c = make_color(color)
+
+        hw = width / 2
+        l, t = x, y
+        rgt = x + w
+        bot = y + h
+
+        l1, l2 = round(l - hw), round(l + hw)
+        r1, r2 = round(rgt - hw), round(rgt + hw)
+        t1, t2 = round(t - hw), round(t + hw)
+        b1, b2 = round(bot - hw), round(bot + hw)
+
+        def draw_rect(x1, y1, x2, y2):
+            rr = pygame.Rect(x1, y1, x2 - x1, y2 - y1)
+            pygame.draw.rect(self._surf, c, rr, 0)
+
+        draw_rect(l1, t1, r2, t2)  # top
+        draw_rect(l1, t2, l2, b1)  # left
+        draw_rect(r1, t2, r2, b1)  # right
+        draw_rect(l1, b1, r2, b2)  # bottom
+
+    def filled_rectangle(self, pos, size, color):
+        """Draw a filled rectangle using (x, y) and (width, height)."""
+        try:
+            x, y = pos
+            w, h = size
+        except Exception:
+            raise TypeError(
+                "filled_rectangle() requires (x, y) and (width, height)"
+            ) from None
+
+        try:
+            x, y, w, h = float(x), float(y), float(w), float(h)
+        except Exception:
+            raise TypeError(
+                "filled_rectangle() values must be numeric"
+            ) from None
+
+        r = pygame.Rect(round(x), round(y), round(w), round(h))
+        pygame.draw.rect(self._surf, make_color(color), r, 0)
+
+
+def blit_gradient(start, stop, dest_surface):
+    """Blit a gradient into a destination surface.
+
+    The function does not return anything as the gradient is written
+    in-place in the destination surface.
+
+    Args:
+      start: The starting (top) color as a tuple (red, green, blue).
+      stop: The stopping (bottom) color as a tuple (red, green, blue).
+      dest_surface: A pygame.Surface to write the gradient into.
+    Returns:
+      None."""
+    surface_compact = pygame.Surface((2, 2))
+    pixelarray = pygame.PixelArray(surface_compact)
+    pixelarray[0][0] = start
+    pixelarray[0][1] = stop
+    pixelarray[1][0] = start
+    pixelarray[1][1] = stop
+    pygame.transform.smoothscale(
+        surface_compact,
+        pygame.PixelArray(dest_surface).shape,
+        dest_surface=dest_surface,
+    )
 
 
 class Screen:
@@ -157,13 +228,7 @@ class Screen:
         if gcolor:
             start = make_color(color)
             stop = make_color(gcolor)
-            pixs = pygame.surfarray.pixels3d(self.surface)
-            h = self.height
-
-            gradient = np.dstack(
-                [np.linspace(a, b, h) for a, b in zip(start, stop)][:3]
-            )
-            pixs[...] = gradient
+            blit_gradient(start, stop, self.surface)
         else:
             self.surface.fill(make_color(color))
 

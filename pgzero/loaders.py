@@ -7,10 +7,12 @@ import pygame.mixer
 
 from . import ptext
 
+from typing import Any
+import pygame.mixer
 
 # Root directory for loaders
 # This is modified by calling set_root(), which is called by the game runner.
-root = '.'
+root = "."
 
 
 def set_root(path):
@@ -36,9 +38,12 @@ class InvalidCase(Exception):
 try:
     import win32api
 except ImportError:
+
     def real_path(path):
         return path
+
 else:
+
     def real_path(path):
         """Get the real capitalisation of a path on Windows."""
         if not os.path.exists(path):
@@ -54,7 +59,6 @@ def validate_lowercase(relpath):
             "portability problems when run on another operating system "
             "(because filenames on some operating systems are case-"
             "sensitive and others are not)." % relpath
-
         )
 
 
@@ -69,9 +73,8 @@ def validate_compatible_path(path):
     if real_rel != relpath:
         raise InvalidCase(
             "%s is mis-capitalised on disk as %r.\nYou should rename it to be "
-            "correctly lowercase, for cross-platform portability." % (
-                relpath, real_rel
-            )
+            "correctly lowercase, for cross-platform portability."
+            % (relpath, real_rel)
         )
 
 
@@ -124,15 +127,14 @@ class ResourceLoader:
 
         if not os.path.isfile(p):
             for ext in self.EXTNS:
-                p = os.path.join(self._root(), name + '.' + ext)
+                p = os.path.join(self._root(), name + "." + ext)
                 if os.path.exists(p):
                     break
             else:
                 raise KeyError(
                     "No {type} found like '{name}'. "
                     "Are you sure the {type} exists?".format(
-                        type=self.TYPE,
-                        name=name
+                        type=self.TYPE, name=name
                     )
                 )
 
@@ -162,18 +164,22 @@ class ResourceLoader:
         return resource
 
     def __dir__(self):
-        standard_attributes = [key for key in self.__dict__.keys()
-                               if not key.startswith("_")]
+        standard_attributes = [
+            key for key in self.__dict__.keys() if not key.startswith("_")
+        ]
         resources = os.listdir(self._root())
         resource_names = [os.path.splitext(r) for r in resources]
-        loadable_names = [name for name, ext in resource_names
-                          if name.isidentifier() and ext[1:] in self.EXTNS]
+        loadable_names = [
+            name
+            for name, ext in resource_names
+            if name.isidentifier() and ext[1:] in self.EXTNS
+        ]
         return standard_attributes + loadable_names
 
 
 class ImageLoader(ResourceLoader):
-    EXTNS = ['png', 'gif', 'jpg', 'jpeg', 'bmp']
-    TYPE = 'image'
+    EXTNS = ["png", "gif", "jpg", "jpeg", "bmp", "webp"]
+    TYPE = "image"
 
     def _load(self, path):
         return pygame.image.load(path).convert_alpha()
@@ -187,22 +193,33 @@ class UnsupportedFormat(Exception):
 
 
 class SoundLoader(ResourceLoader):
-    EXTNS = ['wav', 'ogg', 'oga']
-    TYPE = 'sound'
+    EXTNS = ["wav", "ogg", "oga"]
+    TYPE = "sound"
+
+    def __getattr__(self, name: str) -> pygame.mixer.Sound:
+        return super().__getattr__(name)
 
     def _load(self, path):
         try:
             return pygame.mixer.Sound(path)
         except pygame.error as err:
-            if not err.args[0].startswith('Unable to open file'):
+            if not err.args[0].startswith(
+                (
+                    "Unable to open file",
+                    "Unknown WAVE format tag",
+                    "MPEG formats not supported",
+                )
+            ):
                 raise
             from .soundfmt import identify
+
             try:
                 fmt = identify(path)
             except Exception:
                 pass
             else:
-                raise UnsupportedFormat("""
+                raise UnsupportedFormat(
+                    """
 '{0}' is not in a supported audio format.
 
 It appears to be:
@@ -213,7 +230,10 @@ Pygame supports only uncompressed WAV files (PCM or ADPCM) and compressed
 Ogg Vorbis files. Try re-encoding the sound file, for example using Audacity:
 
     http://audacityteam.org/
-""".format(path, fmt).strip()) from None
+""".format(
+                        path, fmt
+                    ).strip()
+                ) from None
             raise
 
     def __repr__(self):
@@ -225,25 +245,38 @@ Ogg Vorbis files. Try re-encoding the sound file, for example using Audacity:
 
 
 class FontLoader(ResourceLoader):
-    EXTNS = ['ttf']
-    TYPE = 'font'
+    EXTNS = ["ttf"]
+    TYPE = "font"
 
     def _load(self, path, fontsize=None):
         return pygame.font.Font(path, fontsize or ptext.DEFAULT_FONT_SIZE)
 
 
-images = ImageLoader('images')
-sounds = SoundLoader('sounds')
-fonts = FontLoader('fonts')
+class TextLoader(ResourceLoader):
+    EXTNS = ["tmx", "tsx"]
+    TYPE = "map file"
+
+    def _load(self, path):
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+
+
+images = ImageLoader("images")
+sprites = ImageLoader("sprites")
+mapimages = ImageLoader("maps")
+maps = TextLoader("maps")
+sounds = SoundLoader("sounds")
+fonts = FontLoader("fonts")
 
 
 def getfont(
-        fontname=None,
-        fontsize=None,
-        sysfontname=None,
-        bold=None,
-        italic=None,
-        underline=None):
+    fontname=None,
+    fontsize=None,
+    sysfontname=None,
+    bold=None,
+    italic=None,
+    underline=None,
+):
     """Monkey-patch for ptext.getfont().
 
     This will use our loader and therefore obey our case validation, caching
@@ -253,14 +286,7 @@ def getfont(
     fontname = fontname or ptext.DEFAULT_FONT_NAME
     fontsize = fontsize or ptext.DEFAULT_FONT_SIZE
 
-    key = (
-        fontname,
-        fontsize,
-        sysfontname,
-        bold,
-        italic,
-        underline
-    )
+    key = (fontname, fontsize, sysfontname, bold, italic, underline)
 
     if key in ptext._font_cache:
         return ptext._font_cache[key]
@@ -269,7 +295,7 @@ def getfont(
         font = ptext._font_cache.get(key)
         if font:
             return font
-        font = pygame.font.Font(fontname, fontsize)
+        font = pygame.font.SysFont(sysfontname, fontsize)
     else:
         font = fonts.load(fontname, fontsize)
 

@@ -1,6 +1,5 @@
 import pgzrun
 from pgzero.builtins import *
-from pgone import *
 
 WIDTH = 500
 HEIGHT = 500
@@ -13,7 +12,9 @@ frame_height = 16  # height of each frame
 row_number = 1  # row number on the spritesheet
 frame_count = 14  # number of frames in the animation
 fps = 2  # FPS refresh rate: updates every 2 frames
-fox_stand = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+fox_stand = Sprite(
+    filename, frame_width, frame_height, row_number, frame_count, fps
+)
 
 # define SpriteActor
 player = SpriteActor(fox_stand)
@@ -44,11 +45,23 @@ def draw():
 
     # Check and display collision status
     if player.colliderect(enemy1):
-        screen.draw.text("Enemy 1 collision!", center=(WIDTH / 2, 50), color="red", fontsize=30)
+        screen.draw.text(
+            "Enemy 1 collision!",
+            center=(WIDTH / 2, 50),
+            color="red",
+            fontsize=30,
+        )
     elif player.colliderect(enemy2):
-        screen.draw.text("Enemy 2 collision!", center=(WIDTH / 2, 50), color="red", fontsize=30)
+        screen.draw.text(
+            "Enemy 2 collision!",
+            center=(WIDTH / 2, 50),
+            color="red",
+            fontsize=30,
+        )
     else:
-        screen.draw.text("No collision", center=(WIDTH / 2, 50), color="green", fontsize=30)
+        screen.draw.text(
+            "No collision", center=(WIDTH / 2, 50), color="green", fontsize=30
+        )
 
 
 def update():

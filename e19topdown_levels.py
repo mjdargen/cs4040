@@ -1,6 +1,5 @@
 import pgzrun
 from pgzero.builtins import *
-from pgone import *
 
 # our tile map constants
 TILE_SIZE = 18
@@ -156,7 +155,12 @@ def update():
 def level_transition():
     global level, win, ground, walls, obstacles, hearts
     # transition to level 2
-    if level == 1 and (rabbit.left < 0 or rabbit.right > WIDTH or rabbit.top < 0 or rabbit.bottom > HEIGHT):
+    if level == 1 and (
+        rabbit.left < 0
+        or rabbit.right > WIDTH
+        or rabbit.top < 0
+        or rabbit.bottom > HEIGHT
+    ):
         # set level and new start position
         level = 2
         rabbit.pos = (0, rabbit.y)

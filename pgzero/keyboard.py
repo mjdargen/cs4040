@@ -3,8 +3,8 @@ from warnings import warn
 
 from .constants import keys
 
-DEPRECATED_KEY_RE = re.compile(r'[A-Z]')
-PREFIX_RE = re.compile(r'^K_(?!\d$)')
+DEPRECATED_KEY_RE = re.compile(r"[A-Z]")
+PREFIX_RE = re.compile(r"^K_(?!\d$)")
 
 
 class Keyboard:
@@ -17,14 +17,15 @@ class Keyboard:
     is True if the 'A' key is depressed, and False otherwise.
 
     """
+
     # The current key state. This may as well be a class attribute - there's
     # only one keyboard.
     _pressed = set()
 
     def __getattr__(self, kname):
         # return is a reserved word, so alias enter to return
-        if kname == 'enter':
-            kname = 'return'
+        if kname == "enter":
+            kname = "return"
         elif DEPRECATED_KEY_RE.match(kname):
             # warn(
             #     "Uppercase keyboard attributes (eg. keyboard.%s) are "
@@ -32,7 +33,7 @@ class Keyboard:
             #     DeprecationWarning,
             #     2
             # )
-            kname = PREFIX_RE.sub('', kname)
+            kname = PREFIX_RE.sub("", kname)
         try:
             key = keys[kname.upper()]
         except AttributeError:
@@ -51,12 +52,12 @@ class Keyboard:
         if isinstance(k, keys):
             return k.value in self._pressed
         else:
-            warn(
-                "String lookup in keyboard (eg. keyboard[%r]) is "
-                "deprecated." % k,
-                DeprecationWarning,
-                2
-            )
+            # warn(
+            #     "String lookup in keyboard (eg. keyboard[%r]) is "
+            #     "deprecated." % k,
+            #     DeprecationWarning,
+            #     2,
+            # )
             return getattr(self, k)
 
     def __repr__(self):
