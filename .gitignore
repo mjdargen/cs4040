@@ -15,8 +15,8 @@ depr_*.*
 *.zip
 _*.py
 !__*__.py
-pgzero - Copy
-!images/sprites/*.md
+sprites/*.md
+utils/output_assets/**
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
