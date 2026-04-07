@@ -17,7 +17,7 @@ def draw():
     # rectangle = Rect((x, y), (width, height))
     # x, y is the coordinate of the top-left corner.
     rectangle = Rect((0, 300), (WIDTH, 100))  # At top of code with actors
-    screen.draw.filled_rect(rectangle, "snow")
+    screen.draw.filled_rect((0, 300), (WIDTH, 100), "snow")
     # screen.draw.line((x1, y1), (x2, y2), "color")
     screen.draw.line((0, 300), (WIDTH, 300), "black")
 

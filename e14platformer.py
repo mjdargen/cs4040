@@ -21,12 +21,10 @@ player.alive = True
 player.jumping = False
 player.velocity_x = 5
 player.velocity_y = 0
+player.jump_velocity = -15
 
 # global variables
-jump_velocity = -15
 gravity = 1
-win = False
-over = False
 
 # build world from Tiled tile map
 map_layers = load_tile_map_actors("platformer.tmx", scale=SCALE)
@@ -39,9 +37,9 @@ mushrooms = map_layers["mushrooms"]
 def draw():
     screen.clear()  # clears the screen
     screen.fill("lightslateblue")  # fills background color
-    if over:
+    if game.state == "game_over":
         screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
-    if win:
+    if game.state == "win":
         screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
     # draw platforms
     for platform in platforms:
@@ -59,11 +57,9 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
-    # declare scope of global variables
-    global win, over
 
-    # if game is over, no more updating game state, just return
-    if over or win:
+    # if game state is not playing, just return
+    if game.state != "playing":
         return
 
     # handle player left movement
@@ -114,7 +110,7 @@ def update():
     # player collided with obstacle, game over
     if player.collidelist(obstacles) != -1:
         player.alive = False
-        over = True
+        game.state = "game_over"
 
     # check if player collected mushrooms
     if player.collidelist(mushrooms) != -1:
@@ -123,14 +119,14 @@ def update():
 
     # check if player collected all mushrooms
     if len(mushrooms) == 0:
-        win = True
+        game.state = "win"
 
 
 # keyboard pressed event listener
 def on_key_down(key):
     # up key and not already jumping
     if key == keys.UP and not player.jumping:
-        player.velocity_y = jump_velocity
+        player.velocity_y = player.jump_velocity
         player.jumping = True
 
 

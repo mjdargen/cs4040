@@ -1,3 +1,5 @@
+import builtins as python_builtins
+
 # Expose clock API as a builtin
 from . import clock
 from . import music
@@ -10,11 +12,14 @@ from .animation import animate
 from .rect import Rect, ZRect
 from .loaders import images, sounds
 from .constants import mouse, keys, keymods
-from .game import exit
+from .game import Game, exit
 from .tilemaps import load_tile_map_actors
 
 # The actual screen will be installed here
 from .screen import screen_instance as screen
+
+# Global game state object
+game = getattr(python_builtins, "game", Game())
 
 
 __all__ = [
@@ -35,6 +40,8 @@ __all__ = [
     "keys",
     "keymods",  # input
     "storage",  # persistence
+    "Game",
+    "game",
     "exit",
     "load_tile_map_actors",
 ]

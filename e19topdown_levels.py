@@ -12,11 +12,6 @@ WIDTH = TILE_SIZE * ROWS * SCALE
 HEIGHT = TILE_SIZE * COLS * SCALE
 TITLE = "Top-Down Perspective"
 
-# global variables
-win = False
-over = False
-level = 1
-
 # build world from Tiled tile map
 map_layers = load_tile_map_actors("tl1.tmx", scale=SCALE)
 ground = map_layers["ground"]
@@ -66,19 +61,16 @@ def draw():
         rabbit.draw()
 
     # draw messages over top
-    if over:
+    if game.state == "game_over":
         screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
-    if win:
+    elif game.state == "win":
         screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
 
 
 # updates game state between drawing of each frame
 def update():
-    # declare scope of global variables
-    global win, over
-
-    # if game is over, no more updating game state, just return
-    if over or win:
+    # if game state is not playing, just return
+    if game.state != "playing":
         return
 
     # handle rabbit left movement
@@ -140,7 +132,7 @@ def update():
     # rabbit collided with obstacle, game over
     if rabbit.collidelist(obstacles) != -1:
         rabbit.alive = False
-        over = True
+        game.state = "game_over"
 
     # check if rabbit collected hearts
     heart_index = rabbit.collidelist(hearts)
@@ -153,16 +145,11 @@ def update():
 
 
 def level_transition():
-    global level, win, ground, walls, obstacles, hearts
+    global ground, walls, obstacles, hearts
     # transition to level 2
-    if level == 1 and (
-        rabbit.left < 0
-        or rabbit.right > WIDTH
-        or rabbit.top < 0
-        or rabbit.bottom > HEIGHT
-    ):
+    if game.level == 1 and (rabbit.left < 0 or rabbit.right > WIDTH or rabbit.top < 0 or rabbit.bottom > HEIGHT):
         # set level and new start position
-        level = 2
+        game.level = 2
         rabbit.pos = (0, rabbit.y)
         # build level 2 tile map
         map_layers = load_tile_map_actors("tl2.tmx", scale=SCALE)
@@ -171,10 +158,10 @@ def level_transition():
         obstacles = map_layers["obstacles"]
         hearts = map_layers["hearts"]
     # transition to win
-    elif level == 2:
+    elif game.level == 2:
         # set level and win
-        level = 3
-        win = True
+        game.level = 3
+        game.state = "win"
 
 
 pgzrun.go()  # program must always end with this

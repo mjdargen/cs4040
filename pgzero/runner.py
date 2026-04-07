@@ -52,9 +52,7 @@ def _substitute_full_framework_python():
         return
     venv_paths = [p for p in sys.path if p.startswith(venv_base)]
     # Need to allow for PYTHONPATH not already existing in environment
-    os.environ["PYTHONPATH"] = ":".join(
-        venv_paths + [os.environ.get("PYTHONPATH", "")]
-    ).rstrip(":")
+    os.environ["PYTHONPATH"] = ":".join(venv_paths + [os.environ.get("PYTHONPATH", "")]).rstrip(":")
     # Pass command line args to the new process
     os.execv(framework_python, ["python", "-m", "pgzero"] + sys.argv[1:])
 
@@ -71,12 +69,8 @@ def main():
         action="store_true",
         help="Print periodic FPS measurements on the terminal.",
     )
-    parser.add_argument(
-        "--version", action="version", version=f"%(prog)s {__version__}"
-    )
-    parser.add_argument(
-        "game", help="The Pygame Zero game to run (a Python file or directory)."
-    )
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    parser.add_argument("game", help="The Pygame Zero game to run (a Python file or directory).")
     args = parser.parse_args()
 
     if __debug__:
@@ -220,9 +214,13 @@ def prepare_mod(mod):
     storage.storage._set_filename_from_path(mod.__file__)
     loaders.set_root(mod.__file__)
 
-    # Copy pgzero builtins into system builtins
-    from . import builtins as pgzero_builtins
+    from .game import Game
     import builtins as python_builtins
+
+    # Create a fresh game object before importing pgzero.builtins
+    python_builtins.game = Game()
+
+    from . import builtins as pgzero_builtins
 
     for k, v in vars(pgzero_builtins).items():
         python_builtins.__dict__.setdefault(k, v)

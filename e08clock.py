@@ -12,6 +12,12 @@ robot = Actor("robot_idle", (WIDTH // 2, HEIGHT // 2))
 timer = 0
 
 
+# runs once at beginning before draw()/update()
+def start():
+    clock.schedule_interval(increment_timer, 1.0)
+    clock.schedule_interval(move_character, 2.0)
+
+
 # displays the new frame
 def draw():
     screen.clear()
@@ -37,8 +43,4 @@ def move_character():
     robot.y = random.randint(50, HEIGHT - 50)
 
 
-# call just before pgzrun.go() to schedule intervals
-# otherwise, they would be repeatedly scheduled
-clock.schedule_interval(increment_timer, 1.0)
-clock.schedule_interval(move_character, 2.0)
 pgzrun.go()  # program must always end with this

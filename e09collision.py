@@ -44,6 +44,12 @@ def move_bomb():
         coin.y = random.randint(20, HEIGHT - 20)
 
 
+# runs once at beginning before draw()/update()
+def start():
+    move_bomb()
+    move_coin()
+
+
 # displays the new frame
 def draw():
     screen.clear()
@@ -87,6 +93,4 @@ def on_key_up(key):
         robot.image = "robot_idle"
 
 
-move_bomb()
-move_coin()
 pgzrun.go()

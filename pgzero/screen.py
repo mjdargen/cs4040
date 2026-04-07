@@ -76,10 +76,62 @@ class SurfacePainter:
         points = [round_pos(point) for point in points]
         pygame.draw.polygon(self._surf, make_color(color), points, 0)
 
-    def rect(self, rect, color, width=1):
-        """Draw a rectangle."""
-        if not isinstance(rect, RECT_CLASSES):
-            raise TypeError("screen.draw.rect() requires a rect to draw")
+    def _coerce_rect(self, rect_or_pos, size=None, method_name="rect"):
+        """
+        Accept either:
+            - a Rect/ZRect-like object
+            - ((x, y), (w, h))
+        and return a pygame.Rect
+        """
+        if isinstance(rect_or_pos, RECT_CLASSES):
+            l, t, w, h = rect_or_pos
+            return pygame.Rect(round(l), round(t), round(w), round(h)), (
+                float(l),
+                float(t),
+                float(w),
+                float(h),
+            )
+
+        if size is None:
+            raise TypeError(
+                f"screen.draw.{method_name}() requires a rect or ((x, y), (w, h))"
+            )
+
+        try:
+            x, y = rect_or_pos
+            w, h = size
+        except Exception:
+            raise TypeError(
+                f"screen.draw.{method_name}() requires a rect or ((x, y), (w, h))"
+            ) from None
+
+        try:
+            x, y, w, h = float(x), float(y), float(w), float(h)
+        except Exception:
+            raise TypeError(
+                f"screen.draw.{method_name}() values must be numeric"
+            ) from None
+
+        return pygame.Rect(round(x), round(y), round(w), round(h)), (x, y, w, h)
+
+    def rect(self, rect_or_pos, color_or_size, color=None, width=1):
+        """Draw a rectangle from either a rect or ((x, y), (w, h))."""
+        if isinstance(rect_or_pos, RECT_CLASSES):
+            if color is not None:
+                raise TypeError(
+                    "screen.draw.rect() got too many positional arguments for rect form"
+                )
+            rect, raw = self._coerce_rect(
+                rect_or_pos,
+                method_name="rect",
+            )
+            color = color_or_size
+        else:
+            rect, raw = self._coerce_rect(
+                rect_or_pos,
+                size=color_or_size,
+                method_name="rect",
+            )
 
         if width <= 1:
             pygame.draw.rect(self._surf, make_color(color), rect, width)
@@ -87,26 +139,41 @@ class SurfacePainter:
 
         c = make_color(color)
 
+        l, t, w, h = raw  # noqa: E741
         hw = width / 2
-        l, t, w, h = rect  # noqa: E741
         l1, l2 = round(l - hw), round(l + hw)
         r1, r2 = round(l + w - hw), round(l + w + hw)
         t1, t2 = round(t - hw), round(t + hw)
         b1, b2 = round(t + h - hw), round(t + h + hw)
 
         def r(x1, y1, x2, y2):
-            r = pygame.Rect(x1, y1, x2 - x1, y2 - y1)
-            pygame.draw.rect(self._surf, c, r, 0)
+            rr = pygame.Rect(x1, y1, x2 - x1, y2 - y1)
+            pygame.draw.rect(self._surf, c, rr, 0)
 
-        r(l1, t1, r2, t2)  # top inclusive
-        r(l1, t2, l2, b1)  # left exclusive
-        r(r1, t2, r2, b1)  # right exclusive
-        r(l1, b1, r2, b2)  # bottom inclusive
+        r(l1, t1, r2, t2)
+        r(l1, t2, l2, b1)
+        r(r1, t2, r2, b1)
+        r(l1, b1, r2, b2)
 
-    def filled_rect(self, rect, color):
-        """Draw a filled rectangle."""
-        if not isinstance(rect, RECT_CLASSES):
-            raise TypeError("screen.draw.filled_rect() requires a rect to draw")
+    def filled_rect(self, rect_or_pos, color_or_size, color=None):
+        """Draw a filled rectangle from either a rect or ((x, y), (w, h))."""
+        if isinstance(rect_or_pos, RECT_CLASSES):
+            if color is not None:
+                raise TypeError(
+                    "screen.draw.filled_rect() got too many positional arguments for rect form"
+                )
+            rect, _ = self._coerce_rect(
+                rect_or_pos,
+                method_name="filled_rect",
+            )
+            color = color_or_size
+        else:
+            rect, _ = self._coerce_rect(
+                rect_or_pos,
+                size=color_or_size,
+                method_name="filled_rect",
+            )
+
         pygame.draw.rect(self._surf, make_color(color), rect, 0)
 
     def text(self, *args, **kwargs):
@@ -118,69 +185,6 @@ class SurfacePainter:
         """Draw text to the screen, wrapped to fit a box"""
         # FIXME: expose ptext parameters, for autocompletion and autodoc
         ptext.drawbox(*args, surf=self._surf, **kwargs)
-
-    def rectangle(self, pos, size, color, width=1):
-        """Draw a rectangle using (x, y) and (width, height)."""
-        try:
-            x, y = pos
-            w, h = size
-        except Exception:
-            raise TypeError(
-                "rectangle() requires (x, y) and (width, height)"
-            ) from None
-
-        try:
-            x, y, w, h = float(x), float(y), float(w), float(h)
-        except Exception:
-            raise TypeError("rectangle() values must be numeric") from None
-
-        r = pygame.Rect(round(x), round(y), round(w), round(h))
-
-        if width <= 1:
-            pygame.draw.rect(self._surf, make_color(color), r, width)
-            return
-
-        # match existing thick-border behavior
-        c = make_color(color)
-
-        hw = width / 2
-        l, t = x, y
-        rgt = x + w
-        bot = y + h
-
-        l1, l2 = round(l - hw), round(l + hw)
-        r1, r2 = round(rgt - hw), round(rgt + hw)
-        t1, t2 = round(t - hw), round(t + hw)
-        b1, b2 = round(bot - hw), round(bot + hw)
-
-        def draw_rect(x1, y1, x2, y2):
-            rr = pygame.Rect(x1, y1, x2 - x1, y2 - y1)
-            pygame.draw.rect(self._surf, c, rr, 0)
-
-        draw_rect(l1, t1, r2, t2)  # top
-        draw_rect(l1, t2, l2, b1)  # left
-        draw_rect(r1, t2, r2, b1)  # right
-        draw_rect(l1, b1, r2, b2)  # bottom
-
-    def filled_rectangle(self, pos, size, color):
-        """Draw a filled rectangle using (x, y) and (width, height)."""
-        try:
-            x, y = pos
-            w, h = size
-        except Exception:
-            raise TypeError(
-                "filled_rectangle() requires (x, y) and (width, height)"
-            ) from None
-
-        try:
-            x, y, w, h = float(x), float(y), float(w), float(h)
-        except Exception:
-            raise TypeError(
-                "filled_rectangle() values must be numeric"
-            ) from None
-
-        r = pygame.Rect(round(x), round(y), round(w), round(h))
-        pygame.draw.rect(self._surf, make_color(color), r, 0)
 
 
 def blit_gradient(start, stop, dest_surface):

@@ -14,10 +14,7 @@ TITLE = "Platformer"
 
 
 # global variables
-jump_velocity = -15
 gravity = 1
-win = False
-over = False
 
 # build world from Tiled tile map
 map_layers = load_tile_map_actors("platformer.tmx", scale=SCALE)
@@ -42,6 +39,7 @@ fox.alive = True
 fox.jumping = False
 fox.velocity_x = 5
 fox.velocity_y = 0
+fox.jump_velocity = -15
 
 
 # displays the new frame
@@ -62,19 +60,16 @@ def draw():
         fox.draw()
 
     # draw messages over top
-    if over:
+    if game.state == "game_over":
         screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
-    if win:
+    elif game.state == "win":
         screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
 
 
 # updates game state between drawing of each frame
 def update():
-    # declare scope of global variables
-    global win, over
-
-    # if game is over, no more updating game state, just return
-    if over or win:
+    # if game state is not playing, just return
+    if game.state != "playing":
         return
 
     # handle fox left movement
@@ -129,7 +124,7 @@ def update():
     # fox collided with obstacle, game over
     if fox.collidelist(obstacles) != -1:
         fox.alive = False
-        over = True
+        game.state = "game_over"
 
     # check if fox collected mushrooms
     if fox.collidelist(mushrooms) != -1:
@@ -138,14 +133,14 @@ def update():
 
     # check if fox collected all mushrooms
     if len(mushrooms) == 0:
-        win = True
+        game.state = "win"
 
 
 # keyboard pressed event listener
 def on_key_down(key):
     # up key and not already jumping
     if key == keys.UP and not fox.jumping:
-        fox.velocity_y = jump_velocity
+        fox.velocity_y = fox.jump_velocity
         fox.jumping = True
 
 

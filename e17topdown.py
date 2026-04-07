@@ -12,10 +12,6 @@ WIDTH = TILE_SIZE * ROWS * SCALE
 HEIGHT = TILE_SIZE * COLS * SCALE
 TITLE = "Top-Down Perspective"
 
-# global variables
-win = False
-over = False
-
 # build world from Tiled tile map
 map_layers = load_tile_map_actors("topdown.tmx", scale=SCALE)
 ground = map_layers["ground"]
@@ -65,19 +61,16 @@ def draw():
         rabbit.draw()
 
     # draw messages over top
-    if over:
+    if game.state == "game_over":
         screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
-    if win:
+    elif game.state == "win":
         screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
 
 
 # updates game state between drawing of each frame
 def update():
-    # declare scope of global variables
-    global win, over
-
-    # if game is over, no more updating game state, just return
-    if over or win:
+    # if game state is not playing, just return
+    if game.state != "playing":
         return
 
     # handle rabbit left movement
@@ -139,7 +132,7 @@ def update():
     # rabbit collided with obstacle, game over
     if rabbit.collidelist(obstacles) != -1:
         rabbit.alive = False
-        over = True
+        game.state = "game_over"
 
     # check if rabbit collected hearts
     heart_index = rabbit.collidelist(hearts)
@@ -148,7 +141,7 @@ def update():
 
     # check if rabbit collected all hearts
     if len(hearts) == 0:
-        win = True
+        game.state = "win"
 
 
 pgzrun.go()  # program must always end with this

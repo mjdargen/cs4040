@@ -14,43 +14,32 @@ robot.velocity = 5
 coin = Actor("coin_gold")
 bomb = Actor("bomb")
 
-# global variables
-over = False
-timer = 0
 
-
-# called at start or restart of game to reinitialize
+# runs once at beginning before draw()/update()
 def start():
-    # include and reset global variables for playing again
-    global over, timer
+    # reset variables for playing again
     robot.velocity = 5
-    over = False
-    timer = 0
+    # reset and restart the game state
+    game.restart()
     # set initial positions
     robot.pos = WIDTH // 2, HEIGHT // 2
     move_bomb()
     move_coin()
-    # set interval timers
-    clock.schedule_interval(increment_timer, 1.0)
     # start music
     music.play("house")
 
 
-# scheduled callback for incrementing counter every second
-def increment_timer():
-    global timer
-    timer += 1  # increment counter
-
-
 # called during lose condition to trigger game_over and schedule start again
 def game_over():
-    global over
-    # set over to True
-    over = True
+    # immediately return and don't run code if game already over!
+    if game.state == "game_over":
+        return
+    # play bomb sound
+    sounds.bomb_explosion.play()
+    # set state to be game over
+    game.state = "game_over"
     # schedule start to run in 2 seconds
     clock.schedule_unique(start, 5.0)
-    # stop increment counter, will be scheduled again in start
-    clock.unschedule(increment_timer)
     # stop music
     music.stop()
     # schedule game over sound for after bomb explosion ends
@@ -90,7 +79,7 @@ def draw():
     bg.draw()
     coin.draw()
     bomb.draw()
-    if over:
+    if game.state == "game_over":
         screen.draw.text("Game over!", center=(WIDTH // 2, HEIGHT // 2))
     else:
         robot.draw()
@@ -119,9 +108,8 @@ def update():
     if robot.colliderect(coin):
         sounds.find_money.play()
         move_coin()
-    # if collision and not already game over, trigger game_over()
-    if robot.colliderect(bomb) and not over:
-        sounds.bomb_explosion.play()
+    # if collision, trigger game_over()
+    if robot.colliderect(bomb):
         game_over()
 
 
