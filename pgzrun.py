@@ -8,10 +8,24 @@ script (we enter the game loop, calling draw() and update() etc as defined in
 __main__).
 """
 
-import sys
+import os
+
+if (
+    "CODIO_BOX_DOMAIN" in os.environ
+    or "CODIO_HOSTNAME" in os.environ
+    or os.environ.get("USER") == "codio"
+    or os.path.exists("/home/codio")
+):
+    os.environ["SDL_AUDIODRIVER"] = "dummy"
+import warnings
+
+warnings.filterwarnings("ignore", message=".*avx2 capable.*", category=RuntimeWarning)
+
+
 import pygame
 from pgzero.runner import prepare_mod, run_mod
 from pgzero.game import PGZeroGame, DISPLAY_FLAGS
+import sys
 
 
 mod = sys.modules["__main__"]
