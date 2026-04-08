@@ -12,22 +12,22 @@ frame_height = 16  # height of each frame
 row_number = 1  # row number on the spritesheet
 frame_count = 14  # number of frames in the animation
 fps = 2  # FPS refresh rate: updates every 2 frames
-fox_stand = Sprite(
-    filename, frame_width, frame_height, row_number, frame_count, fps
-)
+fox_stand = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
 
 # define SpriteActor
 player = SpriteActor(fox_stand)
 player.pos = (WIDTH / 2, 300)
 player.scale = 2
+# specify offset_x, offset_y from center and width, height
+player.collision_rect = (2, 4, 16, 8)
 
 # Create two actors with different collision rectangles
 enemy1 = Actor("alien_yellow", (100, 200))
 # specify width and height of new box - centered at image center
 enemy1.collision_rect = (40, 80)
 enemy2 = Actor("alien_blue", (400, 200))
-# OR specify distance from center to top, right, bottom, left edge
-enemy2.collision_rect = (30, 20, 50, 20)
+# OR specify offset_x, offset_y from center and width, height
+enemy2.collision_rect = (0, 20, 40, 50)
 
 
 def draw():
@@ -59,9 +59,7 @@ def draw():
             fontsize=30,
         )
     else:
-        screen.draw.text(
-            "No collision", center=(WIDTH / 2, 50), color="green", fontsize=30
-        )
+        screen.draw.text("No collision", center=(WIDTH / 2, 50), color="green", fontsize=30)
 
 
 def update():

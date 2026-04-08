@@ -85,9 +85,7 @@ def _set_opacity(actor, current_surface):
 
     alpha_img = pygame.Surface(current_surface.get_size(), pygame.SRCALPHA)
     alpha_img.fill((255, 255, 255, alpha))
-    alpha_img.blit(
-        current_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT
-    )
+    alpha_img.blit(current_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
     return alpha_img
 
 
@@ -155,14 +153,7 @@ class Actor:
 
         return self._surface_cache[-1]
 
-    def __init__(
-        self,
-        image,
-        pos=POS_TOPLEFT,
-        anchor=ANCHOR_CENTER,
-        collision_rect=None,
-        **kwargs
-    ):
+    def __init__(self, image, pos=POS_TOPLEFT, anchor=ANCHOR_CENTER, collision_rect=None, **kwargs):
         self._handle_unexpected_kwargs(kwargs)
 
         self._surface_cache = []
@@ -191,14 +182,10 @@ class Actor:
         return iter(self._rect)
 
     def __repr__(self):
-        return "<{} {!r} pos={!r}>".format(
-            type(self).__name__, self._image_name, self.pos
-        )
+        return "<{} {!r} pos={!r}>".format(type(self).__name__, self._image_name, self.pos)
 
     def __dir__(self):
-        standard_attributes = [
-            key for key in self.__dict__.keys() if not key.startswith("_")
-        ]
+        standard_attributes = [key for key in self.__dict__.keys() if not key.startswith("_")]
         return standard_attributes + self.__class__.DELEGATED_ATTRIBUTES
 
     def _handle_unexpected_kwargs(self, kwargs):
@@ -206,32 +193,21 @@ class Actor:
         if not unexpected_kwargs:
             return
 
-        typos, _ = spellcheck.compare(
-            unexpected_kwargs, self.EXPECTED_INIT_KWARGS
-        )
+        typos, _ = spellcheck.compare(unexpected_kwargs, self.EXPECTED_INIT_KWARGS)
         for found, suggested in typos:
-            raise TypeError(
-                "Unexpected keyword argument '{}' (did you mean '{}'?)".format(
-                    found, suggested
-                )
-            )
+            raise TypeError("Unexpected keyword argument '{}' (did you mean '{}'?)".format(found, suggested))
 
     def _init_position(self, pos, anchor, **kwargs):
         if anchor is None:
             anchor = ("center", "center")
         self.anchor = anchor
 
-        symbolic_pos_args = {
-            k: kwargs[k] for k in kwargs if k in SYMBOLIC_POSITIONS
-        }
+        symbolic_pos_args = {k: kwargs[k] for k in kwargs if k in SYMBOLIC_POSITIONS}
 
         if not pos and not symbolic_pos_args:
             self.topleft = (0, 0)
         elif pos and symbolic_pos_args:
-            raise TypeError(
-                "'pos' argument cannot be mixed with 'topleft', "
-                "'topright' etc. argument."
-            )
+            raise TypeError("'pos' argument cannot be mixed with 'topleft', " "'topright' etc. argument.")
         elif pos:
             self.pos = pos
         else:
@@ -239,14 +215,9 @@ class Actor:
 
     def _set_symbolic_pos(self, symbolic_pos_dict):
         if len(symbolic_pos_dict) == 0:
-            raise TypeError(
-                "No position-setting keyword arguments ('topleft', "
-                "'topright' etc) found."
-            )
+            raise TypeError("No position-setting keyword arguments ('topleft', " "'topright' etc) found.")
         if len(symbolic_pos_dict) > 1:
-            raise TypeError(
-                "Only one 'topleft', 'topright' etc. argument is allowed."
-            )
+            raise TypeError("Only one 'topleft', 'topright' etc. argument is allowed.")
 
         setter_name, position = symbolic_pos_dict.popitem()
         setattr(self, setter_name, position)
@@ -257,10 +228,7 @@ class Actor:
             del self._surface_cache[i:]
             self._mask = None
         else:
-            raise IndexError(
-                "function {!r} does not have a registered order."
-                "".format(function)
-            )
+            raise IndexError("function {!r} does not have a registered order." "".format(function))
 
     @property
     def anchor(self):
@@ -520,34 +488,29 @@ class Actor:
             tly = cy - ch / 2
             self._collision_rect = rect.ZRect(tlx, tly, cw, ch)
         elif len(self._collision_rect_spec) == 4:
-            top, right, bottom, left = self._collision_rect_spec
-            top *= self._scale
-            right *= self._scale
-            bottom *= self._scale
-            left *= self._scale
+            ox, oy, width, height = self._collision_rect_spec
+
+            ox *= self._scale
+            oy *= self._scale
+            width *= self._scale
+            height *= self._scale
+
             cx, cy = self.center
-            tlx = cx - left
-            tly = cy - top
-            cw = left + right
-            ch = top + bottom
-            self._collision_rect = rect.ZRect(tlx, tly, cw, ch)
+
+            # shift from center, then convert to topleft
+            left = cx + ox - width / 2
+            top = cy + oy - height / 2
+
+            self._collision_rect = rect.ZRect(left, top, width, height)
         else:
             raise ValueError(
-                "Invalid collision_rect_spec format. "
-                "Use (width, height) or (top, right, bottom, left)."
+                "Invalid collision_rect_spec format. " "Use (width, height) or (offset_x, offset_y, width, height)."
             )
 
     def colliderect(self, other):
-        my_rect = (
-            self._rect
-            if self._collision_rect_spec is None
-            else self._collision_rect
-        )
+        my_rect = self._rect if self._collision_rect_spec is None else self._collision_rect
 
-        if (
-            hasattr(other, "_collision_rect_spec")
-            and other._collision_rect_spec is not None
-        ):
+        if hasattr(other, "_collision_rect_spec") and other._collision_rect_spec is not None:
             other_rect = other._collision_rect
         elif hasattr(other, "_rect"):
             other_rect = other._rect
@@ -563,11 +526,7 @@ class Actor:
         return -1
 
     def collidepoint(self, *args):
-        r = (
-            self._rect
-            if self._collision_rect_spec is None
-            else self._collision_rect
-        )
+        r = self._rect if self._collision_rect_spec is None else self._collision_rect
         return r.collidepoint(*args)
 
     @property
