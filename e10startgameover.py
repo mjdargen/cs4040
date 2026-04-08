@@ -7,7 +7,7 @@ HEIGHT = 500
 TITLE = "Start & Game Over"
 
 # global variables
-countdown_timer = 3
+countdown_timer = 5
 
 # define Actor
 robot = Actor("robot_idle")
@@ -17,9 +17,9 @@ robot = Actor("robot_idle")
 def start():
     global countdown_timer
     # set initial pos
-    robot.pos = WIDTH // 2, HEIGHT // 2
+    robot.pos = (WIDTH // 2, HEIGHT // 2)
     # reset timer
-    countdown_timer = 3
+    countdown_timer = 5
     # reset and restart the game state
     game.restart()
     # schedule countdown timer
@@ -51,7 +51,7 @@ def draw():
     robot.draw()
     # show countdown timer if game is live
     if game.state == "playing":
-        screen.draw.text(f"Time: {game.countdown_timer}", center=(WIDTH // 2, 20))
+        screen.draw.text(f"Time: {countdown_timer}", center=(WIDTH // 2, 20))
     # show game over if timer elapsed
     else:
         screen.draw.text("Game Over", center=(WIDTH // 2, 20))
