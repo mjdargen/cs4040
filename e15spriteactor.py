@@ -2,7 +2,7 @@
 import pgzrun
 from pgzero.builtins import *
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 800
 HEIGHT = 400
 TITLE = "Sprite Actor"
@@ -18,17 +18,13 @@ frame_height = 16  # height of each frame
 row_number = 1  # row number on the spritesheet
 frame_count = 14  # number of frames in the animation
 fps = 2  # FPS refresh rate: shows ~2 frames per second
-fox_idle = Sprite(
-    filename, frame_width, frame_height, row_number, frame_count, fps
-)
+fox_idle = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
 
 # Fox walking animation (walking animation starts at row 2)
 row_number = 2  # row number on the spritesheet
 frame_count = 8  # Number of frames in the walking animation
 fps = 10  # FPS refresh rate: shows ~10 frames per second
-fox_walk = Sprite(
-    filename, frame_width, frame_height, row_number, frame_count, fps
-)
+fox_walk = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
 
 # define SpriteActor
 fox = SpriteActor(fox_idle)

@@ -1,7 +1,7 @@
 import pgzrun
 from pgzero.builtins import *
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 600
 HEIGHT = 400
 TITLE = "Snowperson"

@@ -2,7 +2,7 @@ import pgzrun
 from pgzero.builtins import *
 import random
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Music and Sounds"

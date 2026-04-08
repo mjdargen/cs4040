@@ -1,14 +1,13 @@
 import pgzrun
 from pgzero.builtins import *
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Start & Game Over"
 
 # global variables
 countdown_timer = 5
-
 # define Actor
 robot = Actor("robot_idle")
 
@@ -60,8 +59,8 @@ def draw():
 # updates game state between drawing of each frame
 def update():
     # once timer has elapsed, call game_over()
-    if game.countdown_timer == 0:
+    if countdown_timer <= 0:
         game_over()
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

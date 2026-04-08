@@ -2,17 +2,15 @@ import pgzrun
 from pgzero.builtins import *
 import random
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "List Collectibles"
 
-# define Actor
+# global variables
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
 robot = Actor("robot_idle")
 robot.velocity = 5
-
-# global variables
 coins = []  # create list
 
 
@@ -55,7 +53,7 @@ def draw():
     for coin in coins:
         coin.draw()
     screen.draw.text(f"Score: {game.score}", midleft=(20, 20))
-    screen.draw.text(f"Time: {game.timer:.0f}", midright=(WIDTH - 20, 20))
+    screen.draw.text(f"Time: {int(game.timer)}", midright=(WIDTH - 20, 20))
     if game.state == "game_over":
         screen.draw.text("Game over!", center=(WIDTH // 2, HEIGHT // 2))
 

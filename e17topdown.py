@@ -7,7 +7,7 @@ ROWS = 30
 COLS = 20
 SCALE = 2
 
-# Pygame constants
+# Pygame Constants
 WIDTH = TILE_SIZE * ROWS * SCALE
 HEIGHT = TILE_SIZE * COLS * SCALE
 TITLE = "Top-Down Perspective"

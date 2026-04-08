@@ -2,7 +2,7 @@ import pgzrun
 from pgzero.builtins import *
 import random
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Start & Game Over with Collisions"
@@ -17,12 +17,12 @@ bomb = Actor("bomb")
 
 # runs once at beginning before draw()/update()
 def start():
+    # set initial positions
+    robot.pos = WIDTH // 2, HEIGHT // 2
     # reset variables for playing again
     robot.velocity = 5
     # reset and restart the game state
     game.restart()
-    # set initial positions
-    robot.pos = WIDTH // 2, HEIGHT // 2
     move_bomb()
     move_coin()
 
@@ -38,28 +38,6 @@ def game_over():
     clock.schedule_unique(start, 5.0)
 
 
-# relocates coin to a new location
-def move_coin():
-    # randomly generate new position, 20 pixels from edge
-    coin.x = random.randint(20, WIDTH - 20)
-    coin.y = random.randint(20, HEIGHT - 20)
-    # while coin is accidentally placed on bomb or robot, try new location
-    while coin.colliderect(bomb) or coin.colliderect(robot):
-        coin.x = random.randint(20, WIDTH - 20)
-        coin.y = random.randint(20, HEIGHT - 20)
-
-
-# relocates bomb to a new location
-def move_bomb():
-    # randomly generate new position, 20 pixels from edge
-    bomb.x = random.randint(20, WIDTH - 20)
-    bomb.y = random.randint(20, HEIGHT - 20)
-    # while bomb is accidentally placed on robot or coin, try new location
-    while bomb.colliderect(robot) or bomb.colliderect(coin):
-        bomb.x = random.randint(20, WIDTH - 20)
-        bomb.y = random.randint(20, HEIGHT - 20)
-
-
 # displays the new frame
 def draw():
     screen.clear()
@@ -70,6 +48,7 @@ def draw():
         screen.draw.text("Game over!", center=(WIDTH // 2, HEIGHT // 2))
     else:
         robot.draw()
+    screen.draw.text(f"Score: {game.score}", midleft=(20, 20))
 
 
 # updates game state between drawing of each frame
@@ -97,6 +76,7 @@ def update():
     # if collision with coin, add a new coin
     if robot.colliderect(coin):
         move_coin()
+        game.score += 1
     # if collision, trigger game_over()
     if robot.colliderect(bomb):
         game_over()
@@ -107,6 +87,28 @@ def on_key_up(key):
     # change to forward facing image when left/right keys released
     if key == keys.LEFT or key == keys.RIGHT:
         robot.image = "robot_idle"
+
+
+# relocates coin to a new location
+def move_coin():
+    # randomly generate new position, 20 pixels from edge
+    coin.x = random.randint(20, WIDTH - 20)
+    coin.y = random.randint(20, HEIGHT - 20)
+    # while coin is accidentally placed on bomb or robot, try new location
+    while coin.colliderect(bomb) or coin.colliderect(robot):
+        coin.x = random.randint(20, WIDTH - 20)
+        coin.y = random.randint(20, HEIGHT - 20)
+
+
+# relocates bomb to a new location
+def move_bomb():
+    # randomly generate new position, 20 pixels from edge
+    bomb.x = random.randint(20, WIDTH - 20)
+    bomb.y = random.randint(20, HEIGHT - 20)
+    # while bomb is accidentally placed on robot or coin, try new location
+    while bomb.colliderect(robot) or bomb.colliderect(coin):
+        bomb.x = random.randint(20, WIDTH - 20)
+        bomb.y = random.randint(20, HEIGHT - 20)
 
 
 pgzrun.go()

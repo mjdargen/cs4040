@@ -95,6 +95,67 @@ def build_layer_frames(layer: dict, fw: int, fh: int) -> list[Image.Image]:
     return frames
 
 
+def remove_white_background(img: Image.Image, threshold=240) -> Image.Image:
+    img = img.convert("RGBA")
+    pixels = img.load()
+
+    for y in range(img.height):
+        for x in range(img.width):
+            r, g, b, a = pixels[x, y]
+
+            # detect near-white pixels
+            if r >= threshold and g >= threshold and b >= threshold:
+                pixels[x, y] = (r, g, b, 0)
+
+    return img
+
+
+from collections import deque
+
+
+def remove_white_border_background(img: Image.Image, threshold=240) -> Image.Image:
+    img = img.convert("RGBA")
+    pixels = img.load()
+    width, height = img.size
+
+    visited = set()
+    queue = deque()
+
+    def is_background_white(x, y):
+        r, g, b, a = pixels[x, y]
+        return a > 0 and r >= threshold and g >= threshold and b >= threshold
+
+    for x in range(width):
+        queue.append((x, 0))
+        queue.append((x, height - 1))
+    for y in range(height):
+        queue.append((0, y))
+        queue.append((width - 1, y))
+
+    while queue:
+        x, y = queue.popleft()
+
+        if (x, y) in visited:
+            continue
+        if not (0 <= x < width and 0 <= y < height):
+            continue
+
+        visited.add((x, y))
+
+        if not is_background_white(x, y):
+            continue
+
+        r, g, b, a = pixels[x, y]
+        pixels[x, y] = (r, g, b, 0)
+
+        queue.append((x + 1, y))
+        queue.append((x - 1, y))
+        queue.append((x, y + 1))
+        queue.append((x, y - 1))
+
+    return img
+
+
 def composite_frames(data: dict):
     p = data["piskel"]
     fw, fh = p["width"], p["height"]
@@ -134,6 +195,7 @@ def composite_frames(data: dict):
 
             canvas.alpha_composite(img)
 
+        canvas = remove_white_border_background(canvas)
         final.append(canvas)
 
     return final, fps

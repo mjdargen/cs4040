@@ -2,19 +2,17 @@ import pgzrun
 from pgzero.builtins import *
 import random
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Clock Example"
 
-# define Actor
+# global variables
 robot = Actor("robot_idle", (WIDTH // 2, HEIGHT // 2))
-timer = 0
 
 
 # runs once at beginning before draw()/update()
 def start():
-    clock.schedule_interval(increment_timer, 1.0)
     clock.schedule_interval(move_character, 2.0)
 
 
@@ -23,18 +21,12 @@ def draw():
     screen.clear()
     screen.fill("darkslateblue")
     robot.draw()
-    screen.draw.text(f"Time: {timer}", center=(WIDTH // 2, 20))
+    screen.draw.text(f"Time: {int(game.timer)}", center=(WIDTH // 2, 20))
 
 
 # updates game state between drawing of each frame
 def update():
     pass
-
-
-# scheduled callback for incrementing timer counter
-def increment_timer():
-    global timer
-    timer += 1
 
 
 # scheduled callback for moving character to a random position

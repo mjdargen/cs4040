@@ -2,16 +2,16 @@ import pgzrun
 from pgzero.builtins import *
 import random
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Bouncing Actor"
 
+# global variables
 # define Actor
 alien = Actor("alien")
 # start actor at center
 alien.pos = (WIDTH // 2, HEIGHT // 2)
-
 # choose a random velocity between 1 and 5
 # defined as a tuple -> (x, y)
 # x -> represents velocity or change in position for x direction

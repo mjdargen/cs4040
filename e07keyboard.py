@@ -1,18 +1,18 @@
 import pgzrun
 from pgzero.builtins import *
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 600
 HEIGHT = 300
 TITLE = "Keyboard Example"
 
+# global variables
 # define Actors
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
 robot = Actor("robot_idle")
 robot.midbottom = (WIDTH // 2, HEIGHT)
 robot.velocity_x = 0
 robot.velocity_y = 0
-
 # define gravity
 gravity = 1
 

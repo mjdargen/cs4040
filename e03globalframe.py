@@ -1,7 +1,7 @@
 import pgzrun
 from pgzero.builtins import *
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Frame Counter"
@@ -10,7 +10,6 @@ TITLE = "Frame Counter"
 # defined outside of functions
 alien = Actor("alien_beige_stand")
 alien.pos = (WIDTH // 2, HEIGHT // 2)
-
 # declare global variable to keep track of frame
 frame = 0
 

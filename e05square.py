@@ -1,18 +1,17 @@
 import pgzrun
 from pgzero.builtins import *
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Square Dancing Actor"
 
+# global variables
+state = 0
 # define Actor
 alien = Actor("alien")
 alien.topleft = (0, 0)
 alien.velocity = 5
-
-# global variables
-state = 0
 
 
 # displays the new frame

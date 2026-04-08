@@ -1,7 +1,7 @@
 import pgzrun
 from pgzero.builtins import *
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Mouse Example"
@@ -10,6 +10,7 @@ TITLE = "Mouse Example"
 current_point = (0, 0)
 previous_point = (0, 0)
 clear = True
+
 
 # displays the new frame
 def draw():

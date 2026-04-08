@@ -1,6 +1,7 @@
 import pgzrun
 from pgzero.builtins import *
 
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Collision Box Resizing Demo"

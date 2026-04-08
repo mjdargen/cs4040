@@ -1,7 +1,7 @@
 import pgzrun
 from pgzero.builtins import *
 
-# Pygame constants
+# Pygame Constants
 WIDTH = 600
 HEIGHT = 200
 TITLE = "Projectile Demo"

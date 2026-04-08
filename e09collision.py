@@ -2,46 +2,24 @@ import pgzrun
 from pgzero.builtins import *
 import random
 
-# set width and height of screen
+# Pygame Constants
 WIDTH = 500
 HEIGHT = 500
 TITLE = "Collision Example"
 
+
+# global variables
 # define player Actor
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
 robot = Actor("robot_idle")
 robot.pos = (WIDTH // 2, HEIGHT // 2)
 robot.velocity = 5
-
 # create coin Actor
 coin = Actor("coin_gold")
-# position is set by calling move_coin() just before pgzrun.go()
-
+# position is set by calling move_coin() in start()
 # create bomb Actor
 bomb = Actor("bomb")
-# position is set by calling move_bomb() just before pgzrun.go()
-
-
-# relocates coin to a new location
-def move_coin():
-    # randomly generate new position, 20 pixels from edge
-    coin.x = random.randint(20, WIDTH - 20)
-    coin.y = random.randint(20, HEIGHT - 20)
-    # while coin is accidentally placed on bomb or robot, try new location
-    while coin.colliderect(bomb) or coin.colliderect(robot):
-        coin.x = random.randint(20, WIDTH - 20)
-        coin.y = random.randint(20, HEIGHT - 20)
-
-
-# relocates bomb to a new location
-def move_bomb():
-    # randomly generate new position, 20 pixels from edge
-    bomb.x = random.randint(20, WIDTH - 20)
-    bomb.y = random.randint(20, HEIGHT - 20)
-    # while bomb is accidentally placed on robot or coin, try new location
-    while bomb.colliderect(robot) or bomb.colliderect(coin):
-        coin.x = random.randint(20, WIDTH - 20)
-        coin.y = random.randint(20, HEIGHT - 20)
+# position is set by calling move_bomb() in statr()
 
 
 # runs once at beginning before draw()/update()
@@ -91,6 +69,28 @@ def on_key_up(key):
     # change to forward facing image when left/right keys released
     if key == keys.LEFT or key == keys.RIGHT:
         robot.image = "robot_idle"
+
+
+# relocates coin to a new location
+def move_coin():
+    # randomly generate new position, 20 pixels from edge
+    coin.x = random.randint(20, WIDTH - 20)
+    coin.y = random.randint(20, HEIGHT - 20)
+    # while coin is accidentally placed on bomb or robot, try new location
+    while coin.colliderect(bomb) or coin.colliderect(robot):
+        coin.x = random.randint(20, WIDTH - 20)
+        coin.y = random.randint(20, HEIGHT - 20)
+
+
+# relocates bomb to a new location
+def move_bomb():
+    # randomly generate new position, 20 pixels from edge
+    bomb.x = random.randint(20, WIDTH - 20)
+    bomb.y = random.randint(20, HEIGHT - 20)
+    # while bomb is accidentally placed on robot or coin, try new location
+    while bomb.colliderect(robot) or bomb.colliderect(coin):
+        bomb.x = random.randint(20, WIDTH - 20)
+        bomb.y = random.randint(20, HEIGHT - 20)
 
 
 pgzrun.go()

@@ -1,7 +1,7 @@
 import pgzrun
 from pgzero.builtins import *
 
-# Pygame constants
+# Pygame Constants
 WIDTH = 400
 HEIGHT = 400
 TITLE = "Enemy AI Demo"
