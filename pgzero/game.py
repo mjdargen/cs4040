@@ -81,23 +81,38 @@ class Game:
         finally:
             self._is_restarting = False
 
-    def win(self, delay=0.0):
+    def win(self, restart_after=None):
         if self.state != "playing":
             return
         self.state = "won"
-        self.restart(delay)
 
-    def lose(self, delay=0.0):
+        if self._clock:
+            self._clock.clear()
+
+        if restart_after is not None:
+            self.restart(restart_after)
+
+    def lose(self, restart_after=None):
         if self.state != "playing":
             return
         self.state = "lost"
-        self.restart(delay)
 
-    def over(self, delay=0.0):
+        if self._clock:
+            self._clock.clear()
+
+        if restart_after is not None:
+            self.restart(restart_after)
+
+    def over(self, restart_after=None):
         if self.state != "playing":
             return
         self.state = "over"
-        self.restart(delay)
+
+        if self._clock:
+            self._clock.clear()
+
+        if restart_after is not None:
+            self.restart(restart_after)
 
     def __getattr__(self, name: str) -> Any:
         return self.__dict__.get(name)
