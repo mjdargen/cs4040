@@ -18,22 +18,8 @@ coins = []  # create list
 def start():
     robot.pos = WIDTH // 2, HEIGHT // 2
     coins.clear()  # remove all elements from list
-    # reset and restart the game state
-    game.restart()
+    # schedule coins to begin spawning
     clock.schedule_interval(spawn_coin, 0.5)
-
-
-# called during lose condition to trigger game_over and schedule start again
-def game_over():
-    # immediately return and don't run code if game already over!
-    if game.state == "game_over":
-        return
-    # set state to be game over
-    game.state = "game_over"
-    # schedule start to run in 5 seconds
-    clock.schedule_unique(start, 5.0)
-    # stop increment counter, will be scheduled again in start
-    clock.unschedule(spawn_coin)
 
 
 # spawn coin event handler
@@ -54,7 +40,7 @@ def draw():
         coin.draw()
     screen.draw.text(f"Score: {game.score}", midleft=(20, 20))
     screen.draw.text(f"Time: {int(game.timer)}", midright=(WIDTH - 20, 20))
-    if game.state == "game_over":
+    if game.state == "lost":
         screen.draw.text("Game over!", center=(WIDTH // 2, HEIGHT // 2))
 
 
@@ -76,10 +62,12 @@ def update():
     if collided_index != -1:
         coins.pop(collided_index)
         game.score += 1
+        if game.score >= 25:
+            game.win(3.0)
 
     # once there are more than 5 coins call game over
     if len(coins) > 5:
-        game_over()
+        game.lose(3.0)
 
 
 # released key event listener

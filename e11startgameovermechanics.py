@@ -21,21 +21,9 @@ def start():
     robot.pos = WIDTH // 2, HEIGHT // 2
     # reset variables for playing again
     robot.velocity = 5
-    # reset and restart the game state
-    game.restart()
+    # set new position of bomb and coin
     move_bomb()
     move_coin()
-
-
-# called during lose condition to trigger game_over and schedule start again
-def game_over():
-    # immediately return and don't run code if game already over!
-    if game.state == "game_over":
-        return
-    # set state to be game over
-    game.state = "game_over"
-    # schedule start to run in 5 seconds
-    clock.schedule_unique(start, 5.0)
 
 
 # displays the new frame
@@ -44,9 +32,11 @@ def draw():
     bg.draw()
     coin.draw()
     bomb.draw()
-    if game.state == "game_over":
+    if game.state == "lost":
         screen.draw.text("Game over!", center=(WIDTH // 2, HEIGHT // 2))
-    else:
+    if game.state == "won":
+        screen.draw.text("You won!", center=(WIDTH // 2, HEIGHT // 2))
+    if game.state != "lost":
         robot.draw()
     screen.draw.text(f"Score: {game.score}", midleft=(20, 20))
 
@@ -77,9 +67,11 @@ def update():
     if robot.colliderect(coin):
         move_coin()
         game.score += 1
-    # if collision, trigger game_over()
+        if game.score >= 5:
+            game.win(5.0)
+    # if collision, trigger lose()
     if robot.colliderect(bomb):
-        game_over()
+        game.lose(5.0)
 
 
 # called when a keyboard button is released

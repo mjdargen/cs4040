@@ -29,7 +29,14 @@ class Game:
     """
 
     def __init__(self):
+        self._start_callback = None
+        self._clock = None
+        self._is_restarting = False
         self.reset()
+
+    def _bind_engine(self, start_callback=None, clock=None):
+        self._start_callback = start_callback
+        self._clock = clock
 
     def reset(self):
         """Reset the game back to its default starting values."""
@@ -42,6 +49,55 @@ class Game:
         self.frame_count = 0
 
         self.data = {}
+
+    def restart(self, delay=0.0):
+        if self._is_restarting:
+            raise RuntimeError(
+                "game.restart() was called from inside start(). "
+                "Do not call game.restart() inside start(). "
+                "The library already calls start() during restart."
+            )
+
+        if self._clock:
+            self._clock.unschedule(self._do_restart)
+            self._clock.clear()
+
+        if delay and delay > 0:
+            if self._clock:
+                self._clock.schedule_unique(self._do_restart, delay)
+            return
+
+        self._do_restart()
+
+    def _do_restart(self):
+        if self._is_restarting:
+            return
+
+        self._is_restarting = True
+        try:
+            self.reset()
+            if callable(self._start_callback):
+                self._start_callback()
+        finally:
+            self._is_restarting = False
+
+    def win(self, delay=0.0):
+        if self.state != "playing":
+            return
+        self.state = "won"
+        self.restart(delay)
+
+    def lose(self, delay=0.0):
+        if self.state != "playing":
+            return
+        self.state = "lost"
+        self.restart(delay)
+
+    def over(self, delay=0.0):
+        if self.state != "playing":
+            return
+        self.state = "over"
+        self.restart(delay)
 
     def __getattr__(self, name: str) -> Any:
         return self.__dict__.get(name)
@@ -88,11 +144,6 @@ class Game:
 
         if self.state == "playing":
             self.timer += dt
-
-    def restart(self):
-        """Restart the entire game."""
-        self.reset()
-        self.start()
 
 
 def exit():
@@ -389,6 +440,13 @@ class PGZeroGame:
         update = self.get_update_func()
         draw = self.get_draw_func()
         start = self.get_start_func()
+
+        game_obj = getattr(self.mod, "game", None)
+        if game_obj is None:
+            game_obj = getattr(builtins, "game", None)
+
+        if game_obj is not None and hasattr(game_obj, "_bind_engine"):
+            game_obj._bind_engine(start_callback=start, clock=pgzero.clock.clock)
 
         self.load_handlers()
         self.inject_global_handlers()
