@@ -37,9 +37,9 @@ mushrooms = map_layers["mushrooms"]
 def draw():
     screen.clear()  # clears the screen
     screen.fill("lightslateblue")  # fills background color
-    if game.state == "game_over":
+    if game.state == "lost":
         screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
-    if game.state == "win":
+    if game.state == "won":
         screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
     # draw platforms
     for platform in platforms:
@@ -110,7 +110,7 @@ def update():
     # player collided with obstacle, game over
     if player.collidelist(obstacles) != -1:
         player.alive = False
-        game.state = "game_over"
+        game.lose()
 
     # check if player collected mushrooms
     if player.collidelist(mushrooms) != -1:
@@ -119,7 +119,7 @@ def update():
 
     # check if player collected all mushrooms
     if len(mushrooms) == 0:
-        game.state = "win"
+        game.win()
 
 
 # keyboard pressed event listener

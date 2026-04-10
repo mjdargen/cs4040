@@ -9,11 +9,10 @@ TITLE = "Collision Example"
 
 
 # global variables
-# define player Actor
+# define background "Actor"
 bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
+# define player Actor
 robot = Actor("robot_idle")
-robot.pos = (WIDTH // 2, HEIGHT // 2)
-robot.velocity = 5
 # create coin Actor
 coin = Actor("coin_gold")
 # position is set by calling move_coin() in start()
@@ -24,6 +23,8 @@ bomb = Actor("bomb")
 
 # runs once at beginning before draw()/update()
 def start():
+    robot.pos = (WIDTH // 2, HEIGHT // 2)
+    robot.velocity = 5
     move_bomb()
     move_coin()
 

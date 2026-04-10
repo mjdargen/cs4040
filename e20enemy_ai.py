@@ -7,12 +7,12 @@ HEIGHT = 400
 TITLE = "Enemy AI Demo"
 
 enemy = Actor("alien_yellow")
-enemy.bottomleft = (100, HEIGHT)
-enemy.velocity_x = 5
 
 
 # runs once at beginning before draw()/update()
 def start():
+    enemy.bottomleft = (100, HEIGHT)
+    enemy.velocity_x = 5
     # schedule move enemy to happen every 0.01 seconds
     clock.schedule_interval(move_enemy, 0.01)
 

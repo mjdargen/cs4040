@@ -61,9 +61,9 @@ def draw():
         rabbit.draw()
 
     # draw messages over top
-    if game.state == "game_over":
+    if game.state == "lost":
         screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
-    elif game.state == "win":
+    elif game.state == "won":
         screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
 
 
@@ -129,10 +129,10 @@ def update():
     else:
         rabbit.sprite = idle
 
-    # rabbit collided with obstacle, game over
+    # rabbit collided with obstacle, lose
     if rabbit.collidelist(obstacles) != -1:
         rabbit.alive = False
-        game.state = "game_over"
+        game.lose()
 
     # check if rabbit collected hearts
     heart_index = rabbit.collidelist(hearts)
@@ -161,7 +161,7 @@ def level_transition():
     elif game.level == 2:
         # set level and win
         game.level = 3
-        game.state = "win"
+        game.win()
 
 
 pgzrun.go()  # program must always end with this

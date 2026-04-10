@@ -60,9 +60,9 @@ def draw():
         fox.draw()
 
     # draw messages over top
-    if game.state == "game_over":
+    if game.state == "lost":
         screen.draw.text("Game Over", center=(WIDTH / 2, HEIGHT / 2))
-    elif game.state == "win":
+    elif game.state == "won":
         screen.draw.text("You win!", center=(WIDTH / 2, HEIGHT / 2))
 
 
@@ -124,7 +124,7 @@ def update():
     # fox collided with obstacle, game over
     if fox.collidelist(obstacles) != -1:
         fox.alive = False
-        game.state = "game_over"
+        game.lose()
 
     # check if fox collected mushrooms
     if fox.collidelist(mushrooms) != -1:
@@ -133,7 +133,7 @@ def update():
 
     # check if fox collected all mushrooms
     if len(mushrooms) == 0:
-        game.state = "win"
+        game.win()
 
 
 # keyboard pressed event listener

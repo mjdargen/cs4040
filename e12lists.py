@@ -42,10 +42,15 @@ def draw():
     screen.draw.text(f"Time: {int(game.timer)}", midright=(WIDTH - 20, 20))
     if game.state == "lost":
         screen.draw.text("Game over!", center=(WIDTH // 2, HEIGHT // 2))
+    if game.state == "won":
+        screen.draw.text("You won!", center=(WIDTH // 2, HEIGHT // 2))
 
 
 # updates game state between drawing of each frame
 def update():
+    # do not execute update() if game is over
+    if game.state != "playing":
+        return
     if keyboard.LEFT and robot.left > 0:
         robot.x -= robot.velocity
         robot.image = "robot_left"
@@ -62,7 +67,7 @@ def update():
     if collided_index != -1:
         coins.pop(collided_index)
         game.score += 1
-        if game.score >= 25:
+        if game.score >= 5:
             game.win(3.0)
 
     # once there are more than 5 coins call game over

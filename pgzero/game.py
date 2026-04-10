@@ -134,14 +134,6 @@ class Game:
         if self.state == "paused":
             self.state = "playing"
 
-    def game_over(self):
-        """Set the game to game over."""
-        self.state = "game_over"
-
-    def win_game(self):
-        """Set the game to a win state."""
-        self.state = "win"
-
     def next_level(self):
         """Advance to the next level."""
         self.level += 1

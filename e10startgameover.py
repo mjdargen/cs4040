@@ -43,9 +43,9 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
-    # once timer has elapsed, trigger game_over()
+    # once timer has elapsed, trigger over
     if countdown_timer <= 0:
-        game.game_over()
+        game.over(2.0)
 
 
 pgzrun.go()

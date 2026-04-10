@@ -18,32 +18,12 @@ bomb = Actor("bomb")
 # runs once at beginning before draw()/update()
 def start():
     # reset variables for playing again
-    robot.velocity = 5
-    # reset and restart the game state
-    game.restart()
-    # set initial positions
     robot.pos = WIDTH // 2, HEIGHT // 2
+    robot.velocity = 5
     move_bomb()
     move_coin()
     # start music
     music.play("house")
-
-
-# called during lose condition to trigger game_over and schedule start again
-def game_over():
-    # immediately return and don't run code if game already over!
-    if game.state == "game_over":
-        return
-    # play bomb sound
-    sounds.bomb_explosion.play()
-    # set state to be game over
-    game.state = "game_over"
-    # schedule start to run in 2 seconds
-    clock.schedule_unique(start, 5.0)
-    # stop music
-    music.stop()
-    # schedule game over sound for after bomb explosion ends
-    clock.schedule_unique(game_over_sound, sounds.bomb_explosion.get_length())
 
 
 # callback function for scheduling game over sound
@@ -79,14 +59,19 @@ def draw():
     bg.draw()
     coin.draw()
     bomb.draw()
-    if game.state == "game_over":
+    screen.draw.text(f"Score: {game.score}", midleft=(20, 20))
+    if game.state == "lost":
         screen.draw.text("Game over!", center=(WIDTH // 2, HEIGHT // 2))
-    else:
+    if game.state == "won":
+        screen.draw.text("You won!", center=(WIDTH // 2, HEIGHT // 2))
+    if game.state != "lost":
         robot.draw()
 
 
 # updates game state between drawing of each frame
 def update():
+    if game.state != "playing":
+        return
     # while left key is pressed and not at edge
     if keyboard.LEFT and robot.left > 0:
         # show left facing image and change x velocity
@@ -108,9 +93,19 @@ def update():
     if robot.colliderect(coin):
         sounds.find_money.play()
         move_coin()
-    # if collision, trigger game_over()
+        game.score += 1
+        if game.score >= 5:
+            game.win(5.0)
+    # if collision, lose condition()
     if robot.colliderect(bomb):
-        game_over()
+        # trigger lose condition
+        game.lose(5.0)
+        # stop music
+        music.stop()
+        # play bomb sound
+        sounds.bomb_explosion.play()
+        # schedule game over sound for after bomb explosion ends
+        clock.schedule_unique(game_over_sound, sounds.bomb_explosion.get_length())
 
 
 # called when a keyboard button is released

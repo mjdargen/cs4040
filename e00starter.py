@@ -7,9 +7,13 @@ WIDTH = 500
 HEIGHT = 500
 TITLE = "Name of Game"
 
-# define Actor
+# define global variables
 alien = Actor("alien")
-alien.pos = (200, 200)
+
+
+# runs once at beginning before draw()/update()
+def start():
+    alien.pos = (200, 200)
 
 
 # displays the new frame
