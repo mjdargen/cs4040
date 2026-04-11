@@ -8,7 +8,7 @@ kenney_*
 _tests
 *.md
 activity*.py
-p3.py
+p3*.py
 p4*.py
 p5*.py
 depr_*.*

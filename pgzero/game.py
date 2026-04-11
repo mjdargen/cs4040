@@ -114,11 +114,12 @@ class Game:
         if restart_after is not None:
             self.restart(restart_after)
 
-    def __getattr__(self, name: str) -> Any:
-        return self.__dict__.get(name)
+    # allows student creation of any variable for game, similar to Actor
+    # def __getattr__(self, name: str) -> Any:
+    #     return self.__dict__.get(name)
 
-    def __setattr__(self, name: str, value: Any) -> None:
-        self.__dict__[name] = value
+    # def __setattr__(self, name: str, value: Any) -> None:
+    #     self.__dict__[name] = value
 
     def start(self):
         """Start or resume normal gameplay."""
