@@ -7,6 +7,7 @@ pygame_examples
 kenney_*
 _tests
 *.md
+!/*/*.md
 activity*.py
 p3*.py
 p4*.py
@@ -15,7 +16,6 @@ depr_*.*
 *.zip
 _*.py
 !__*__.py
-sprites/*.md
 utils/output_assets/**
 
 # Byte-compiled / optimized / DLL files

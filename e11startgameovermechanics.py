@@ -43,8 +43,9 @@ def draw():
 
 # updates game state between drawing of each frame
 def update():
-    # do not execute update() if game is over
+    # if we are not in the "playing" game state
     if game.state != "playing":
+        # return from update(), preventing rest of code from running
         return
     # while left key is pressed and not at edge
     if keyboard.LEFT and robot.left > 0:
