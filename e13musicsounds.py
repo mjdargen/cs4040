@@ -115,5 +115,4 @@ def on_key_up(key):
         robot.image = "robot_idle"
 
 
-start()
 pgzrun.go()
