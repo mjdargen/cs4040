@@ -19,7 +19,7 @@ def start():
     robot.pos = WIDTH // 2, HEIGHT // 2
     coins.clear()  # remove all elements from list
     # schedule coins to begin spawning
-    clock.schedule_interval(spawn_coin, 0.5)
+    clock.schedule_interval(spawn_coin, 1.0)
 
 
 # spawn coin event handler
@@ -63,9 +63,9 @@ def update():
         robot.y += robot.velocity
 
     # check for collision between robot and any coins
-    collided_index = robot.collidelist(coins)
-    if collided_index != -1:
-        coins.pop(collided_index)
+    collision_index = robot.collidelist(coins)
+    if collision_index != -1:
+        coins.pop(collision_index)
         game.score += 1
         if game.score >= 5:
             game.win(3.0)
