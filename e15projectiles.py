@@ -59,6 +59,7 @@ def update():
     # update projectile position
     for projectile in projectiles:
         projectile.x += 5
+        projectile.angle -= 5
         # remove if gone off the screen
         if projectile.left > WIDTH:
             projectiles.remove(projectile)

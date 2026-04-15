@@ -8,14 +8,15 @@ kenney_*
 _tests
 *.md
 !/*/*.md
+_*.py
 activity*.py
 p3*.py
 p4*.py
 p5*.py
+e*topdown*.py
+e*platformer*.py
 depr_*.*
 *.zip
-_*.py
-!__*__.py
 utils/output_assets/**
 
 # Byte-compiled / optimized / DLL files
