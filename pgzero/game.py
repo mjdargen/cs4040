@@ -32,6 +32,7 @@ class Game:
         self._start_callback = None
         self._clock = None
         self._is_restarting = False
+        self._restart_clear_mode = "immediate"
         self.reset()
 
     def _bind_engine(self, start_callback=None, clock=None):
@@ -50,7 +51,17 @@ class Game:
 
         self.data = {}
 
-    def restart(self, delay=0.0):
+    def restart(self, delay=0.0, clear_clock="immediate"):
+        """
+        Restart the game.
+
+        clear_clock options:
+        - "immediate": clear scheduled events right away
+        - "on_restart": clear scheduled events when the restart actually happens
+        - "never": do not clear scheduled events
+
+        Note: any previously scheduled restart is always unscheduled first.
+        """
         if self._is_restarting:
             raise RuntimeError(
                 "game.restart() was called from inside start(). "
@@ -58,9 +69,18 @@ class Game:
                 "The library already calls start() during restart."
             )
 
+        if clear_clock not in ("immediate", "on_restart", "never"):
+            raise ValueError("clear_clock must be 'immediate', 'on_restart', or 'never'")
+
+        self._restart_clear_mode = clear_clock
+
         if self._clock:
+            # Always cancel any pending restart first
             self._clock.unschedule(self._do_restart)
-            self._clock.clear()
+
+            # Only clear everything else immediately if requested
+            if clear_clock == "immediate":
+                self._clock.clear()
 
         if delay and delay > 0:
             if self._clock:
@@ -75,44 +95,53 @@ class Game:
 
         self._is_restarting = True
         try:
+            # Delay clock clearing until the actual restart moment
+            if self._clock and self._restart_clear_mode == "on_restart":
+                self._clock.clear()
+                # clear() may remove this scheduled callback, so make sure
+                # we do not accidentally re-enter or depend on future calls
+
             self.reset()
             if callable(self._start_callback):
                 self._start_callback()
         finally:
             self._is_restarting = False
 
-    def win(self, restart_after=None):
+    def win(self, restart_after=None, clear_clock="immediate"):
         if self.state != "playing":
             return
         self.state = "won"
 
-        if self._clock:
+        if self._clock and clear_clock == "immediate":
             self._clock.clear()
 
         if restart_after is not None:
-            self.restart(restart_after)
+            restart_mode = clear_clock if clear_clock != "immediate" else "never"
+            self.restart(restart_after, clear_clock=restart_mode)
 
-    def lose(self, restart_after=None):
+    def lose(self, restart_after=None, clear_clock="immediate"):
         if self.state != "playing":
             return
         self.state = "lost"
 
-        if self._clock:
+        if self._clock and clear_clock == "immediate":
             self._clock.clear()
 
         if restart_after is not None:
-            self.restart(restart_after)
+            restart_mode = clear_clock if clear_clock != "immediate" else "never"
+            self.restart(restart_after, clear_clock=restart_mode)
 
-    def over(self, restart_after=None):
+    def over(self, restart_after=None, clear_clock="immediate"):
         if self.state != "playing":
             return
         self.state = "over"
 
-        if self._clock:
+        if self._clock and clear_clock == "immediate":
             self._clock.clear()
 
         if restart_after is not None:
-            self.restart(restart_after)
+            restart_mode = clear_clock if clear_clock != "immediate" else "never"
+            self.restart(restart_after, clear_clock=restart_mode)
 
     # allows student creation of any variable for game, similar to Actor
     # def __getattr__(self, name: str) -> Any:
