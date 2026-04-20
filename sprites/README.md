@@ -6,6 +6,7 @@ Read the `.md` files first by clicking the links for the sprite you want below. 
 
 ## Sprite Documentation Files
 
+- [bat](bat.md)
 - [bike](bike.md)
 - [bike_frog](bike_frog.md)
 - [bike_idle](bike_idle.md)
