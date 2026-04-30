@@ -41,9 +41,9 @@ def draw():
     screen.draw.text(f"Score: {game.score}", midleft=(20, 20))
     screen.draw.text(f"Time: {int(game.timer)}", midright=(WIDTH - 20, 20))
     if game.state == "lost":
-        screen.draw.text("Game over!", center=(WIDTH // 2, HEIGHT // 2))
+        screen.draw.text("Game over!", center=(WIDTH / 2, HEIGHT / 2))
     if game.state == "won":
-        screen.draw.text("You won!", center=(WIDTH // 2, HEIGHT // 2))
+        screen.draw.text("You won!", center=(WIDTH / 2, HEIGHT / 2))
 
 
 # updates game state between drawing of each frame

@@ -1,5 +1,4 @@
 # rabbit.aseprite
-
 **Image Size:** 384x16
 
 **Frame Size:** 16x16
@@ -7,7 +6,6 @@
 **Number of Animations:** 8
 
 **Animations:**
-
 - idle_down - row 0 - 2 frames
 - idle_up - row 1 - 2 frames
 - idle_left - row 2 - 2 frames
@@ -18,7 +16,6 @@
 - walk_right - row 7 - 4 frames
 
 **Code Example:**
-
 ```python
 # Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
 # Note: FPS set to 5 in examples below, adjust as needed)

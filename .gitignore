@@ -13,8 +13,8 @@ activity*.py
 p3*.py
 p4*.py
 p5*.py
-e*topdown*.py
-e*platformer*.py
+# e*topdown*.py
+# e*platformer*.py
 depr_*.*
 *.zip
 utils/output_assets/**
