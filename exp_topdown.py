@@ -17,7 +17,12 @@ map_layers = load_tile_map_actors("topdown.tmx", scale=SCALE)
 ground = map_layers["ground"]
 walls = map_layers["walls"]
 hazards = map_layers["hazards"]
-hearts = map_layers["hearts"]
+collectables = map_layers["collectables"]
+world = []
+world.extend(ground)
+world.extend(walls)
+world.extend(hazards)
+world.extend(collectables)
 
 # define Sprites
 # Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
@@ -33,7 +38,7 @@ walk_right = Sprite(filename, frame_width, frame_height, 7, 4, 10)
 # define SpriteActor
 rabbit = SpriteActor(idle)
 rabbit.scale = SCALE
-rabbit.bottomleft = (WIDTH / 2, HEIGHT - TILE_SIZE)
+rabbit.pos = (WIDTH / 2, HEIGHT - TILE_SIZE)
 # define Actor-specific variables
 rabbit.alive = True
 rabbit.jumping = False
@@ -53,8 +58,8 @@ def draw():
     # draw hazards
     for hazard in hazards:
         hazard.draw()
-    # draw hearts
-    for heart in hearts:
+    # draw collectables
+    for heart in collectables:
         heart.draw()
     # draw the rabbit if still alive
     if rabbit.alive:
@@ -74,9 +79,11 @@ def update():
         return
 
     # handle rabbit left movement
-    if keyboard.LEFT and rabbit.left > 0:
+    if keyboard.LEFT:
         # change x position and sprite
-        rabbit.x -= rabbit.velocity
+        # rabbit.x -= rabbit.velocity
+        for tile in world:
+            tile.x += rabbit.velocity
         rabbit.sprite = walk_left
         # if the movement caused a collision
         collision_index = rabbit.collidelist(walls)
@@ -87,10 +94,12 @@ def update():
             rabbit.left = collided_wall.right
 
     # handle rabbit right movement
-    elif keyboard.RIGHT and rabbit.right < WIDTH:
+    elif keyboard.RIGHT:
         # change x position and sprite
-        rabbit.x += rabbit.velocity
+        # rabbit.x += rabbit.velocity
         rabbit.sprite = walk_right
+        for tile in world:
+            tile.x -= rabbit.velocity
         # if the movement caused a collision
         collision_index = rabbit.collidelist(walls)
         if collision_index != -1:
@@ -100,7 +109,7 @@ def update():
             rabbit.right = collided_wall.left
 
     # handle rabbit up movement
-    elif keyboard.UP and rabbit.top > 0:
+    elif keyboard.UP:
         # change y position and sprite
         rabbit.y -= rabbit.velocity
         rabbit.sprite = walk_up
@@ -113,7 +122,7 @@ def update():
             rabbit.top = collided_wall.bottom
 
     # handle rabbit down movement
-    elif keyboard.DOWN and rabbit.bottom < HEIGHT:
+    elif keyboard.DOWN:
         # change y position and sprite
         rabbit.y += rabbit.velocity
         rabbit.sprite = walk_down
@@ -134,13 +143,13 @@ def update():
         rabbit.alive = False
         game.lose()
 
-    # check if rabbit collected hearts
-    heart_index = rabbit.collidelist(hearts)
+    # check if rabbit collected collectables
+    heart_index = rabbit.collidelist(collectables)
     if heart_index != -1:
-        hearts.pop(heart_index)
+        collectables.pop(heart_index)
 
-    # check if rabbit collected all hearts
-    if len(hearts) == 0:
+    # check if rabbit collected all collectables
+    if len(collectables) == 0:
         game.win()
 
 

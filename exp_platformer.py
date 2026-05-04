@@ -19,7 +19,7 @@ gravity = 1
 map_layers = load_tile_map_actors("platformer.tmx", scale=SCALE)
 platforms = map_layers["platforms"]
 hazards = map_layers["hazards"]
-mushrooms = map_layers["mushrooms"]
+collectables = map_layers["collectables"]
 
 # define Sprites
 filename = "fox.png"  # Name of file, must be stored in "images" folder
@@ -51,8 +51,8 @@ def draw():
     # draw hazards
     for hazard in hazards:
         hazard.draw()
-    # draw mushrooms
-    for mushroom in mushrooms:
+    # draw collectables
+    for mushroom in collectables:
         mushroom.draw()
     # draw the fox if still alive
     if fox.alive:
@@ -125,13 +125,13 @@ def update():
         fox.alive = False
         game.lose()
 
-    # check if fox collected mushrooms
-    if fox.collidelist(mushrooms) != -1:
-        mushroom_index = fox.collidelist(mushrooms)
-        mushrooms.pop(mushroom_index)
+    # check if fox collected collectables
+    if fox.collidelist(collectables) != -1:
+        mushroom_index = fox.collidelist(collectables)
+        collectables.pop(mushroom_index)
 
-    # check if fox collected all mushrooms
-    if len(mushrooms) == 0:
+    # check if fox collected all collectables
+    if len(collectables) == 0:
         game.win()
 
 

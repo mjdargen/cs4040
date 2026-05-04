@@ -16,6 +16,7 @@ Read the `.md` files first by clicking the links for the sprite you want below. 
 - [fox](fox.md)
 - [frog](frog.md)
 - [frog_full](frog_full.md)
+- [ninja](ninja.md)
 - [panda](panda.md)
 - [piggy](piggy.md)
 - [rabbit](rabbit.md)
