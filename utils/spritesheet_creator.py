@@ -496,10 +496,7 @@ def build_sprite_sheet():
         arrangement, frame_width, frame_height = get_png_frame_settings()
         crop_settings = get_crop_settings()
 
-        fps = parse_optional_positive_int(fps_var.get(), "FPS")
-
-        if fps is None:
-            fps = 5
+        fps = 5
 
         animations = []
 
@@ -648,13 +645,13 @@ ttk.Entry(png_frame, textvariable=frame_width_var, width=12).grid(row=2, column=
 ttk.Label(png_frame, text="Frame height, optional:").grid(row=2, column=2, sticky="w")
 ttk.Entry(png_frame, textvariable=frame_height_var, width=12).grid(row=2, column=3, sticky="w")
 
-frame_desc = (
-    "Leave blank to auto-detect. For row strips, the full image height is assumed to be one frame height, "
-    "and the frame width defaults to the same value. Fill these in when your frames are not square."
-)
-ttk.Label(png_frame, text=frame_desc, wraplength=680, justify="left").grid(
-    row=3, column=0, columnspan=4, sticky="w", pady=(2, 0)
-)
+# frame_desc = (
+#     "Leave blank to auto-detect. For row strips, the full image height is assumed to be one frame height, "
+#     "and the frame width defaults to the same value. Fill these in when your frames are not square."
+# )
+# ttk.Label(png_frame, text=frame_desc, wraplength=680, justify="left").grid(
+#     row=3, column=0, columnspan=4, sticky="w", pady=(2, 0)
+# )
 
 
 # Crop section

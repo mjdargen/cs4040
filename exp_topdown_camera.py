@@ -3,15 +3,15 @@ from pgzero.builtins import *
 
 # our tile map constants
 TILE_SIZE = 18
-ROWS = 30
-COLS = 20
+MAP_WIDTH = 30
+MAP_HEIGHT = 20
 SCALE = 2
 WORLD_WIDTH = 90
 WORLD_HEIGHT = 60
 
 # Pygame Constants
-WIDTH = TILE_SIZE * ROWS * SCALE
-HEIGHT = TILE_SIZE * COLS * SCALE
+WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
+HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
 TITLE = "Top-Down Perspective"
 
 # build world from Tiled tile map
