@@ -23,5 +23,6 @@ Read the `.md` files first by clicking the links for the sprite you want below. 
 - [rat](rat.md)
 - [samurai](samurai.md)
 - [santa](santa.md)
+- [soldier](soldier.md)
 - [tomato](tomato.md)
 - [wolf](wolf.md)

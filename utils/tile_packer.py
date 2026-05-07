@@ -5,68 +5,6 @@ from PIL import Image
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
-def main():
-    # we don't want a full GUI, so keep the root window from appearing
-    Tk().withdraw()
-    # select file and store filename
-    filename = askopenfilename(
-        initialdir=os.path.dirname(os.path.realpath(__file__)),
-        multiple=False,
-        filetypes=(("PNG or JPG files", "*.png;*.jpg"),),
-        title="Select your tileset or spritesheet image:",
-    )
-    # filename = "wind.png"
-    
-    # load old sheet
-    old_sheet = Image.open(filename)
-    old_pixels = old_sheet.load()
-
-    # input
-    current, future, tile_margin = get_all_data(old_sheet.width, old_sheet.height)
-    tile_width, tile_height = future
-    current_tile_width, current_tile_height = current
-
-    # hardcoded
-    # tile_width = 128
-    # tile_height = 128
-    # l r t b
-    # tile_margin = [80, 80, 0, 0]
-    # current_tile_width = tile_width + tile_margin[0] + tile_margin[1]
-    # current_tile_height = tile_height + tile_margin[2] + tile_margin[3]
-
-    # create new sheet
-    new_sheet = Image.new(
-        "RGBA",
-        (
-            int(old_sheet.width / current_tile_width * tile_width),
-            int(old_sheet.height / current_tile_height * tile_height),
-        ),
-    )
-    new_pixels = new_sheet.load()
-
-    # copy pixel data while skipping margins
-    for tile_x in range(old_sheet.width // current_tile_width):
-        for tile_y in range(old_sheet.height // current_tile_height):
-            # calculate source tile's position in the old sheet
-            src_x_start = tile_x * current_tile_width + tile_margin[0]
-            src_y_start = tile_y * current_tile_height + tile_margin[2]
-            
-            # calculate destination tile's position in the new sheet
-            dst_x_start = tile_x * tile_width
-            dst_y_start = tile_y * tile_height
-            
-            # copy pixels within the tile region
-            for x in range(tile_width):
-                for y in range(tile_height):
-                    new_pixels[dst_x_start + x, dst_y_start + y] = old_pixels[
-                        src_x_start + x, src_y_start + y
-                    ]
-
-    # write out to file and show
-    filename = ".".join(filename.split(".")[0:-1]) + "_packed.png"
-    new_sheet.save(filename)
-    new_sheet.show()
-
 
 # get int input with retry
 def get_int_input(prompt):
@@ -82,7 +20,7 @@ def get_all_data(sheet_width, sheet_height):
     print("How many rows and columns are there on the spritesheet?")
     num_cols = get_int_input("  Number of columns: ")
     num_rows = get_int_input("  Number of rows: ")
-    
+
     # width / height of sheet at start including dimensions
     # print("What are the actual dimensions of the tiles, including margins?")
     # width = get_int_input("  Width: ")
@@ -111,9 +49,71 @@ def get_all_data(sheet_width, sheet_height):
         print(
             f"Something isn't quite right. You said the sheet was {num_cols}x{num_rows}, but the tile size with margins based on your inputs is {current_tile_width}x{current_tile_height} and wouldn't fit in the {sheet_width}x{sheet_height} spritesheet. Try again."
         )
-        current, future, tile_margin = get_all_data()
+        current, future, tile_margin = get_all_data(sheet_width, sheet_height)
     current = (current_tile_width, current_tile_height)
     return current, future, tile_margin
+
+
+def main():
+    # we don't want a full GUI, so keep the root window from appearing
+    Tk().withdraw()
+    # select file and store filename
+    filename = askopenfilename(
+        initialdir=os.path.dirname(os.path.realpath(__file__)),
+        filetypes=(("PNG or JPG files", "*.png;*.jpg"),),
+        title="Select your tileset or spritesheet image:",
+    )
+    # filename = "wind.png"
+
+    # load old sheet
+    old_sheet = Image.open(filename)
+    old_pixels = old_sheet.load()
+    assert old_pixels is not None
+
+    # input
+    current, future, tile_margin = get_all_data(old_sheet.width, old_sheet.height)
+    tile_width, tile_height = future
+    current_tile_width, current_tile_height = current
+
+    # hardcoded
+    # tile_width = 128
+    # tile_height = 128
+    # l r t b
+    # tile_margin = [80, 80, 0, 0]
+    # current_tile_width = tile_width + tile_margin[0] + tile_margin[1]
+    # current_tile_height = tile_height + tile_margin[2] + tile_margin[3]
+
+    # create new sheet
+    new_sheet = Image.new(
+        "RGBA",
+        (
+            int(old_sheet.width / current_tile_width * tile_width),
+            int(old_sheet.height / current_tile_height * tile_height),
+        ),
+    )
+    new_pixels = new_sheet.load()
+    assert new_pixels is not None
+
+    # copy pixel data while skipping margins
+    for tile_x in range(old_sheet.width // current_tile_width):
+        for tile_y in range(old_sheet.height // current_tile_height):
+            # calculate source tile's position in the old sheet
+            src_x_start = tile_x * current_tile_width + tile_margin[0]
+            src_y_start = tile_y * current_tile_height + tile_margin[2]
+
+            # calculate destination tile's position in the new sheet
+            dst_x_start = tile_x * tile_width
+            dst_y_start = tile_y * tile_height
+
+            # copy pixels within the tile region
+            for x in range(tile_width):
+                for y in range(tile_height):
+                    new_pixels[dst_x_start + x, dst_y_start + y] = old_pixels[src_x_start + x, src_y_start + y]
+
+    # write out to file and show
+    filename = ".".join(filename.split(".")[0:-1]) + "_packed.png"
+    new_sheet.save(filename)
+    new_sheet.show()
 
 
 if __name__ == "__main__":
