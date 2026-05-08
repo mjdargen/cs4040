@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="18" tileheight="18" infinite="0" nextlayerid="4" nextobjectid="1">
- <editorsettings>
-  <export target="p2.csv" format="csv"/>
- </editorsettings>
  <tileset firstgid="1" source="platformer_tilemap_packed.tsx"/>
  <layer id="1" name="platforms" width="30" height="20">
   <data encoding="csv">

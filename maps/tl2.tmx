@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="18" tileheight="18" infinite="0" nextlayerid="5" nextobjectid="1">
- <editorsettings>
-  <export target="t2.csv" format="csv"/>
- </editorsettings>
  <tileset firstgid="1" source="topdown_tilemap_packed.tsx"/>
  <layer id="1" name="ground" width="30" height="20">
   <data encoding="csv">
