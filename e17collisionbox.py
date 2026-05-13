@@ -20,7 +20,7 @@ player = SpriteActor(fox_stand)
 player.pos = (WIDTH / 2, 300)
 player.scale = 2
 # specify offset_x, offset_y from center and width, height
-player.collision_rect = (2, 4, 16, 8)
+player.collision_rect = (16, 8, 2, 4)
 
 # Create two actors with different collision rectangles
 enemy1 = Actor("alien_yellow", (100, 200))
@@ -28,7 +28,7 @@ enemy1 = Actor("alien_yellow", (100, 200))
 enemy1.collision_rect = (40, 80)
 enemy2 = Actor("alien_blue", (400, 200))
 # OR specify offset_x, offset_y from center and width, height
-enemy2.collision_rect = (0, 20, 40, 50)
+enemy2.collision_rect = (40, 50, 0, 20)
 
 
 def draw():

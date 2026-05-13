@@ -43,7 +43,6 @@ rabbit = SpriteActor(idle)
 rabbit.scale = SCALE
 # define Actor-specific variables
 rabbit.alive = True
-rabbit.jumping = False
 rabbit.velocity = 5
 
 

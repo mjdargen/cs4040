@@ -27,19 +27,19 @@ filename = "fox.png"  # Name of file, must be stored in "images" folder
 frame_width = 24  # width of each frame
 frame_height = 16  # height of each frame
 # Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-fox_stand = Sprite(filename, frame_width, frame_height, 1, 14, 2)
+fox_idle = Sprite(filename, frame_width, frame_height, 1, 14, 2)
 fox_walk = Sprite(filename, frame_width, frame_height, 2, 8, 10)
 
 # define SpriteActor
-fox = SpriteActor(fox_stand)
+fox = SpriteActor(fox_idle)
 fox.scale = 2.5
 fox.bottomleft = (0, HEIGHT - 40)
 # define Actor-specific variables
 fox.alive = True
-fox.jumping = False
+fox.on_ground = False
 fox.velocity_x = 5
 fox.velocity_y = 0
-fox.jump_velocity = -15
+fox.jump_velocity = -16
 
 
 # displays the new frame
@@ -100,25 +100,25 @@ def update():
             # use it to calculate position where there is no collision
             fox.right = collided_platform.left
 
-    # handle gravity
-    fox.y += fox.velocity_y
+    # apply gravity
     fox.velocity_y += gravity
-    # if the movement caused a collision, move position back
+    # assume not on the ground unless a collision proves otherwise
+    fox.on_ground = False
+    # move vertically
+    fox.y += fox.velocity_y
+    # check for platform collision
     collision_index = fox.collidelist(platforms)
     if collision_index != -1:
-        # get object that fox collided with
+        # get the platform that cause the collision
         collided_platform = platforms[collision_index]
-        # moving down - hit the ground
-        if fox.velocity_y >= 0:
-            # move fox up to no collision position
+        # falling down - landed on top of a platform
+        if fox.velocity_y > 0:
             fox.bottom = collided_platform.top
-            # no longer jumping
-            fox.jumping = False
-        # moving up - bumped their head
-        else:
-            # move fox down to no collision position
+            fox.on_ground = True
+        # moving up - bumped head on bottom of a platform
+        elif fox.velocity_y < 0:
             fox.top = collided_platform.bottom
-        # reset velocity
+        # stop vertical movement after hitting something
         fox.velocity_y = 0
 
     # fox collided with hazard, game over
@@ -157,17 +157,16 @@ def level_transition():
 
 # keyboard pressed event listener
 def on_key_down(key):
-    # up key and not already jumping
-    if key == keys.UP and not fox.jumping:
+    # up key and on the ground
+    if key == keys.UP and fox.on_ground:
         fox.velocity_y = fox.jump_velocity
-        fox.jumping = True
 
 
 # called when a keyboard button is released
 def on_key_up(key):
     # change to forward facing image when left/right keys released
     if key == keys.LEFT or key == keys.RIGHT:
-        fox.sprite = fox_stand
+        fox.sprite = fox_idle
 
 
 pgzrun.go()  # program must always end with this

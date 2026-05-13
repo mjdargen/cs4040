@@ -41,7 +41,6 @@ rabbit.scale = SCALE
 rabbit.pos = (WIDTH / 2, HEIGHT - TILE_SIZE)
 # define Actor-specific variables
 rabbit.alive = True
-rabbit.jumping = False
 rabbit.velocity = 4
 
 

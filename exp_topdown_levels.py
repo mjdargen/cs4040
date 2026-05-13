@@ -36,7 +36,6 @@ rabbit.scale = SCALE
 rabbit.pos = (200, HEIGHT / 2)
 # define Actor-specific variables
 rabbit.alive = True
-rabbit.jumping = False
 rabbit.velocity = 4
 
 
