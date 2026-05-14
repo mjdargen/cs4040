@@ -18,11 +18,6 @@ ground = map_layers["ground"]
 walls = map_layers["walls"]
 hazards = map_layers["hazards"]
 collectables = map_layers["collectables"]
-world = []
-world.extend(ground)
-world.extend(walls)
-world.extend(hazards)
-world.extend(collectables)
 
 # define Sprites
 # Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
@@ -80,9 +75,7 @@ def update():
     # handle rabbit left movement
     if keyboard.LEFT:
         # change x position and sprite
-        # rabbit.x -= rabbit.velocity
-        for tile in world:
-            tile.x += rabbit.velocity
+        rabbit.x -= rabbit.velocity
         rabbit.sprite = walk_left
         # if the movement caused a collision
         collision_index = rabbit.collidelist(walls)
@@ -95,10 +88,8 @@ def update():
     # handle rabbit right movement
     elif keyboard.RIGHT:
         # change x position and sprite
-        # rabbit.x += rabbit.velocity
+        rabbit.x += rabbit.velocity
         rabbit.sprite = walk_right
-        for tile in world:
-            tile.x -= rabbit.velocity
         # if the movement caused a collision
         collision_index = rabbit.collidelist(walls)
         if collision_index != -1:
