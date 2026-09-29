@@ -10,9 +10,12 @@ _tests
 !/*/*.md
 _*.py
 activity*.py
+p2*.py
 p3*.py
 p4*.py
 p5*.py
+project*.py
+exp_*.py
 # e*topdown*.py
 # e*platformer*.py
 depr_*.*
