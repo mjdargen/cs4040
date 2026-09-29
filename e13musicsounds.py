@@ -23,7 +23,7 @@ def start():
     move_bomb()
     move_coin()
     # start music
-    music.play("house")
+    music.play("flowing_rocks")
 
 
 # callback function for scheduling game over sound
