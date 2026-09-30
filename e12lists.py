@@ -8,15 +8,15 @@ HEIGHT = 500
 TITLE = "List Collectibles"
 
 # global variables
-bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
+bg = Actor("grass")
 robot = Actor("robot_idle")
-robot.velocity = 5
 coins = []  # create list
 
 
 # runs once at beginning before draw()/update()
 def start():
-    robot.pos = WIDTH // 2, HEIGHT // 2
+    bg.pos = (WIDTH // 2, HEIGHT // 2)
+    robot.pos = (WIDTH // 2, HEIGHT // 2)
     coins.clear()  # remove all elements from list
     # schedule coins to begin spawning
     clock.schedule_interval(spawn_coin, 1.0)

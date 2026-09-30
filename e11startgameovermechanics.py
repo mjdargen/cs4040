@@ -8,9 +8,8 @@ HEIGHT = 500
 TITLE = "Start & Game Over with Collisions"
 
 # define Actors, set positions in start()
-bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
+bg = Actor("grass")
 robot = Actor("robot_idle")
-robot.velocity = 5
 coin = Actor("coin_gold")
 bomb = Actor("bomb")
 
@@ -18,7 +17,8 @@ bomb = Actor("bomb")
 # runs once at beginning before draw()/update()
 def start():
     # set initial positions
-    robot.pos = WIDTH // 2, HEIGHT // 2
+    bg.pos = (WIDTH // 2, HEIGHT // 2)
+    robot.pos = (WIDTH // 2, HEIGHT // 2)
     # reset variables for playing again
     robot.velocity = 5
     # set new position of bomb and coin

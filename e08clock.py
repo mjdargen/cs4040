@@ -8,11 +8,12 @@ HEIGHT = 500
 TITLE = "Clock Example"
 
 # global variables
-robot = Actor("robot_idle", (WIDTH // 2, HEIGHT // 2))
+robot = Actor("robot_idle")
 
 
 # runs once at beginning before draw()/update()
 def start():
+    robot.pos = (WIDTH // 2, HEIGHT // 2)
     clock.schedule_interval(move_character, 2.0)
 
 
