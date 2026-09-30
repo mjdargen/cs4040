@@ -16,6 +16,7 @@ p4*.py
 p5*.py
 project*.py
 exp_*.py
+images/*/*.png
 # e*topdown*.py
 # e*platformer*.py
 depr_*.*
