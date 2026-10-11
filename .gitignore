@@ -16,12 +16,12 @@ p4*.py
 p5*.py
 project*.py
 exp_*.py
-images/*/*.png
 # e*topdown*.py
 # e*platformer*.py
 depr_*.*
 *.zip
 utils/output_assets/**
+# images/*/*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
