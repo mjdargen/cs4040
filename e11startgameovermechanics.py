@@ -7,7 +7,7 @@ WIDTH = 500
 HEIGHT = 500
 TITLE = "Start & Game Over with Collisions"
 
-# define Actors, set positions in start()
+# define global variables
 bg = Actor("grass")
 robot = Actor("robot_idle")
 coin = Actor("coin_gold")

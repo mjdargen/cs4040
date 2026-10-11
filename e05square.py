@@ -8,10 +8,13 @@ TITLE = "Square Dancing Actor"
 
 # global variables
 state = 0
-# define Actor
 alien = Actor("alien")
-alien.topleft = (0, 0)
-alien.velocity = 5
+
+
+# runs once at beginning before draw()/update()
+def start():
+    alien.topleft = (0, 0)
+    alien.velocity = 5
 
 
 # displays the new frame

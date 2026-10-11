@@ -28,11 +28,13 @@ fox_walk = Sprite(filename, frame_width, frame_height, row_number, frame_count, 
 
 # define SpriteActor
 fox = SpriteActor(fox_idle)
-fox.scale = 4  # scales up the Actor size by four
 
-# define Actor-specific variables
-fox.velocity_x = 0
-fox.velocity_y = 0
+
+# runs once at beginning before draw()/update()
+def start():
+    fox.scale = 4  # scales up the Actor size by four
+    fox.velocity_x = 0
+    fox.velocity_y = 0
 
 
 # displays the new frame

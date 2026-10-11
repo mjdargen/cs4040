@@ -3,9 +3,9 @@ import pgzrun
 from pgzero.builtins import *
 
 # Pygame Constants
-WIDTH = 500
-HEIGHT = 500
-TITLE = "Name of Game"
+WIDTH = 500  # width of game window
+HEIGHT = 500  # height of game window
+TITLE = "Name of Game"  # title in game window
 
 # define global variables
 alien = Actor("alien")
@@ -13,7 +13,7 @@ alien = Actor("alien")
 
 # runs once at beginning before draw()/update()
 def start():
-    alien.pos = (200, 200)
+    alien.pos = (200, 200)  # sets initial position
 
 
 # displays the new frame

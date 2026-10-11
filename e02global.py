@@ -27,6 +27,11 @@ words = []
 #   - Common for int, float, bool, string, tuple when changed
 
 
+# runs once at beginning before draw()/update()
+def start():
+    pass
+
+
 # displays the new frame
 def draw():
     screen.clear()  # clears the screen

@@ -6,16 +6,19 @@ WIDTH = 600
 HEIGHT = 200
 TITLE = "Projectile Demo"
 
+# global variables
 player = Actor("alien_beige")
-player.bottomleft = (0, HEIGHT)
-player.velocity_x = 0
-player.velocity_y = 0
-
 enemy = Actor("alien_yellow")
-enemy.bottomright = (WIDTH, HEIGHT)
-
 gravity = 1
 projectiles = []
+
+
+# runs once at beginning before draw()/update()
+def start():
+    player.bottomleft = (0, HEIGHT)
+    player.velocity_x = 0
+    player.velocity_y = 0
+    enemy.bottomright = (WIDTH, HEIGHT)
 
 
 # displays the new frame
@@ -96,7 +99,7 @@ def on_key_down(key):
         player.velocity_y = -10
     # create new projectile to player's right
     if key == keys.SPACE:
-        projectile = Actor("fireball_small")
+        projectile = Actor("fireball")
         projectile.midleft = player.midright
         projectiles.append(projectile)
 

@@ -9,9 +9,12 @@ TITLE = "Frame Counter"
 # global variables towards the top of the program
 # defined outside of functions
 alien = Actor("alien_beige_stand")
-alien.pos = (WIDTH // 2, HEIGHT // 2)
-# declare global variable to keep track of frame
-frame = 0
+frame = 0  # keep track of which num frame we are on
+
+
+# runs once at beginning before draw()/update()
+def start():
+    alien.pos = (WIDTH // 2, HEIGHT // 2)
 
 
 # displays the new frame

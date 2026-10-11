@@ -12,6 +12,11 @@ previous_point = (0, 0)
 clear = True
 
 
+# runs once at beginning before draw()/update()
+def start():
+    pass
+
+
 # displays the new frame
 def draw():
     global clear

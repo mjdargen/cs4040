@@ -8,7 +8,6 @@ TITLE = "Start & Game Over"
 
 # global variables
 countdown_timer = 5
-# define Actor
 robot = Actor("robot_idle")
 
 

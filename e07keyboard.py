@@ -7,14 +7,17 @@ HEIGHT = 300
 TITLE = "Keyboard Example"
 
 # global variables
-# define Actors
-bg = Actor("grass", (WIDTH // 2, HEIGHT // 2))
+bg = Actor("grass")
 robot = Actor("robot_idle")
-robot.midbottom = (WIDTH // 2, HEIGHT)
-robot.velocity_x = 0
-robot.velocity_y = 0
-# define gravity
 gravity = 1
+
+
+# runs once at beginning before draw()/update()
+def start():
+    bg.pos = (WIDTH // 2, HEIGHT)
+    robot.midbottom = (WIDTH // 2, HEIGHT)
+    robot.velocity_x = 0
+    robot.velocity_y = 0
 
 
 # displays the new frame

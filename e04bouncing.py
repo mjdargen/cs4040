@@ -7,17 +7,20 @@ WIDTH = 500
 HEIGHT = 500
 TITLE = "Bouncing Actor"
 
-# global variables
-# define Actor
+# define global variables
 alien = Actor("alien")
-# start actor at center
-alien.pos = (WIDTH // 2, HEIGHT // 2)
-# choose a random velocity between 1 and 5
-# defined as a tuple -> (x, y)
-# x -> represents velocity or change in position for x direction
-# y -> represents velocity or change in position for y direction
-alien.velocity_x = random.randint(1, 5)
-alien.velocity_y = random.randint(1, 5)
+
+
+# runs once at beginning before draw()/update()
+def start():
+    # start actor at center
+    alien.pos = (WIDTH // 2, HEIGHT // 2)
+    # define actor-specific variables - ones that don't exist, but we create
+    # choose a random velocity between 1 and 5
+    # velocity_x -> represents velocity or change in position for x direction
+    alien.velocity_x = random.randint(1, 5)
+    # velocity_y -> represents velocity or change in position for y direction
+    alien.velocity_y = random.randint(1, 5)
 
 
 # displays the new frame
