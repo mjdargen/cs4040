@@ -21,7 +21,7 @@ exp_*.py
 depr_*.*
 *.zip
 utils/output_assets/**
-# images/*/*.png
+images/*/*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
