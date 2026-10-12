@@ -9,6 +9,11 @@ TITLE = "Snowperson"
 # color reference: https://pygame-zero.readthedocs.io/en/latest/colors_ref.html
 
 
+# runs once at beginning before draw()/update()
+def start():
+    pass  # pass means do nothing, used because we can't have empty function
+
+
 # displays the new frame
 def draw():
     screen.clear()
@@ -19,6 +24,9 @@ def draw():
     screen.draw.filled_rect((0, 300), (WIDTH, 100), "snow")
     # screen.draw.line((x1, y1), (x2, y2), "color")
     screen.draw.line((0, 300), (WIDTH, 300), "black")
+
+    # draw text to the screen
+    screen.draw.text("Hello, I am a snowperson.", midbottom=(300, 380), color="black")
 
     # draw snowperson body
     # screen.draw.circle((x,y), radius, color)

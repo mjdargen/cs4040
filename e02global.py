@@ -10,7 +10,6 @@ TITLE = "Global Variables"
 # global variables towards the top of the program
 # defined outside of functions
 alien = Actor("alien")
-alien.pos = (200, 200)
 n = 3
 m = 5
 text = "ha"
@@ -29,7 +28,7 @@ words = []
 
 # runs once at beginning before draw()/update()
 def start():
-    pass
+    alien.pos = (200, 200)
 
 
 # displays the new frame
