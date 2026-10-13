@@ -51,15 +51,15 @@ def update():
     # do not execute update() if game is over
     if game.state != "playing":
         return
-    if keyboard.LEFT and robot.left > 0:
+    if keyboard.left and robot.left > 0:
         robot.x -= robot.velocity
         robot.image = "robot_left"
-    elif keyboard.RIGHT and robot.right < WIDTH:
+    elif keyboard.right and robot.right < WIDTH:
         robot.x += robot.velocity
         robot.image = "robot_right"
-    elif keyboard.UP and robot.top > 0:
+    elif keyboard.up and robot.top > 0:
         robot.y -= robot.velocity
-    elif keyboard.DOWN and robot.bottom < HEIGHT:
+    elif keyboard.down and robot.bottom < HEIGHT:
         robot.y += robot.velocity
 
     # check for collision between robot and any coins

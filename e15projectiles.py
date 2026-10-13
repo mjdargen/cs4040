@@ -34,10 +34,10 @@ def draw():
 # updates game state between drawing of each frame
 def update():
     # while left key is pressed and not at edge
-    if keyboard.LEFT and player.left > 0:
+    if keyboard.left and player.left > 0:
         player.velocity_x = -5
     # while right key is pressed and not at edge
-    elif keyboard.RIGHT and player.right < WIDTH:
+    elif keyboard.right and player.right < WIDTH:
         player.velocity_x = 5
     # otherwise set x velocity to 0
     else:

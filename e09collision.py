@@ -15,10 +15,8 @@ bg = Actor("grass")
 robot = Actor("robot_idle")
 # create coin Actor
 coin = Actor("coin_gold")
-# position is set by calling move_coin() in start()
 # create bomb Actor
 bomb = Actor("bomb")
-# position is set by calling move_bomb() in statr()
 
 
 # runs once at beginning before draw()/update()
@@ -42,20 +40,20 @@ def draw():
 # updates game state between drawing of each frame
 def update():
     # while left key is pressed and not at edge
-    if keyboard.LEFT and robot.left > 0:
+    if keyboard.left and robot.left > 0:
         # show left facing image and change x velocity
         robot.image = "robot_left"
         robot.x -= robot.velocity
     # while right key is pressed and not at edge
-    elif keyboard.RIGHT and robot.right < WIDTH:
+    elif keyboard.right and robot.right < WIDTH:
         # show right facing image and change x velocity
         robot.image = "robot_right"
         robot.x += robot.velocity
     # while UP key is pressed and not at edge
-    elif keyboard.UP and robot.top > 0:
+    elif keyboard.up and robot.top > 0:
         robot.y -= robot.velocity
     # while DOWN key is pressed and not at edge
-    elif keyboard.DOWN and robot.bottom < HEIGHT:
+    elif keyboard.down and robot.bottom < HEIGHT:
         robot.y += robot.velocity
 
     # if collision with coin, add a new coin

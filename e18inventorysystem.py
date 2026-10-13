@@ -86,13 +86,13 @@ def update():
     if game.state != "playing":
         return
     # player movement
-    if keyboard.LEFT:
+    if keyboard.left:
         alien.x -= 10
-    elif keyboard.RIGHT:
+    elif keyboard.right:
         alien.x += 10
-    elif keyboard.UP:
+    elif keyboard.up:
         alien.y -= 10
-    elif keyboard.DOWN:
+    elif keyboard.down:
         alien.y += 10
     # check if the movement caused a collision with an item
     collision_index = alien.collidelist(items)

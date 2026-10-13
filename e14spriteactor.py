@@ -47,13 +47,13 @@ def draw():
 # updates game state between drawing of each frame
 def update():
     # while left key is pressed and not at edge
-    if keyboard.LEFT and fox.left > 0:
+    if keyboard.left and fox.left > 0:
         # flip image and change x velocity
         fox.sprite = fox_walk
         fox.flip_h = True
         fox.velocity_x = -5
     # while right key is pressed and not at edge
-    elif keyboard.RIGHT and fox.right < WIDTH:
+    elif keyboard.right and fox.right < WIDTH:
         # flip image and change x velocity
         fox.sprite = fox_walk
         fox.flip_h = False

@@ -30,12 +30,12 @@ def draw():
 # updates game state between drawing of each frame
 def update():
     # while left key is pressed and not at edge
-    if keyboard.LEFT and robot.left > 0:
+    if keyboard.left and robot.left > 0:
         # show left facing image and change x velocity
         robot.image = "robot_left"
         robot.velocity_x = -5
     # while right key is pressed and not at edge
-    elif keyboard.RIGHT and robot.right < WIDTH:
+    elif keyboard.right and robot.right < WIDTH:
         # show right facing image and change x velocity
         robot.image = "robot_right"
         robot.velocity_x = 5
