@@ -7,7 +7,7 @@ HEIGHT = 300
 TITLE = "Keyboard Example"
 
 # global variables
-bg = Actor("grass")
+bg = Actor("grass_bg")
 robot = Actor("robot_idle")
 gravity = 1
 

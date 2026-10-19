@@ -10,7 +10,7 @@ TITLE = "Collision Example"
 
 # global variables
 # define background "Actor"
-bg = Actor("grass")
+bg = Actor("grass_bg")
 # define player Actor
 robot = Actor("robot_idle")
 # create coin Actor

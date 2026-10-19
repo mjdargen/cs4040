@@ -8,7 +8,7 @@ HEIGHT = 500
 TITLE = "List Collectibles"
 
 # global variables
-bg = Actor("grass")
+bg = Actor("grass_bg")
 robot = Actor("robot_idle")
 coins = []  # create list
 

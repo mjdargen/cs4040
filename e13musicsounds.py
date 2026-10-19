@@ -8,7 +8,7 @@ HEIGHT = 500
 TITLE = "Music and Sounds"
 
 # define Actors, set positions in start()
-bg = Actor("grass")
+bg = Actor("grass_bg")
 robot = Actor("robot_idle")
 coin = Actor("coin_gold")
 bomb = Actor("bomb")

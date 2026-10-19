@@ -8,7 +8,7 @@ HEIGHT = 500
 TITLE = "Start & Game Over with Collisions"
 
 # define global variables
-bg = Actor("grass")
+bg = Actor("grass_bg")
 robot = Actor("robot_idle")
 coin = Actor("coin_gold")
 bomb = Actor("bomb")
