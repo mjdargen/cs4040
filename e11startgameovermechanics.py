@@ -87,8 +87,8 @@ def move_coin():
     # randomly generate new position, 20 pixels from edge
     coin.x = random.randint(20, WIDTH - 20)
     coin.y = random.randint(20, HEIGHT - 20)
-    # while coin is accidentally placed on bomb or robot, try new location
-    while coin.colliderect(bomb) or coin.colliderect(robot):
+    # if coin is accidentally placed on bomb or robot, call again
+    if coin.colliderect(bomb) or coin.colliderect(robot):
         coin.x = random.randint(20, WIDTH - 20)
         coin.y = random.randint(20, HEIGHT - 20)
 
@@ -98,10 +98,9 @@ def move_bomb():
     # randomly generate new position, 20 pixels from edge
     bomb.x = random.randint(20, WIDTH - 20)
     bomb.y = random.randint(20, HEIGHT - 20)
-    # while bomb is accidentally placed on robot or coin, try new location
-    while bomb.colliderect(robot) or bomb.colliderect(coin):
-        bomb.x = random.randint(20, WIDTH - 20)
-        bomb.y = random.randint(20, HEIGHT - 20)
+    # if bomb is accidentally placed on robot or coin, call again
+    if bomb.colliderect(robot) or bomb.colliderect(coin):
+        move_bomb()
 
 
 pgzrun.go()

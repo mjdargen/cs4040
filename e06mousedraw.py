@@ -33,7 +33,7 @@ def update():
     pass  # pass means do nothing, used because we can't have empty function
 
 
-# mouse event handler
+# mouse event listener
 def on_mouse_down(pos, button):
     global current_point, previous_point, clear
     if button == mouse.LEFT:
