@@ -14,17 +14,13 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "carrot.png"
-frame_width = 32
-frame_height = 32
-carrot_idle = Sprite(filename, frame_width, frame_height, 0, 5, 5)
-carrot_jump = Sprite(filename, frame_width, frame_height, 1, 8, 5)
-carrot_spin = Sprite(filename, frame_width, frame_height, 2, 20, 5)
-carrot_hurt = Sprite(filename, frame_width, frame_height, 3, 5, 5)
-carrot_death = Sprite(filename, frame_width, frame_height, 4, 8, 5)
+# Note: fps is set to 5 below; adjust as needed
+carrot_idle = Sprite("carrot", frame_width=32, frame_height=32, row=0, frames=5, fps=5)
+carrot_jump = Sprite("carrot", frame_width=32, frame_height=32, row=1, frames=8, fps=5)
+carrot_spin = Sprite("carrot", frame_width=32, frame_height=32, row=2, frames=20, fps=5)
+carrot_hurt = Sprite("carrot", frame_width=32, frame_height=32, row=3, frames=5, fps=5)
+carrot_death = Sprite("carrot", frame_width=32, frame_height=32, row=4, frames=8, fps=5)
 
-# Define SpriteActor
-carrot = SpriteActor(carrot_idle)
+# Define the Actor
+carrot = Actor(carrot_idle)
 ```

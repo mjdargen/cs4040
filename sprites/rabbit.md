@@ -17,20 +17,16 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "rabbit.png"
-frame_width = 16
-frame_height = 16
-rabbit_idle_down = Sprite(filename, frame_width, frame_height, 0, 2, 5)
-rabbit_idle_up = Sprite(filename, frame_width, frame_height, 1, 2, 5)
-rabbit_idle_left = Sprite(filename, frame_width, frame_height, 2, 2, 5)
-rabbit_idle_right = Sprite(filename, frame_width, frame_height, 3, 2, 5)
-rabbit_walk_down = Sprite(filename, frame_width, frame_height, 4, 4, 5)
-rabbit_walk_up = Sprite(filename, frame_width, frame_height, 5, 4, 5)
-rabbit_walk_left = Sprite(filename, frame_width, frame_height, 6, 4, 5)
-rabbit_walk_right = Sprite(filename, frame_width, frame_height, 7, 4, 5)
+# Note: fps is set to 5 below; adjust as needed
+rabbit_idle_down = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=5)
+rabbit_idle_up = Sprite("rabbit", frame_width=16, frame_height=16, row=1, frames=2, fps=5)
+rabbit_idle_left = Sprite("rabbit", frame_width=16, frame_height=16, row=2, frames=2, fps=5)
+rabbit_idle_right = Sprite("rabbit", frame_width=16, frame_height=16, row=3, frames=2, fps=5)
+rabbit_walk_down = Sprite("rabbit", frame_width=16, frame_height=16, row=4, frames=4, fps=5)
+rabbit_walk_up = Sprite("rabbit", frame_width=16, frame_height=16, row=5, frames=4, fps=5)
+rabbit_walk_left = Sprite("rabbit", frame_width=16, frame_height=16, row=6, frames=4, fps=5)
+rabbit_walk_right = Sprite("rabbit", frame_width=16, frame_height=16, row=7, frames=4, fps=5)
 
-# Define SpriteActor
-rabbit = SpriteActor(rabbit_idle_down)
+# Define the Actor
+rabbit = Actor(rabbit_idle_down)
 ```

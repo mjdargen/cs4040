@@ -16,19 +16,15 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "panda.png"
-frame_width = 24
-frame_height = 16
-panda_1 = Sprite(filename, frame_width, frame_height, 0, 6, 5)
-panda_2 = Sprite(filename, frame_width, frame_height, 1, 6, 5)
-panda_3 = Sprite(filename, frame_width, frame_height, 2, 8, 5)
-panda_4 = Sprite(filename, frame_width, frame_height, 3, 8, 5)
-panda_5 = Sprite(filename, frame_width, frame_height, 4, 5, 5)
-panda_6 = Sprite(filename, frame_width, frame_height, 5, 8, 5)
-panda_7 = Sprite(filename, frame_width, frame_height, 6, 8, 5)
+# Note: fps is set to 5 below; adjust as needed
+panda_1 = Sprite("panda", frame_width=24, frame_height=16, row=0, frames=6, fps=5)
+panda_2 = Sprite("panda", frame_width=24, frame_height=16, row=1, frames=6, fps=5)
+panda_3 = Sprite("panda", frame_width=24, frame_height=16, row=2, frames=8, fps=5)
+panda_4 = Sprite("panda", frame_width=24, frame_height=16, row=3, frames=8, fps=5)
+panda_5 = Sprite("panda", frame_width=24, frame_height=16, row=4, frames=5, fps=5)
+panda_6 = Sprite("panda", frame_width=24, frame_height=16, row=5, frames=8, fps=5)
+panda_7 = Sprite("panda", frame_width=24, frame_height=16, row=6, frames=8, fps=5)
 
-# Define SpriteActor
-panda = SpriteActor(panda_1)
+# Define the Actor
+panda = Actor(panda_1)
 ```

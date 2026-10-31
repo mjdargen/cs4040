@@ -88,11 +88,7 @@ def generate_documentation(metadata, output_file):
                 doc.write(f"- {anim['name']} - row {i} - {anim['num_frames']} frames\n")
 
             doc.write("\n**Code Example:**\n```python\n")
-            doc.write("# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)\n")
-            doc.write("# Note: FPS set to 5 in examples below, adjust as needed)\n")
-            doc.write(f'filename = "{filename}.png"\n')
-            doc.write(f"frame_width = {frame_width}\n")
-            doc.write(f"frame_height = {frame_height}\n")
+            doc.write("# Note: fps is set to 5 below; adjust as needed\n")
             sprite_name = filename.lower()
             first = None
             for i, anim in enumerate(animation_data):
@@ -100,10 +96,11 @@ def generate_documentation(metadata, output_file):
                 if i == 0:
                     first = f"{sprite_name}_{anim_name}"
                 doc.write(
-                    f"{sprite_name}_{anim_name} = Sprite(filename, frame_width, frame_height, {i}, {anim['num_frames']}, 5)\n"
+                    f'{sprite_name}_{anim_name} = Sprite("{filename}", frame_width={frame_width}, '
+                    f"frame_height={frame_height}, row={i}, frames={anim['num_frames']}, fps=5)\n"
                 )
-            doc.write("\n# Define SpriteActor\n")
-            doc.write(f"{sprite_name} = SpriteActor({first})\n")
+            doc.write("\n# Define the Actor\n")
+            doc.write(f"{sprite_name} = Actor({first})\n")
             doc.write("```\n")
 
         print(f"Documentation written to {output_file}")

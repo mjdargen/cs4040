@@ -339,25 +339,22 @@ def generate_markdown(save_path, sheet_width, sheet_height, frame_width, frame_h
     lines.append("")
     lines.append("**Code Example:**")
     lines.append("```python")
-    lines.append("# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)")
-    lines.append(f"# Note: FPS set to {fps} in examples below, adjust as needed)")
-    lines.append(f'filename = "{sheet_filename}"')
-    lines.append(f"frame_width = {frame_width}")
-    lines.append(f"frame_height = {frame_height}")
+    lines.append(f"# Note: fps is set to {fps} below; adjust as needed")
 
     for row, anim in enumerate(animations):
         anim_name = safe_variable_name(anim["name"])
         frame_count = anim["frame_count"]
 
         lines.append(
-            f"{sheet_stem}_{anim_name} = Sprite(filename, frame_width, frame_height, {row}, {frame_count}, {fps})"
+            f'{sheet_stem}_{anim_name} = Sprite("{save_path.stem}", frame_width={frame_width}, '
+            f"frame_height={frame_height}, row={row}, frames={frame_count}, fps={fps})"
         )
 
     first_anim_name = safe_variable_name(animations[0]["name"])
 
     lines.append("")
-    lines.append("# Define SpriteActor")
-    lines.append(f"{sheet_stem} = SpriteActor({sheet_stem}_{first_anim_name})")
+    lines.append("# Define the Actor")
+    lines.append(f"{sheet_stem} = Actor({sheet_stem}_{first_anim_name})")
     lines.append("```")
     lines.append("")
 

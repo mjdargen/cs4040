@@ -13,16 +13,12 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "bee.png"
-frame_width = 16
-frame_height = 16
-bee_right = Sprite(filename, frame_width, frame_height, 0, 4, 5)
-bee_left = Sprite(filename, frame_width, frame_height, 1, 4, 5)
-bee_up = Sprite(filename, frame_width, frame_height, 2, 4, 5)
-bee_down = Sprite(filename, frame_width, frame_height, 3, 4, 5)
+# Note: fps is set to 5 below; adjust as needed
+bee_right = Sprite("bee", frame_width=16, frame_height=16, row=0, frames=4, fps=5)
+bee_left = Sprite("bee", frame_width=16, frame_height=16, row=1, frames=4, fps=5)
+bee_up = Sprite("bee", frame_width=16, frame_height=16, row=2, frames=4, fps=5)
+bee_down = Sprite("bee", frame_width=16, frame_height=16, row=3, frames=4, fps=5)
 
-# Define SpriteActor
-bee = SpriteActor(bee_right)
+# Define the Actor
+bee = Actor(bee_right)
 ```

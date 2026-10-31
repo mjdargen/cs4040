@@ -6,17 +6,11 @@ WIDTH = 500
 HEIGHT = 500
 TITLE = "Collision Box Resizing Demo"
 
-# Define a Sprite and SpriteActor
-filename = "fox.png"  # Name of file, must be stored in "images" folder
-frame_width = 24  # width of each frame
-frame_height = 16  # height of each frame
-row_number = 1  # row number on the spritesheet
-frame_count = 14  # number of frames in the animation
-fps = 2  # FPS refresh rate: updates every 2 frames
-fox_stand = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+# Define a Sprite and an Actor
+fox_stand = Sprite("fox", frame_width=24, frame_height=16, row=1, frames=14, fps=2)
 
 # define actors
-player = SpriteActor(fox_stand)
+player = Actor(fox_stand)
 enemy1 = Actor("alien_yellow")
 enemy2 = Actor("alien_blue")
 

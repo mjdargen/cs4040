@@ -11,14 +11,10 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "soldier.png"
-frame_width = 24
-frame_height = 24
-soldier_idle = Sprite(filename, frame_width, frame_height, 0, 6, 5)
-soldier_walk = Sprite(filename, frame_width, frame_height, 1, 8, 5)
+# Note: fps is set to 5 below; adjust as needed
+soldier_idle = Sprite("soldier", frame_width=24, frame_height=24, row=0, frames=6, fps=5)
+soldier_walk = Sprite("soldier", frame_width=24, frame_height=24, row=1, frames=8, fps=5)
 
-# Define SpriteActor
-soldier = SpriteActor(soldier_idle)
+# Define the Actor
+soldier = Actor(soldier_idle)
 ```

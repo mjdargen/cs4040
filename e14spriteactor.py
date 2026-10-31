@@ -7,34 +7,38 @@ WIDTH = 800
 HEIGHT = 400
 TITLE = "Sprite Actor"
 
-# define global variables
-gravity = 1
+# A Sprite is one animation cut from a sprite sheet:
+#   "fox"            name of the sprite sheet, stored in the "sprites" folder
+#   frame_width      width of each frame, in pixels
+#   frame_height     height of each frame, in pixels
+#   row              which row of the sheet the animation is on (top row is 0)
+#   frames           number of frames in the animation
+#   fps              how many frames to show each second
 
-# example sprite
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-filename = "fox.png"  # Name of file, must be stored in "images" folder
-frame_width = 24  # width of each frame
-frame_height = 16  # height of each frame
-row_number = 1  # row number on the spritesheet
-frame_count = 14  # number of frames in the animation
-fps = 2  # FPS refresh rate: shows ~2 frames per second
-fox_idle = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+# Fox idle animation (row 1, shows ~2 frames per second)
+fox_idle = Sprite("fox", frame_width=24, frame_height=16, row=1, frames=14, fps=2)
 
-# Fox walking animation (walking animation starts at row 2)
-row_number = 2  # row number on the spritesheet
-frame_count = 8  # Number of frames in the walking animation
-fps = 10  # FPS refresh rate: shows ~10 frames per second
-fox_walk = Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
+# Fox walking animation (row 2, shows ~10 frames per second)
+fox_walk = Sprite("fox", frame_width=24, frame_height=16, row=2, frames=8, fps=10)
 
-# define SpriteActor
-fox = SpriteActor(fox_idle)
+# define the Actor
+fox = Actor(fox_idle)
+
+# A Sprite can also be made from a list of images in the "images" folder.
+# The bee flaps its wings by switching between two images, 8 times a second.
+bee_fly = Sprite(["bee_a", "bee_b"], fps=8)
+
+# define the bee Actor
+bee = Actor(bee_fly)
 
 
 # runs once at beginning before draw()/update()
 def start():
     fox.scale = 4  # scales up the Actor size by four
+    fox.bottomleft = (0, HEIGHT)
     fox.velocity_x = 0
-    fox.velocity_y = 0
+    bee.pos = (WIDTH / 2, 80)
+    bee.velocity_x = -3  # the bee starts flying left
 
 
 # displays the new frame
@@ -42,6 +46,7 @@ def draw():
     screen.clear()
     screen.fill("forestgreen")
     fox.draw()
+    bee.draw()
 
 
 # updates game state between drawing of each frame
@@ -64,28 +69,13 @@ def update():
 
     # modify fox position by the velocity
     fox.x += fox.velocity_x
-    fox.y += fox.velocity_y
 
-    # handle gravity
-
-    # once the fox has returned to the floor, cancel y velocity
-    if fox.bottom >= HEIGHT:
-        fox.velocity_y = 0
-        fox.bottom = HEIGHT
-    # otherwise, continue to add gravity
-    # change y velocity by adding gravity
-    # causes deceleration in the upwards direction
-    # causes acceleration in the downwards direction
-    else:
-        fox.velocity_y += gravity
-
-
-# called when a keyboard button is pressed
-def on_key_down(key):
-    # change vertical velocity when space or up keys are pressed
-    # make sure not previously jumping first
-    if (key == keys.SPACE or key == keys.UP) and fox.bottom >= HEIGHT:
-        fox.velocity_y = -10
+    # fly the bee back and forth, turning around at the edges of the screen
+    bee.x += bee.velocity_x
+    if bee.left < 0 or bee.right > WIDTH:
+        bee.velocity_x = -bee.velocity_x
+    # the bee images face left, so flip them when the bee flies right
+    bee.flip_h = bee.velocity_x > 0
 
 
 # called when a keyboard button is released

@@ -13,16 +13,12 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "crab.png"
-frame_width = 32
-frame_height = 16
-crab_idle = Sprite(filename, frame_width, frame_height, 0, 4, 5)
-crab_walk = Sprite(filename, frame_width, frame_height, 1, 4, 5)
-crab_die = Sprite(filename, frame_width, frame_height, 2, 4, 5)
-crab_attack = Sprite(filename, frame_width, frame_height, 3, 4, 5)
+# Note: fps is set to 5 below; adjust as needed
+crab_idle = Sprite("crab", frame_width=32, frame_height=16, row=0, frames=4, fps=5)
+crab_walk = Sprite("crab", frame_width=32, frame_height=16, row=1, frames=4, fps=5)
+crab_die = Sprite("crab", frame_width=32, frame_height=16, row=2, frames=4, fps=5)
+crab_attack = Sprite("crab", frame_width=32, frame_height=16, row=3, frames=4, fps=5)
 
-# Define SpriteActor
-crab = SpriteActor(crab_idle)
+# Define the Actor
+crab = Actor(crab_idle)
 ```

@@ -12,15 +12,11 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "santa.png"
-frame_width = 32
-frame_height = 32
-santa_idle = Sprite(filename, frame_width, frame_height, 0, 6, 5)
-santa_run = Sprite(filename, frame_width, frame_height, 1, 6, 5)
-santa_jump = Sprite(filename, frame_width, frame_height, 2, 8, 5)
+# Note: fps is set to 5 below; adjust as needed
+santa_idle = Sprite("santa", frame_width=32, frame_height=32, row=0, frames=6, fps=5)
+santa_run = Sprite("santa", frame_width=32, frame_height=32, row=1, frames=6, fps=5)
+santa_jump = Sprite("santa", frame_width=32, frame_height=32, row=2, frames=8, fps=5)
 
-# Define SpriteActor
-santa = SpriteActor(santa_idle)
+# Define the Actor
+santa = Actor(santa_idle)
 ```

@@ -33,36 +33,32 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "ninja.png"
-frame_width = 32
-frame_height = 32
-ninja_idle_down = Sprite(filename, frame_width, frame_height, 0, 4, 5)
-ninja_idle_up = Sprite(filename, frame_width, frame_height, 1, 4, 5)
-ninja_idle_left = Sprite(filename, frame_width, frame_height, 2, 4, 5)
-ninja_idle_right = Sprite(filename, frame_width, frame_height, 3, 4, 5)
-ninja_walk_down = Sprite(filename, frame_width, frame_height, 4, 4, 5)
-ninja_walk_up = Sprite(filename, frame_width, frame_height, 5, 4, 5)
-ninja_walk_left = Sprite(filename, frame_width, frame_height, 6, 4, 5)
-ninja_walk_right = Sprite(filename, frame_width, frame_height, 7, 4, 5)
-ninja_attack_down = Sprite(filename, frame_width, frame_height, 8, 4, 5)
-ninja_attack_up = Sprite(filename, frame_width, frame_height, 9, 4, 5)
-ninja_attack_left = Sprite(filename, frame_width, frame_height, 10, 4, 5)
-ninja_attack_right = Sprite(filename, frame_width, frame_height, 11, 4, 5)
-ninja_jump_down = Sprite(filename, frame_width, frame_height, 12, 3, 5)
-ninja_jump_up = Sprite(filename, frame_width, frame_height, 13, 3, 5)
-ninja_jump_left = Sprite(filename, frame_width, frame_height, 14, 3, 5)
-ninja_jump_right = Sprite(filename, frame_width, frame_height, 15, 3, 5)
-ninja_roll_down = Sprite(filename, frame_width, frame_height, 16, 3, 5)
-ninja_roll_up = Sprite(filename, frame_width, frame_height, 17, 3, 5)
-ninja_roll_left = Sprite(filename, frame_width, frame_height, 18, 3, 5)
-ninja_roll_right = Sprite(filename, frame_width, frame_height, 19, 3, 5)
-ninja_hit_down = Sprite(filename, frame_width, frame_height, 20, 2, 5)
-ninja_hit_up = Sprite(filename, frame_width, frame_height, 21, 2, 5)
-ninja_hit_left = Sprite(filename, frame_width, frame_height, 22, 2, 5)
-ninja_hit_right = Sprite(filename, frame_width, frame_height, 23, 2, 5)
+# Note: fps is set to 5 below; adjust as needed
+ninja_idle_down = Sprite("ninja", frame_width=32, frame_height=32, row=0, frames=4, fps=5)
+ninja_idle_up = Sprite("ninja", frame_width=32, frame_height=32, row=1, frames=4, fps=5)
+ninja_idle_left = Sprite("ninja", frame_width=32, frame_height=32, row=2, frames=4, fps=5)
+ninja_idle_right = Sprite("ninja", frame_width=32, frame_height=32, row=3, frames=4, fps=5)
+ninja_walk_down = Sprite("ninja", frame_width=32, frame_height=32, row=4, frames=4, fps=5)
+ninja_walk_up = Sprite("ninja", frame_width=32, frame_height=32, row=5, frames=4, fps=5)
+ninja_walk_left = Sprite("ninja", frame_width=32, frame_height=32, row=6, frames=4, fps=5)
+ninja_walk_right = Sprite("ninja", frame_width=32, frame_height=32, row=7, frames=4, fps=5)
+ninja_attack_down = Sprite("ninja", frame_width=32, frame_height=32, row=8, frames=4, fps=5)
+ninja_attack_up = Sprite("ninja", frame_width=32, frame_height=32, row=9, frames=4, fps=5)
+ninja_attack_left = Sprite("ninja", frame_width=32, frame_height=32, row=10, frames=4, fps=5)
+ninja_attack_right = Sprite("ninja", frame_width=32, frame_height=32, row=11, frames=4, fps=5)
+ninja_jump_down = Sprite("ninja", frame_width=32, frame_height=32, row=12, frames=3, fps=5)
+ninja_jump_up = Sprite("ninja", frame_width=32, frame_height=32, row=13, frames=3, fps=5)
+ninja_jump_left = Sprite("ninja", frame_width=32, frame_height=32, row=14, frames=3, fps=5)
+ninja_jump_right = Sprite("ninja", frame_width=32, frame_height=32, row=15, frames=3, fps=5)
+ninja_roll_down = Sprite("ninja", frame_width=32, frame_height=32, row=16, frames=3, fps=5)
+ninja_roll_up = Sprite("ninja", frame_width=32, frame_height=32, row=17, frames=3, fps=5)
+ninja_roll_left = Sprite("ninja", frame_width=32, frame_height=32, row=18, frames=3, fps=5)
+ninja_roll_right = Sprite("ninja", frame_width=32, frame_height=32, row=19, frames=3, fps=5)
+ninja_hit_down = Sprite("ninja", frame_width=32, frame_height=32, row=20, frames=2, fps=5)
+ninja_hit_up = Sprite("ninja", frame_width=32, frame_height=32, row=21, frames=2, fps=5)
+ninja_hit_left = Sprite("ninja", frame_width=32, frame_height=32, row=22, frames=2, fps=5)
+ninja_hit_right = Sprite("ninja", frame_width=32, frame_height=32, row=23, frames=2, fps=5)
 
-# Define SpriteActor
-ninja = SpriteActor(ninja_idle_down)
+# Define the Actor
+ninja = Actor(ninja_idle_down)
 ```

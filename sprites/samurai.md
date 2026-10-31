@@ -15,18 +15,14 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "samurai.png"
-frame_width = 24
-frame_height = 32
-samurai_idle = Sprite(filename, frame_width, frame_height, 0, 8, 5)
-samurai_run = Sprite(filename, frame_width, frame_height, 1, 8, 5)
-samurai_jump = Sprite(filename, frame_width, frame_height, 2, 4, 5)
-samurai_fall = Sprite(filename, frame_width, frame_height, 3, 4, 5)
-samurai_hurt = Sprite(filename, frame_width, frame_height, 4, 2, 5)
-samurai_die = Sprite(filename, frame_width, frame_height, 5, 14, 5)
+# Note: fps is set to 5 below; adjust as needed
+samurai_idle = Sprite("samurai", frame_width=24, frame_height=32, row=0, frames=8, fps=5)
+samurai_run = Sprite("samurai", frame_width=24, frame_height=32, row=1, frames=8, fps=5)
+samurai_jump = Sprite("samurai", frame_width=24, frame_height=32, row=2, frames=4, fps=5)
+samurai_fall = Sprite("samurai", frame_width=24, frame_height=32, row=3, frames=4, fps=5)
+samurai_hurt = Sprite("samurai", frame_width=24, frame_height=32, row=4, frames=2, fps=5)
+samurai_die = Sprite("samurai", frame_width=24, frame_height=32, row=5, frames=14, fps=5)
 
-# Define SpriteActor
-samurai = SpriteActor(samurai_idle)
+# Define the Actor
+samurai = Actor(samurai_idle)
 ```

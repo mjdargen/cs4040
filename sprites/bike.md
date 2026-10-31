@@ -10,13 +10,9 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "bike.png"
-frame_width = 64
-frame_height = 64
-bike_move = Sprite(filename, frame_width, frame_height, 0, 15, 5)
+# Note: fps is set to 5 below; adjust as needed
+bike_move = Sprite("bike", frame_width=64, frame_height=64, row=0, frames=15, fps=5)
 
-# Define SpriteActor
-bike = SpriteActor(bike_move)
+# Define the Actor
+bike = Actor(bike_move)
 ```

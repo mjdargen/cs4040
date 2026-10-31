@@ -14,17 +14,13 @@
 
 **Code Example:**
 ```python
-# Sprite(filename, frame_width, frame_height, row_number, frame_count, fps)
-# Note: FPS set to 5 in examples below, adjust as needed)
-filename = "frog_full.png"
-frame_width = 36
-frame_height = 20
-frog_full_idle = Sprite(filename, frame_width, frame_height, 0, 8, 5)
-frog_full_jump = Sprite(filename, frame_width, frame_height, 1, 7, 5)
-frog_full_eat = Sprite(filename, frame_width, frame_height, 2, 6, 5)
-frog_full_hurt = Sprite(filename, frame_width, frame_height, 3, 4, 5)
-frog_full_die = Sprite(filename, frame_width, frame_height, 4, 9, 5)
+# Note: fps is set to 5 below; adjust as needed
+frog_full_idle = Sprite("frog_full", frame_width=36, frame_height=20, row=0, frames=8, fps=5)
+frog_full_jump = Sprite("frog_full", frame_width=36, frame_height=20, row=1, frames=7, fps=5)
+frog_full_eat = Sprite("frog_full", frame_width=36, frame_height=20, row=2, frames=6, fps=5)
+frog_full_hurt = Sprite("frog_full", frame_width=36, frame_height=20, row=3, frames=4, fps=5)
+frog_full_die = Sprite("frog_full", frame_width=36, frame_height=20, row=4, frames=9, fps=5)
 
-# Define SpriteActor
-frog_full = SpriteActor(frog_full_idle)
+# Define the Actor
+frog_full = Actor(frog_full_idle)
 ```
