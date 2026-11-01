@@ -1,5 +1,5 @@
 # carrot.aseprite
-**Image Size:** 1472x32
+**Image Size:** 640x160
 
 **Frame Size:** 32x32
 

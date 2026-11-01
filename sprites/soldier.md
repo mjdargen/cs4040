@@ -1,5 +1,5 @@
 # soldier.aseprite
-**Image Size:** 336x24
+**Image Size:** 192x48
 
 **Frame Size:** 24x24
 

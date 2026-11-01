@@ -1,5 +1,5 @@
 # piggy.aseprite
-**Image Size:** 180x20
+**Image Size:** 100x40
 
 **Frame Size:** 20x20
 

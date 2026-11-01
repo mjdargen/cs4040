@@ -1,5 +1,5 @@
 # crab.aseprite
-**Image Size:** 512x16
+**Image Size:** 128x64
 
 **Frame Size:** 32x16
 

@@ -1,6 +1,7 @@
 # mine
 .vscode
 assets
+audio_originals
 reference
 pgzero_examples
 pygame_examples

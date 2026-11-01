@@ -1,49 +1,73 @@
+"""Convert WAV and MP3 files in the sounds and music folders to OGG.
+
+Pygame can't play every kind of WAV file, and some computers can't play MP3,
+but OGG works everywhere. This also renames the files with
+lowercase_filenames.py first.
+
+The original files are moved to an audio_originals folder, so that the game
+loads the new OGG files. (Pygame Zero Plus loads a .wav or .mp3 before an .ogg
+with the same name.)
+
+Needs ffmpeg: https://ffmpeg.org (on macOS: brew install ffmpeg).
+"""
 import os
+import shutil
 import subprocess
+import sys
+from pathlib import Path
+
 from lowercase_filenames import rename_files
 
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-
-TARGETS = {
-    "sounds": os.path.join(BASE_DIR, "..", "sounds"),
-    "music": os.path.join(BASE_DIR, "..", "music"),
-}
+# The scripts in utils/ always work on the project folder above them
+PROJECT_DIR = Path(__file__).resolve().parent.parent
+FOLDERS = ["sounds", "music"]
+ORIGINALS_DIR = PROJECT_DIR / "audio_originals"
 
 AUDIO_EXTENSIONS = (".wav", ".mp3")
 
 
-def convert_audio_files(directory, remove_original=False):
-    for root, _, files in os.walk(directory):
-        for file in files:
-            if file.lower().endswith(AUDIO_EXTENSIONS):
-                old_path = os.path.join(root, file)
-                base, _ = os.path.splitext(old_path)
-                ogg_path = base + ".ogg"
+def convert_audio_files(directory):
+    """Convert the WAV and MP3 files in `directory`, and move the originals."""
+    for root, _, files in os.walk(str(directory)):
+        for file in sorted(files):
+            if not file.lower().endswith(AUDIO_EXTENSIONS):
+                continue
+            old_path = Path(root) / file
+            ogg_path = old_path.with_suffix(".ogg")
+            print("Converting: {} -> {}".format(file, ogg_path.name))
 
-                print(f"Converting: {file} → {os.path.basename(ogg_path)}")
+            command = [
+                "ffmpeg", "-y", "-loglevel", "error",
+                "-i", str(old_path),
+                "-c:a", "libvorbis", "-q:a", "5",  # good quality OGG Vorbis
+                str(ogg_path),
+            ]
+            if subprocess.run(command).returncode != 0:
+                print("Couldn't convert {}; it was left as it was.".format(file))
+                continue
 
-                subprocess.run(
-                    ["ffmpeg", "-y", "-i", old_path, ogg_path],
-                    check=True,
-                )
-
-                if remove_original:
-                    os.remove(old_path)
+            # Move the original out of the way, keeping its folder structure
+            backup = ORIGINALS_DIR / old_path.relative_to(PROJECT_DIR)
+            backup.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(old_path), str(backup))
 
 
 def main():
-    remove_sounds = input("Remove original files in sounds folder? (y/n): ").lower() == "y"
-    remove_music = input("Remove original files in music folder? (y/n): ").lower() == "y"
+    if shutil.which("ffmpeg") is None:
+        sys.exit(
+            "This needs ffmpeg, which isn't installed (or isn't on your PATH).\n"
+            "Get it from https://ffmpeg.org, or on macOS run: brew install ffmpeg"
+        )
 
-    if os.path.exists(TARGETS["sounds"]):
-        rename_files(TARGETS["sounds"])
-        convert_audio_files(TARGETS["sounds"], remove_sounds)
-
-    if os.path.exists(TARGETS["music"]):
-        rename_files(TARGETS["music"])
-        convert_audio_files(TARGETS["music"], remove_music)
+    for folder in FOLDERS:
+        directory = PROJECT_DIR / folder
+        if directory.exists():
+            rename_files(directory)
+            convert_audio_files(directory)
 
     print("Done converting audio.")
+    if ORIGINALS_DIR.exists():
+        print("The original files are in {}. Delete it once you're happy with the new ones.".format(ORIGINALS_DIR))
 
 
 if __name__ == "__main__":

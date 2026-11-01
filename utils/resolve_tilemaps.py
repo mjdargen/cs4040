@@ -1,181 +1,230 @@
+"""Move Tiled maps, and the tilesets and images they use, into the maps folder.
+
+Pygame Zero Plus loads maps from the maps folder, so a map saved in Downloads,
+or one whose tileset image is still in Downloads, can't be found. This finds
+the maps in the project folder, the maps folder, Downloads and the Desktop,
+moves them and everything they use into maps, and fixes the paths in them.
+
+It shows what it will do and asks before changing anything:
+
+    python resolve_tilemaps.py          (Windows)
+    python3 resolve_tilemaps.py         (macOS and Linux)
+
+Add --yes to skip the question.
+"""
+import argparse
+import filecmp
 import os
 import shutil
+import sys
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-PROJECT_DIR = os.path.abspath(os.path.join(BASE_DIR, ".."))
-MAPS_DIR = os.path.join(PROJECT_DIR, "maps")
-
-TMX_EXT = ".tmx"
-TSX_EXT = ".tsx"
-IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp", ".bmp")
-
-
-def ensure_maps_folder():
-    os.makedirs(MAPS_DIR, exist_ok=True)
-
-
-def find_files(extension, search_dirs):
-    matches = []
-
-    for search_dir in search_dirs:
-        if not os.path.exists(search_dir):
-            continue
-
-        for root, _, files in os.walk(search_dir):
-            for file in files:
-                if file.lower().endswith(extension):
-                    matches.append(os.path.join(root, file))
-
-    return matches
-
-
-def find_by_basename(filename):
-    matches = []
-
-    for root, _, files in os.walk(PROJECT_DIR):
-        for file in files:
-            if file == filename:
-                matches.append(os.path.join(root, file))
-
-    return matches
-
-
-def get_unique_path(destination_folder, filename):
-    base, ext = os.path.splitext(filename)
-    candidate = os.path.join(destination_folder, filename)
-
-    count = 2
-    while os.path.exists(candidate):
-        candidate = os.path.join(destination_folder, f"{base}_{count}{ext}")
-        count += 1
-
-    return candidate
-
-
-def move_to_maps(path):
-    path = os.path.abspath(path)
-
-    if os.path.dirname(path) == os.path.abspath(MAPS_DIR):
-        return path
-
-    destination = os.path.join(MAPS_DIR, os.path.basename(path))
-
-    if os.path.exists(destination):
-        if os.path.samefile(path, destination):
-            return destination
-
-        destination = get_unique_path(MAPS_DIR, os.path.basename(path))
-
-    print(f"Moving {path} -> {destination}")
-    shutil.move(path, destination)
-
-    return destination
-
-
-def resolve_reference(source_file, referenced_path):
-    if not referenced_path:
-        return None
-
-    source_folder = os.path.dirname(source_file)
-
-    direct_path = os.path.abspath(os.path.join(source_folder, referenced_path))
-
-    if os.path.exists(direct_path):
-        return direct_path
-
-    filename = os.path.basename(referenced_path)
-    matches = find_by_basename(filename)
-
-    if matches:
-        return matches[0]
-
-    return None
-
-
-def fix_tmx_file(tmx_path):
-    tree = ET.parse(tmx_path)
-    root = tree.getroot()
-
-    changed = False
-
-    for tileset in root.findall("tileset"):
-        source = tileset.get("source")
-
-        if not source:
-            continue
-
-        tsx_path = resolve_reference(tmx_path, source)
-
-        if tsx_path is None:
-            print(f"Could not find tileset: {source}")
-            continue
-
-        new_tsx_path = move_to_maps(tsx_path)
-        new_source = os.path.basename(new_tsx_path)
-
-        if source != new_source:
-            tileset.set("source", new_source)
-            changed = True
-
-        fix_tsx_file(new_tsx_path)
-
-    if changed:
-        tree.write(tmx_path, encoding="UTF-8", xml_declaration=True)
-        print(f"Updated TMX references: {tmx_path}")
-
-
-def fix_tsx_file(tsx_path):
-    tree = ET.parse(tsx_path)
-    root = tree.getroot()
-
-    image = root.find("image")
-
-    if image is None:
-        print(f"No image tag found in: {tsx_path}")
-        return
-
-    source = image.get("source")
-
-    if not source:
-        print(f"No image source found in: {tsx_path}")
-        return
-
-    image_path = resolve_reference(tsx_path, source)
-
-    if image_path is None:
-        print(f"Could not find tilesheet image: {source}")
-        return
-
-    new_image_path = move_to_maps(image_path)
-    new_source = os.path.basename(new_image_path)
-
-    if source != new_source:
-        image.set("source", new_source)
-        tree.write(tsx_path, encoding="UTF-8", xml_declaration=True)
-        print(f"Updated TSX image reference: {tsx_path}")
+SCRIPT_DIR = Path(__file__).resolve().parent
+# The project is the folder this script is in, or the one above utils/
+PROJECT_DIR = SCRIPT_DIR.parent if SCRIPT_DIR.name == "utils" else SCRIPT_DIR
+MAPS_DIR = PROJECT_DIR / "maps"
+# Other places where students often save maps and tilesets
+OTHER_PLACES = [Path.home() / "Downloads", Path.home() / "Desktop"]
+# Files in these project folders may also be used by the game, so they are
+# copied into maps instead of moved
+GAME_FOLDERS = ["images", "sprites", "sounds", "music", "fonts"]
 
 
 def main():
-    ensure_maps_folder()
+    parser = argparse.ArgumentParser(description="Move Tiled maps and what they use into the maps folder.")
+    parser.add_argument("--yes", action="store_true", help="don't ask before moving files")
+    args = parser.parse_args()
 
-    search_dirs = [
-        PROJECT_DIR,
-        MAPS_DIR,
-    ]
+    print("Project folder: {}".format(PROJECT_DIR))
+    plan = Plan()
+    for tmx in find_maps():
+        plan.add_file(tmx)
 
-    tmx_files = find_files(TMX_EXT, search_dirs)
+    if not plan.moves and not plan.copies and not plan.path_fixes() and not plan.missing:
+        print("Everything is already in the maps folder.")
+        return
+    plan.show()
+    if not plan.moves and not plan.copies and not plan.path_fixes():
+        return
+    if not args.yes:
+        answer = input("\nGo ahead? [y/N] ").strip().lower()
+        if answer not in ("y", "yes"):
+            print("Nothing was changed.")
+            return
+    plan.carry_out()
 
-    for tmx_path in tmx_files:
-        new_tmx_path = move_to_maps(tmx_path)
-        fix_tmx_file(new_tmx_path)
 
-    tsx_files = find_files(TSX_EXT, [MAPS_DIR])
+def find_maps():
+    """The .tmx files in the project folder, maps folder, Downloads and Desktop."""
+    maps = list(PROJECT_DIR.glob("*.tmx"))
+    if MAPS_DIR.is_dir():
+        maps += MAPS_DIR.rglob("*.tmx")
+    for place in OTHER_PLACES:
+        if place.is_dir():
+            maps += place.glob("*.tmx")
+    return sorted(set(p.resolve() for p in maps))
 
-    for tsx_path in tsx_files:
-        fix_tsx_file(tsx_path)
 
-    print("Done fixing tilemap files.")
+def short(path):
+    """`path` written short, e.g. ~/Downloads/tiles.png, for printing."""
+    for base, start in [(PROJECT_DIR.resolve(), ""), (Path.home().resolve(), "~/")]:
+        if is_inside(path, base):
+            return start + path.relative_to(base).as_posix()
+    return str(path)
+
+
+def is_inside(path, folder):
+    try:
+        path.relative_to(folder)
+        return True
+    except ValueError:
+        return False
+
+
+class Plan:
+    """Work out where every file goes before changing anything."""
+
+    def __init__(self):
+        self.destinations = {}  # file -> where it will be
+        self.moves = []  # (from, to)
+        self.copies = []  # (from, to)
+        self.trees = {}  # .tmx/.tsx file -> parsed XML
+        self.references = []  # (owner file, element, attribute, target file)
+        self.missing = []  # (owner file, path written in it)
+
+    def add_file(self, path):
+        """Plan where `path` goes, and follow the files it refers to."""
+        if path in self.destinations:
+            return
+        self.destinations[path] = self.choose_destination(path)
+
+        if path.suffix.lower() not in (".tmx", ".tsx"):
+            return
+        try:
+            tree = ET.parse(str(path))
+        except ET.ParseError as error:
+            print("Skipping {}: it isn't a valid Tiled file ({}).".format(path, error))
+            return
+        self.trees[path] = tree
+        for element in tree.getroot().iter():
+            # tileset: a separate .tsx file. image: a tileset's image, a tile's
+            # image in an image-collection tileset, or an image layer.
+            if element.tag in ("tileset", "image") and element.get("source"):
+                written = element.get("source")
+                target = self.find_reference(path, written)
+                if target is None:
+                    self.missing.append((path, written))
+                    continue
+                self.references.append((path, element, target))
+                self.add_file(target)
+
+    def find_reference(self, owner, written):
+        """Find the file that `written`, a path in `owner`, means."""
+        direct = owner.parent / written
+        if direct.is_file():
+            return direct.resolve()
+        # Not where the path says (e.g. a path from another computer, or the
+        # file was moved). Look for a file with the same name nearby.
+        name = Path(written.replace("\\", "/")).name
+        places = [owner.parent, MAPS_DIR] + OTHER_PLACES
+        for place in places:
+            if (place / name).is_file():
+                return (place / name).resolve()
+        for place in [MAPS_DIR] + OTHER_PLACES:
+            if place.is_dir():
+                for match in place.rglob(name):
+                    if match.is_file():
+                        return match.resolve()
+        return None
+
+    def choose_destination(self, path):
+        if is_inside(path, MAPS_DIR.resolve()):
+            return path
+        destination = self.free_name(path)
+        if any(is_inside(path, (PROJECT_DIR / folder).resolve()) for folder in GAME_FOLDERS):
+            self.copies.append((path, destination))
+        else:
+            self.moves.append((path, destination))
+        return destination
+
+    def free_name(self, path):
+        """Where `path` goes in maps: its own name, or e.g. tiles_2.png if a
+        different tiles.png is already there."""
+        taken = set(self.destinations.values())
+        candidate = MAPS_DIR / path.name
+        if candidate.is_file() and candidate not in taken and filecmp.cmp(str(path), str(candidate), shallow=False):
+            return candidate  # the same file is already there
+        name = path.name
+        count = 2
+        while candidate.exists() or candidate in taken:
+            candidate = MAPS_DIR / "{}_{}{}".format(Path(name).stem, count, Path(name).suffix)
+            count += 1
+        return candidate
+
+    def new_path_text(self, owner, target):
+        """How `owner`, in its new place, should refer to `target`."""
+        relative = os.path.relpath(str(self.destinations[target]), str(self.destinations[owner].parent))
+        return relative.replace(os.sep, "/")
+
+    def path_fixes(self):
+        return [
+            (owner, element, self.new_path_text(owner, target))
+            for owner, element, target in self.references
+            if element.get("source") != self.new_path_text(owner, target)
+        ]
+
+    def show(self):
+        if self.moves:
+            print("\nThese files will be moved into the maps folder:")
+            for source, destination in sorted(self.moves):
+                print("  {}  ->  maps/{}".format(short(source), destination.name))
+        if self.copies:
+            print("\nThese are used by your game too, so they will be copied into maps, not moved:")
+            for source, destination in sorted(self.copies):
+                print("  {}  ->  maps/{}".format(short(source), destination.name))
+        fixes = self.path_fixes()
+        if fixes:
+            print("\nPaths inside these files will be fixed:")
+            for owner in sorted(set(owner for owner, _, _ in fixes)):
+                print("  maps/{}".format(self.destinations[owner].name))
+        self.show_missing()
+
+    def show_missing(self):
+        if self.missing:
+            print("\nThese files couldn't be found anywhere. Put them in the maps folder, then run this again:")
+            for owner, written in self.missing:
+                print("  {}  (used by {})".format(written, owner.name))
+
+    def carry_out(self):
+        MAPS_DIR.mkdir(exist_ok=True)
+        fixes = self.path_fixes()
+        for source, destination in self.moves:
+            if destination.exists():
+                source.unlink()  # an identical file is already in maps
+            else:
+                shutil.move(str(source), str(destination))
+        for source, destination in self.copies:
+            if not destination.exists():
+                shutil.copy2(str(source), str(destination))
+        for _, element, new_text in fixes:
+            element.set("source", new_text)
+        for owner in set(owner for owner, _, _ in fixes):
+            self.trees[owner].write(str(self.destinations[owner]), encoding="UTF-8", xml_declaration=True)
+        print("\nDone.")
+
+        reopen = sorted(
+            destination.name for _, destination in self.moves + self.copies
+            if destination.suffix.lower() in (".tmx", ".tsx")
+        )
+        if reopen:
+            print(
+                "\nTiled still has these at their old places, and won't find them there any "
+                "more. Close them in Tiled, then open them again from the maps folder:"
+            )
+            for name in reopen:
+                print("  maps/{}".format(name))
+        self.show_missing()
 
 
 if __name__ == "__main__":

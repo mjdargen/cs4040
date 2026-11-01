@@ -1,5 +1,5 @@
 # panda.aseprite
-**Image Size:** 1176x16
+**Image Size:** 192x112
 
 **Frame Size:** 24x16
 

@@ -1,5 +1,5 @@
 # fox.aseprite
-**Image Size:** 1344x16
+**Image Size:** 336x112
 
 **Frame Size:** 24x16
 

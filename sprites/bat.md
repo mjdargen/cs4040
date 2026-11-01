@@ -1,5 +1,5 @@
 # bat.aseprite
-**Image Size:** 384x32
+**Image Size:** 128x96
 
 **Frame Size:** 32x32
 

@@ -1,5 +1,5 @@
 # samurai.aseprite
-**Image Size:** 960x32
+**Image Size:** 336x192
 
 **Frame Size:** 24x32
 

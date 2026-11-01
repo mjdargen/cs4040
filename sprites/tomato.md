@@ -1,5 +1,5 @@
 # tomato.aseprite
-**Image Size:** 928x32
+**Image Size:** 352x128
 
 **Frame Size:** 32x32
 

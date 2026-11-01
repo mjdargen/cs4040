@@ -1,5 +1,5 @@
 # santa.aseprite
-**Image Size:** 640x32
+**Image Size:** 256x96
 
 **Frame Size:** 32x32
 

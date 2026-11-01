@@ -1,170 +1,169 @@
+"""Write a .md file for each Aseprite sprite in the sprites folder.
+
+Each .md file gives the sprite sheet's size, frame size and animations, and
+example code that makes a Sprite for each animation. It also writes
+sprites/README.md, which links to them all.
+
+It expects each .aseprite file to have been exported next to it as a .png
+sprite sheet with one animation (tag) per row, the way spritesheet_creator.py
+lays them out.
+
+Needs Aseprite (https://www.aseprite.org) and Pillow.
+"""
+import json
 import os
 import re
+import shutil
 import subprocess
-import json
+import sys
+import tempfile
+from pathlib import Path
+
+from PIL import Image
+
+# The scripts in utils/ always work on the project folder above them
+PROJECT_DIR = Path(__file__).resolve().parent.parent
+SPRITES_DIR = PROJECT_DIR / "sprites"
+
+# Where Aseprite is usually installed, if it isn't on the PATH
+ASEPRITE_LOCATIONS = [
+    "C:/Program Files/Aseprite/Aseprite.exe",
+    "C:/Program Files (x86)/Steam/steamapps/common/Aseprite/Aseprite.exe",
+    "/Applications/Aseprite.app/Contents/MacOS/aseprite",
+    "~/Library/Application Support/Steam/steamapps/common/Aseprite/Aseprite.app/Contents/MacOS/aseprite",
+    "~/.steam/steam/steamapps/common/Aseprite/aseprite",
+    "~/.local/share/Steam/steamapps/common/Aseprite/aseprite",
+]
+
+
+def find_aseprite():
+    for name in ("aseprite", "Aseprite"):
+        found = shutil.which(name)
+        if found:
+            return found
+    for location in ASEPRITE_LOCATIONS:
+        path = Path(location).expanduser()
+        if path.is_file():
+            return str(path)
+    sys.exit(
+        "Couldn't find Aseprite. Install it from https://www.aseprite.org, or add the "
+        "folder it's in to your PATH."
+    )
 
 
 def to_snake_case(name):
-    new_name = ""
-    for i, letter in enumerate(name):
-        if letter.isupper():
-            if i != 0 and name[i - 1] not in "_ ":
-                new_name += "_"
-            new_name += letter.lower()
-        else:
-            new_name += letter
-
-    # normalize
-    new_name = new_name.replace(" ", "_")
-    while "__" in new_name:
-        new_name = new_name.replace("__", "_")
-
-    return new_name.strip("_")
+    """Running Left -> running_left, runLeft -> run_left"""
+    name = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", name)
+    name = re.sub(r"[^a-z0-9]+", "_", name.lower())
+    return name.strip("_")
 
 
-def extract_metadata(aseprite_path, file_path):
-    """Extract metadata from a given Aseprite file using the Aseprite CLI."""
-    try:
-        # Command to extract metadata and animation tags using the Aseprite CLI
-        command = [
-            aseprite_path,
-            "-b",  # Run in background mode (no UI)
-            "--list-tags",  # List tags (animations)
-            "--data",
-            "temp.json",  # Export sprite metadata to a temporary JSON file
-            file_path,
-        ]
-
-        # Run the subprocess command
+def extract_metadata(aseprite, file_path):
+    """Get the frames and tags (animations) of an Aseprite file."""
+    with tempfile.TemporaryDirectory() as tmp:
+        data_file = Path(tmp) / "data.json"
+        command = [aseprite, "-b", "--list-tags", "--data", str(data_file), str(file_path)]
         result = subprocess.run(command, capture_output=True, text=True)
-
-        if result.returncode != 0:
-            print(f"Error processing {file_path}: {result.stderr}")
+        if result.returncode != 0 or not data_file.exists():
+            print("  Error: Aseprite couldn't read it. {}".format(result.stderr.strip()))
             return None
-
-        # Read the generated JSON file to extract metadata
-        if not os.path.exists("temp.json"):
-            print(f"No JSON output for {file_path}.")
-            return None
-
-        with open("temp.json", "r") as json_file:
-            metadata = json.load(json_file)
-
-        # Clean up the temporary JSON file
-        os.remove("temp.json")
-
-        return metadata
-
-    except Exception as e:
-        print(f"An error occurred while processing {file_path}: {e}")
-        return None
+        with open(data_file, encoding="utf-8") as f:
+            return json.load(f)
 
 
-def generate_documentation(metadata, output_file):
-    """Generate a Markdown documentation file from metadata."""
-    try:
-        # Extract relevant metadata
-        image_width = metadata["meta"]["size"]["w"]
-        image_height = metadata["meta"]["size"]["h"]
-        frame = list(metadata["frames"].keys())[0]
-        frame_width = metadata["frames"][frame]["frame"]["w"]
-        frame_height = metadata["frames"][frame]["frame"]["h"]
-        tags = metadata["meta"].get("frameTags", [])
+def generate_documentation(metadata, sheet_path, output_file):
+    """Write the .md file for one sprite. Return False if it couldn't."""
+    first_frame = next(iter(metadata["frames"].values()))
+    frame_width = first_frame["frame"]["w"]
+    frame_height = first_frame["frame"]["h"]
+    tags = metadata["meta"].get("frameTags", [])
+    animations = [{"name": tag["name"], "frames": abs(tag["from"] - tag["to"]) + 1} for tag in tags]
 
-        number_of_animations = len(tags)
-        animation_data = []
-        for tag in tags:
-            animation_data.append({"name": tag["name"], "num_frames": abs(tag["from"] - tag["to"]) + 1})
+    # The size of the sprite sheet the game loads, not Aseprite's own layout
+    with Image.open(sheet_path) as sheet:
+        sheet_width, sheet_height = sheet.size
+    columns = sheet_width // frame_width
+    rows = sheet_height // frame_height
+    if len(animations) > rows:
+        print("  Warning: {} animations, but {} only has {} rows of {}-pixel frames.".format(
+            len(animations), sheet_path.name, rows, frame_height))
+    for row, animation in enumerate(animations):
+        if animation["frames"] > columns:
+            print("  Warning: '{}' has {} frames, but {} only fits {} across.".format(
+                animation["name"], animation["frames"], sheet_path.name, columns))
 
-        # Write Markdown file
-        with open(output_file, "w") as doc:
-            filename = os.path.splitext(os.path.basename(output_file))[0]
-            doc.write(f"# {filename}.aseprite\n")
-            doc.write(f"**Image Size:** {image_width}x{image_height}\n\n")
-            doc.write(f"**Frame Size:** {frame_width}x{frame_height}\n\n")
-            doc.write(f"**Number of Animations:** {number_of_animations}\n\n")
-            doc.write("**Animations:**\n")
-            for i, anim in enumerate(animation_data):
-                doc.write(f"- {anim['name']} - row {i} - {anim['num_frames']} frames\n")
+    name = output_file.stem
+    sprite_name = to_snake_case(name)
+    lines = [
+        "# {}.aseprite".format(name),
+        "**Image Size:** {}x{}\n".format(sheet_width, sheet_height),
+        "**Frame Size:** {}x{}\n".format(frame_width, frame_height),
+        "**Number of Animations:** {}\n".format(len(animations)),
+        "**Animations:**",
+    ]
+    for row, animation in enumerate(animations):
+        lines.append("- {} - row {} - {} frames".format(animation["name"], row, animation["frames"]))
+    lines += ["", "**Code Example:**", "```python", "# Note: fps is set to 5 below; adjust as needed"]
+    for row, animation in enumerate(animations):
+        lines.append(
+            '{}_{} = Sprite("{}", frame_width={}, frame_height={}, row={}, frames={}, fps=5)'.format(
+                sprite_name, to_snake_case(animation["name"]), name, frame_width, frame_height, row,
+                animation["frames"]))
+    if animations:
+        lines += ["", "# Define the Actor", "{} = Actor({}_{})".format(
+            sprite_name, sprite_name, to_snake_case(animations[0]["name"]))]
+    lines.append("```")
 
-            doc.write("\n**Code Example:**\n```python\n")
-            doc.write("# Note: fps is set to 5 below; adjust as needed\n")
-            sprite_name = filename.lower()
-            first = None
-            for i, anim in enumerate(animation_data):
-                anim_name = to_snake_case(anim["name"])
-                if i == 0:
-                    first = f"{sprite_name}_{anim_name}"
-                doc.write(
-                    f'{sprite_name}_{anim_name} = Sprite("{filename}", frame_width={frame_width}, '
-                    f"frame_height={frame_height}, row={i}, frames={anim['num_frames']}, fps=5)\n"
-                )
-            doc.write("\n# Define the Actor\n")
-            doc.write(f"{sprite_name} = Actor({first})\n")
-            doc.write("```\n")
-
-        print(f"Documentation written to {output_file}")
-    except Exception as e:
-        print(f"Failed to write documentation for {output_file}: {e}")
+    output_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print("  Wrote {}".format(output_file.name))
+    return True
 
 
 def generate_readme(directory):
-    """Generate a README.md file with an overview and links to all sprite documentation."""
-    try:
-        # Find all Markdown files in the directory (excluding README.md)
-        markdown_files = [f for f in os.listdir(directory) if f.endswith(".md") and f != "README.md"]
-
-        # Write the main README.md file
-        with open(os.path.join(directory, "README.md"), "w") as readme:
-            readme.write("# Sprite Documentation\n\n")
-            readme.write(
-                "This folder contains some example sprites that you can use for your projects. The `.png` files are the spritesheets you will use in your project. The `.md` files (also linked below) provide dimensions and information about each of the animations in the sprite. The `.aseprite` files are the source files used to create the sprites.\n\n"
-                "Read the `.md` files first by clicking the links for the sprite you want below. Each file provides metadata about the sprite, a breakdown of animations, and example usage code.\n\n"
-            )
-            readme.write("## Sprite Documentation Files\n\n")
-
-            if markdown_files:
-                for md_file in sorted(markdown_files):  # Sort for consistency
-                    sprite_name = os.path.splitext(md_file)[0]
-                    readme.write(f"- [{sprite_name}]({md_file})\n")
-            else:
-                readme.write("No sprite documentation files have been generated yet.\n")
-
-        print("README.md generated successfully.")
-    except Exception as e:
-        print(f"An error occurred while generating README.md: {e}")
+    """Write README.md, linking to every sprite's .md file."""
+    markdown_files = sorted(p.name for p in directory.glob("*.md") if p.name != "README.md")
+    lines = [
+        "# Sprite Documentation",
+        "",
+        "This folder contains some example sprites that you can use for your projects. The `.png` files "
+        "are the spritesheets you will use in your project. The `.md` files (also linked below) provide "
+        "dimensions and information about each of the animations in the sprite. The `.aseprite` files "
+        "are the source files used to create the sprites.",
+        "",
+        "Read the `.md` files first by clicking the links for the sprite you want below. Each file "
+        "provides metadata about the sprite, a breakdown of animations, and example usage code.",
+        "",
+        "## Sprite Documentation Files",
+        "",
+    ]
+    if markdown_files:
+        lines += ["- [{}]({})".format(Path(md).stem, md) for md in markdown_files]
+    else:
+        lines.append("No sprite documentation files have been generated yet.")
+    (directory / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print("Wrote README.md")
 
 
-def process_all_files(directory, aseprite_path="Aseprite"):
-    """Process all Aseprite files in the given directory."""
-    try:
-        # Find all .aseprite files in the directory
-        aseprite_files = [os.path.join(directory, f) for f in os.listdir(directory) if f.endswith(".aseprite")]
+def process_all_files(directory):
+    aseprite_files = sorted(directory.glob("*.aseprite"))
+    if not aseprite_files:
+        print("No .aseprite files found in {}.".format(directory))
+        return
+    aseprite = find_aseprite()
 
-        if not aseprite_files:
-            print("No .aseprite files found in the directory.")
-            return
+    for file_path in aseprite_files:
+        print("Processing {}...".format(file_path.name))
+        sheet_path = file_path.with_suffix(".png")
+        if not sheet_path.exists():
+            print("  Skipped: there's no {}. Export the sprite sheet from Aseprite first.".format(sheet_path.name))
+            continue
+        metadata = extract_metadata(aseprite, file_path)
+        if metadata is not None:
+            generate_documentation(metadata, sheet_path, file_path.with_suffix(".md"))
 
-        for file_path in aseprite_files:
-            print(f"Processing {file_path}...")
-
-            # Extract metadata
-            metadata = extract_metadata(aseprite_path, file_path)
-            if metadata is None:
-                continue
-
-            # Generate documentation
-            output_file = os.path.splitext(file_path)[0] + ".md"
-            generate_documentation(metadata, output_file)
-
-        # Generate the main README.md file
-        generate_readme(directory)
-
-    except Exception as e:
-        print(f"An error occurred while processing files: {e}")
+    generate_readme(directory)
 
 
 if __name__ == "__main__":
-    directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "sprites")
-    process_all_files(directory)
+    process_all_files(SPRITES_DIR)
     print("Done.")

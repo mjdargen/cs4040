@@ -1,5 +1,5 @@
 # frog_full.aseprite
-**Image Size:** 1224x20
+**Image Size:** 324x100
 
 **Frame Size:** 36x20
 

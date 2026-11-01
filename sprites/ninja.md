@@ -1,5 +1,5 @@
 # ninja.aseprite
-**Image Size:** 2560x32
+**Image Size:** 128x768
 
 **Frame Size:** 32x32
 

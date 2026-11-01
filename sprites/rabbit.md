@@ -1,5 +1,5 @@
 # rabbit.aseprite
-**Image Size:** 384x16
+**Image Size:** 64x128
 
 **Frame Size:** 16x16
 

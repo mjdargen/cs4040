@@ -1,5 +1,5 @@
 # wolf.aseprite
-**Image Size:** 576x24
+**Image Size:** 96x192
 
 **Frame Size:** 24x24
 

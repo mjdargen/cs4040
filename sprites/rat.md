@@ -1,5 +1,5 @@
 # rat.aseprite
-**Image Size:** 128x16
+**Image Size:** 32x64
 
 **Frame Size:** 16x16
 

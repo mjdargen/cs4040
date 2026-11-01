@@ -1,5 +1,5 @@
 # cat.aseprite
-**Image Size:** 320x20
+**Image Size:** 192x40
 
 **Frame Size:** 32x20
 

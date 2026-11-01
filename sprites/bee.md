@@ -1,5 +1,5 @@
 # bee.aseprite
-**Image Size:** 256x16
+**Image Size:** 64x64
 
 **Frame Size:** 16x16
 

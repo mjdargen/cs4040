@@ -1,10 +1,21 @@
-import os
+"""Export the frames of Piskel (.piskel) files as PNG images and a GIF.
+
+Put .piskel files in utils/input_piskels. The frames are saved in
+utils/output_assets as name_00.png, name_01.png, ... and name.gif.
+"""
 import re
 import json
 import base64
 import io
+from collections import deque
 from pathlib import Path
+from typing import List
+
 from PIL import Image
+
+UTILS_DIR = Path(__file__).resolve().parent
+INPUT_FOLDER = UTILS_DIR / "input_piskels"
+OUTPUT_FOLDER = UTILS_DIR / "output_assets"
 
 
 def decode_base64_png(data_url: str) -> Image.Image:
@@ -82,7 +93,7 @@ def extract_chunk_frames(chunk: dict, fw: int, fh: int) -> dict:
     return frames
 
 
-def build_layer_frames(layer: dict, fw: int, fh: int) -> list[Image.Image]:
+def build_layer_frames(layer: dict, fw: int, fh: int) -> List[Image.Image]:
     count = layer["frameCount"]
     frames = [Image.new("RGBA", (fw, fh), (0, 0, 0, 0)) for _ in range(count)]
 
@@ -95,22 +106,16 @@ def build_layer_frames(layer: dict, fw: int, fh: int) -> list[Image.Image]:
     return frames
 
 
-def remove_white_background(img: Image.Image, threshold=240) -> Image.Image:
-    img = img.convert("RGBA")
+def has_white_background(img: Image.Image, threshold=240) -> bool:
+    """True if all four corners are solid white, i.e. the frame was drawn on a
+    white background instead of a transparent one."""
     pixels = img.load()
-
-    for y in range(img.height):
-        for x in range(img.width):
-            r, g, b, a = pixels[x, y]
-
-            # detect near-white pixels
-            if r >= threshold and g >= threshold and b >= threshold:
-                pixels[x, y] = (r, g, b, 0)
-
-    return img
-
-
-from collections import deque
+    width, height = img.size
+    for x, y in [(0, 0), (width - 1, 0), (0, height - 1), (width - 1, height - 1)]:
+        r, g, b, a = pixels[x, y]
+        if a == 0 or min(r, g, b) < threshold:
+            return False
+    return True
 
 
 def remove_white_border_background(img: Image.Image, threshold=240) -> Image.Image:
@@ -195,13 +200,16 @@ def composite_frames(data: dict):
 
             canvas.alpha_composite(img)
 
-        canvas = remove_white_border_background(canvas)
+        # Only remove a white background if there is one, so that white
+        # artwork (clouds, snow, ghosts) touching the edges is kept
+        if has_white_background(canvas):
+            canvas = remove_white_border_background(canvas)
         final.append(canvas)
 
     return final, fps
 
 
-def save_frames(frames: list[Image.Image], output_dir: Path, base_name: str):
+def save_frames(frames: List[Image.Image], output_dir: Path, base_name: str):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     for i, frame in enumerate(frames):
@@ -209,7 +217,7 @@ def save_frames(frames: list[Image.Image], output_dir: Path, base_name: str):
         frame.save(frame_path)
 
 
-def save_gif(frames: list[Image.Image], fps: int, gif_path: Path):
+def save_gif(frames: List[Image.Image], fps: int, gif_path: Path):
     if not frames:
         raise ValueError("No frames to save.")
 
@@ -243,12 +251,10 @@ def convert_one(piskel_path: Path, output_dir: Path):
     print(f"{piskel_path.name} -> {base_name}_##.png, {base_name}.gif")
 
 
-def batch_convert(input_dir: str, output_dir: str):
-    input_dir = Path(input_dir)
-    output_dir = Path(output_dir)
-
+def batch_convert(input_dir: Path, output_dir: Path):
     if not input_dir.exists():
-        raise ValueError(f"Input folder does not exist: {input_dir}")
+        print(f"Put your .piskel files in {input_dir}, then run this again.")
+        return
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -266,7 +272,4 @@ def batch_convert(input_dir: str, output_dir: str):
 
 
 if __name__ == "__main__":
-    INPUT_FOLDER = "utils/input_piskels"
-    OUTPUT_FOLDER = "utils/output_assets"
-
     batch_convert(INPUT_FOLDER, OUTPUT_FOLDER)
