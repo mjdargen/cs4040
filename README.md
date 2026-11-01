@@ -52,20 +52,22 @@ Please follow each original creator's licensing terms before reusing or redistri
 
 ## Utilities
 
+To make sprite sheets and tile sheets from other art (sheets, strips, GIFs, Aseprite and Piskel files, and tile sets with gaps), use **[Sprite Studio](https://dargen.io/sprite-studio/)** in your browser. It shows previews of the sheet and its animations before you download, and writes the `Sprite(...)` code for you.
+
 The [utils/](utils/) folder has scripts for preparing game assets:
 
-| Script                    | What it does                                                                  |
-| ------------------------- | ----------------------------------------------------------------------------- |
-| `spritesheet_creator.py`  | Combines PNG and GIF animations into one sprite sheet, with documentation     |
-| `spritesheet_packer.py`   | Stacks PNG animation strips into a sprite sheet, one strip per row            |
-| `spritesheet_cropper.py`  | Removes padding around the frames of a sprite sheet                           |
-| `piskel_unpacker.py`      | Exports frames from Piskel files                                              |
-| `sprite_documenter.py`    | Writes documentation for Aseprite sprite files                                |
-| `tile_packer.py`          | Removes the margins around each tile of a tileset or sprite sheet             |
-| `resolve_tilemaps.py`     | Moves Tiled maps, and the tilesets and images they use, from Downloads, the Desktop or the project folder into `maps/`, and fixes the paths in them |
-| `convert_audio.py`        | Converts WAV and MP3 files to OGG, moving the originals to `audio_originals/` |
-| `lowercase_filenames.py`  | Renames asset files to lowercase names that Pygame Zero Plus can load         |
-| `update.py`               | Sets up a workspace with Pygame Zero Plus and this repository's games         |
+| Script                   | What it does                                                                                                                                        |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `spritesheet_creator.py` | Combines PNG and GIF animations into one sprite sheet, with documentation                                                                           |
+| `spritesheet_packer.py`  | Stacks PNG animation strips into a sprite sheet, one strip per row                                                                                  |
+| `spritesheet_cropper.py` | Removes padding around the frames of a sprite sheet                                                                                                 |
+| `piskel_unpacker.py`     | Exports frames from Piskel files                                                                                                                    |
+| `sprite_documenter.py`   | Writes documentation for Aseprite sprite files                                                                                                      |
+| `tile_packer.py`         | Removes the margins around each tile of a tileset or sprite sheet                                                                                   |
+| `resolve_tilemaps.py`    | Moves Tiled maps, and the tilesets and images they use, from Downloads, the Desktop or the project folder into `maps/`, and fixes the paths in them |
+| `convert_audio.py`       | Converts WAV and MP3 files to OGG, moving the originals to `audio_originals/`                                                                       |
+| `lowercase_filenames.py` | Renames asset files to lowercase names that Pygame Zero Plus can load                                                                               |
+| `update.py`              | Sets up a workspace with Pygame Zero Plus and this repository's games                                                                               |
 
 `update.py` is for setting up a separate folder to work in. Copy it into that folder and run it there: `python update.py pygame` installs Pygame Zero Plus, and `python update.py all` copies in the examples and assets (use `python3` on macOS and Linux). Run it with no options to see everything it can do. It works on Windows, macOS and Linux with Python 3.6 or newer, and needs nothing else installed, not even git.
 
