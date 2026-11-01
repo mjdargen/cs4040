@@ -32,18 +32,22 @@ SCRIPT_IN_REPO = "utils/update.py"
 PGZERO_ZIP = "https://github.com/mjdargen/pgzero/archive/{version}.zip"
 PGZERO_DIR = Path.home() / "pgzero"
 
-ASSET_FOLDERS = ["images", "music", "sounds", "sprites"]
+ASSET_FOLDERS = ["images", "music", "sounds", "sprites", "fonts"]
 EXAMPLE = re.compile(r"e(\d\d).*\.py$")
 
 # pygame-dev's pgzrun command contains this, so `pygame` knows to remove it
 DEV_MARKER = "pygame-dev"
+# pygame-dev puts this file in its copy of Pygame Zero Plus, so `pygame` knows
+# the folder is safe to delete
+DEV_MARKER_FILE = ".installed-by-update-py"
 
 MODES = """\
 modes:
-  pygame               install the latest Pygame Zero Plus release (including alphas/betas)
+  pygame               install the latest Pygame Zero Plus release (including alphas/betas),
+                       and remove pygame-dev if it was used
   pygame-dev [VERSION] use Pygame Zero Plus straight from GitHub, to test before a release;
                        VERSION is a branch, tag or commit (default: main)
-  assets               copy the images, music, sounds and sprites folders
+  assets               copy the images, music, sounds, sprites and fonts folders
   images               copy the images folder, and remove the other asset folders
   examples [N]         copy the example games, or only e00 to eN
   all [N]              copy the assets and the examples
@@ -230,12 +234,36 @@ def pgzrun_command():
     return scripts_folder() / ("pgzrun.cmd" if os.name == "nt" else "pgzrun")
 
 
+def is_dev_copy(folder, pth):
+    """True if `folder` is a copy of Pygame Zero Plus that pygame-dev made.
+
+    A git clone someone made there themselves never counts, so it's never
+    deleted. Copies made before the marker file existed are recognized by the
+    .pth file pointing at them, or by being a GitHub download of pgzero-plus
+    (which has no .git folder).
+    """
+    if not folder.is_dir() or (folder / ".git").exists():
+        return False
+    if (folder / DEV_MARKER_FILE).exists():
+        return True
+    if pth.exists() and str(folder) in pth.read_text():
+        return True
+    pyproject = folder / "pyproject.toml"
+    return (folder / "src" / "pgzero").is_dir() and pyproject.is_file() and 'name = "pgzero-plus"' in pyproject.read_text()
+
+
 def stop_using_pgzero_dev():
-    """Undo pygame-dev, so that the installed release is used."""
-    remove(pth_file())
+    """Undo pygame-dev, so that the installed release is used: remove its
+    .pth file, its pgzrun command and its copy of Pygame Zero Plus."""
+    pth = pth_file()
+    remove_copy = is_dev_copy(PGZERO_DIR, pth)
+    remove(pth)
     command = pgzrun_command()
     if command.exists() and DEV_MARKER in command.read_text():
         command.unlink()
+    if remove_copy:
+        print("Removing the pygame-dev copy of Pygame Zero Plus in {}...".format(PGZERO_DIR))
+        remove(PGZERO_DIR)
 
 
 def update_pygame():
@@ -265,6 +293,13 @@ def update_pygame_dev(version):
     # pip can't build Pygame Zero Plus from GitHub on older Pythons (e.g.
     # 3.6), so instead of installing it, point Python at a copy of its files.
 
+    # Don't overwrite a folder someone made there themselves
+    if PGZERO_DIR.exists() and not is_dev_copy(PGZERO_DIR, pth_file()):
+        sys.exit(
+            "Error: {} already exists and wasn't made by this script (it may be your own "
+            "copy of the code). Move or rename it, then run this again.".format(PGZERO_DIR)
+        )
+
     # Install the release first, to get pygame, numpy etc., then remove it so
     # the copy from GitHub is used instead.
     update_pygame()
@@ -276,6 +311,9 @@ def update_pygame_dev(version):
         print("Putting it in {}...".format(PGZERO_DIR))
         remove(PGZERO_DIR)
         shutil.move(str(repo), str(PGZERO_DIR))
+    (PGZERO_DIR / DEV_MARKER_FILE).write_text(
+        "Made by update.py pygame-dev. Running update.py pygame deletes this folder.\n"
+    )
 
     # A .pth file adds a folder to Python's path
     pth = pth_file()
