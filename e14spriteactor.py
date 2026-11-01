@@ -5,7 +5,7 @@ from pgzero.builtins import *
 # Pygame Constants
 WIDTH = 800
 HEIGHT = 400
-TITLE = "Sprite Actor"
+TITLE = "Actors using Sprites!"
 
 # A Sprite is one animation cut from a sprite sheet:
 #   "fox"            name of the sprite sheet, stored in the "sprites" folder
@@ -34,7 +34,7 @@ bee = Actor(bee_fly)
 
 # runs once at beginning before draw()/update()
 def start():
-    fox.scale = 4  # scales up the Actor size by four
+    fox.scale = 4  # scale before positioning
     fox.bottomleft = (0, HEIGHT)
     fox.velocity_x = 0
     bee.pos = (WIDTH / 2, 80)

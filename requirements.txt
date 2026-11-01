@@ -1,0 +1,15 @@
+# Install with: python -m pip install -r requirements.txt
+
+# Pygame Zero Plus, for the games and examples. It also installs pygame (or
+# pygame-ce) and numpy. The version names an alpha, so pip will also install
+# alpha and beta releases.
+pgzero-plus>=0.0.1a1
+
+# The sprite sheet and tile tools in utils/ (Image.Resampling needs 9.1)
+Pillow>=9.1
+
+# pygame_examples/glcube.py
+PyOpenGL
+
+# utils/convert_audio.py also needs ffmpeg, which isn't a Python package:
+# install it from https://ffmpeg.org
