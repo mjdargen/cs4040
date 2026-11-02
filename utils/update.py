@@ -10,6 +10,7 @@ workspace folder, with the Python you use for your games:
 Run it with no mode to see everything it can do. It downloads from GitHub, so
 git doesn't need to be installed.
 """
+
 import argparse
 import io
 import os
@@ -49,8 +50,10 @@ modes:
                        VERSION is a branch, tag or commit (default: main)
   assets               copy the images, music, sounds, sprites and fonts folders
   images               copy the images folder, and remove the other asset folders
-  examples [N]         copy the example games, or only e00 to eN
-  all [N]              copy the assets and the examples
+  examples [N]         copy all examples, or only e00 through eN
+  examples START END   copy examples eSTART through eEND (inclusive)
+  all [N]              copy assets and all examples, or only e00 through eN
+  all START END        copy assets and examples eSTART through eEND (inclusive)
   clean-examples       remove the example games
   clean-assets         remove the asset folders
   clean-all            remove the asset folders and the example games
@@ -65,16 +68,25 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("mode", nargs="?")
-    parser.add_argument("extra", nargs="?", help="N for examples/all, VERSION for pygame-dev")
+    parser.add_argument("extra", nargs="*", help="N or START END for examples/all, VERSION for pygame-dev")
     args = parser.parse_args()
+
+    first, last = 0, None
+    if args.mode in ("examples", "all"):
+        first, last = example_range(args.extra)
+    elif args.mode == "pygame-dev":
+        if len(args.extra) > 1:
+            parser.error("pygame-dev takes at most one VERSION")
+    elif args.extra:
+        parser.error("{} does not take additional arguments".format(args.mode))
 
     modes = {
         "pygame": update_pygame,
-        "pygame-dev": lambda: update_pygame_dev(args.extra or "main"),
+        "pygame-dev": lambda: update_pygame_dev(args.extra[0] if args.extra else "main"),
         "assets": lambda: copy_from_cs4040(assets=True),
         "images": lambda: copy_from_cs4040(assets=True, only_images=True),
-        "examples": lambda: copy_from_cs4040(examples=True, last=example_number(args.extra)),
-        "all": lambda: copy_from_cs4040(assets=True, examples=True, last=example_number(args.extra)),
+        "examples": lambda: copy_from_cs4040(examples=True, first=first, last=last),
+        "all": lambda: copy_from_cs4040(assets=True, examples=True, first=first, last=last),
         "clean-examples": clean_examples,
         "clean-assets": clean_assets,
         "clean-all": lambda: (clean_assets(), clean_examples()),
@@ -90,12 +102,17 @@ def main():
     print("Done.")
 
 
-def example_number(text):
-    if text is None:
-        return None
-    if not text.isdigit():
-        sys.exit("Error: the last example must be a whole number, e.g. 13.")
-    return int(text)
+def example_range(values):
+    if len(values) > 2 or any(not value.isdigit() for value in values):
+        sys.exit("Error: use a whole number N, or START END, e.g. 3 13.")
+    if not values:
+        return 0, None
+    if len(values) == 1:
+        return 0, int(values[0])
+    first, last = int(values[0]), int(values[1])
+    if first > last:
+        sys.exit("Error: START must be less than or equal to END.")
+    return first, last
 
 
 def check_not_the_repository():
@@ -131,13 +148,13 @@ def download_zip(url, into):
     return top, commit
 
 
-def copy_from_cs4040(assets=False, examples=False, last=None, only_images=False):
+def copy_from_cs4040(assets=False, examples=False, first=0, last=None, only_images=False):
     with tempfile.TemporaryDirectory() as tmp:
         repo, _ = download_zip(CS4040_ZIP, Path(tmp))
         if assets:
             copy_assets(repo, ["images"] if only_images else ASSET_FOLDERS)
         if examples:
-            copy_examples(repo, last)
+            copy_examples(repo, first, last)
 
 
 def copy_assets(repo, folders):
@@ -152,13 +169,14 @@ def example_files(folder):
     return [p for p in folder.iterdir() if p.is_file() and EXAMPLE.match(p.name)]
 
 
-def copy_examples(repo, last):
+def copy_examples(repo, first, last):
     print("Copying example files...")
     clean_examples(quiet=True)
     if last is not None:
-        print("Keeping examples e00 through e{:02d}...".format(last))
+        print("Keeping examples e{:02d} through e{:02d}...".format(first, last))
     for path in example_files(repo):
-        if last is None or int(EXAMPLE.match(path.name).group(1)) <= last:
+        number = int(EXAMPLE.match(path.name).group(1))
+        if number >= first and (last is None or number <= last):
             shutil.copy(str(path), path.name)
 
 
@@ -249,7 +267,9 @@ def is_dev_copy(folder, pth):
     if pth.exists() and str(folder) in pth.read_text():
         return True
     pyproject = folder / "pyproject.toml"
-    return (folder / "src" / "pgzero").is_dir() and pyproject.is_file() and 'name = "pgzero-plus"' in pyproject.read_text()
+    return (
+        (folder / "src" / "pgzero").is_dir() and pyproject.is_file() and 'name = "pgzero-plus"' in pyproject.read_text()
+    )
 
 
 def stop_using_pgzero_dev():

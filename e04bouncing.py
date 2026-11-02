@@ -41,15 +41,15 @@ def update():
         # bounce off right wall
         alien.velocity_x = -alien.velocity_x
     # check bottommost part of Actor
-    elif alien.bottom >= HEIGHT:
+    if alien.bottom >= HEIGHT:
         # bounce off bottom wall
         alien.velocity_y = -alien.velocity_y
     # check leftmost part of Actor
-    elif alien.left < 0:
+    if alien.left < 0:
         # bounce off left wall
         alien.velocity_x = -alien.velocity_x
     # check bottommost part of Actor
-    elif alien.top < 0:
+    if alien.top < 0:
         # bounce off top wall
         alien.velocity_y = -alien.velocity_y
 
