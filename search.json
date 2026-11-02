@@ -1,0 +1,1376 @@
+[
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html",
+    "href": "course/u5m1/u5m1-cheatsheet.html",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "",
+    "text": "Every code block has a copy button (top right). Download the printable PDF.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#assets",
+    "href": "course/u5m1/u5m1-cheatsheet.html#assets",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Assets",
+    "text": "Assets\n\n\n\n\nFolder\nHolds\nFile types\n\n\n\n\nimages\npictures for Actors\n.png\n\n\nsounds\nsound effects\n.wav or .ogg\n\n\nmusic\nbackground music\n.ogg or .mp3\n\n\n\nAsset names follow the same rules as Python variables: all lowercase, no spaces, only letters, numbers and underscores, and they must begin with a letter. Refer to an asset by its name without the extension: \"alien\", not \"alien.png\".\nThis module adds two more folders: keep your spritesheets in sprites, and your tilemaps, tilesets, and tilesheets in maps.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#actor-extensions",
+    "href": "course/u5m1/u5m1-cheatsheet.html#actor-extensions",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Actor extensions",
+    "text": "Actor extensions\nAdditional functionality added to Actors:\nplayer.angle  # gets current angle in degrees\nplayer.angle += 1  # increments angle by 1\nplayer.scale  # gets current Actor scaling factor\nplayer.scale = 2.0  # sets the Actor scaling factor\nplayer.flip_v = True  # flips the Actor vertically\nplayer.flip_v = False  # turns off vertical flip, default\nplayer.flip_h = True  # flips the Actor horizontally\nplayer.flip_h = False  # turns off horizontal flip, default\nplayer.opacity = 0.6  # sets opacity, from 0.0 to 1.0\nplayer.visible = False  # hides it; still moves and collides",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#collision-rectangle",
+    "href": "course/u5m1/u5m1-cheatsheet.html#collision-rectangle",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Collision rectangle",
+    "text": "Collision rectangle\nA custom collision rectangle is centered on the Actor. The first line makes it 10 wide and 20 tall; the second makes it 50 wide and 20 tall, with its center moved by (5, -5).\nplayer.collision_rect = (10, 20)  # (width, height)\nplayer.collision_rect = (50, 20, 5, -5)  # (width, height, offset_x, offset_y)\nIn draw():\nplayer.draw_collision_rect()  # shows the collision rect, useful for debugging",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#sprites",
+    "href": "course/u5m1/u5m1-cheatsheet.html#sprites",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Sprites",
+    "text": "Sprites\n\nUse Sprite to make an animation from a spritesheet in the sprites folder for an Actor.\n\nimage_name: sprite sheet filename\nframe_width: width of each frame in pixels\nframe_height: height of frame in pixels\nrow (optional): row to start from, counting from 0. Defaults to 0.\nframes (optional): number of frames. Defaults to the whole row.\nfps (optional): frames per second. Defaults to 10.\ntransparent_color (optional): color to make see-through. Defaults to none.\nloop (optional): False plays once. Defaults to True.\n\n# define Sprites\nidle = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n              row=0, frames=2, fps=3)\nwalk_left = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n                   row=6, frames=2, fps=10)\nwalk_right = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n                    row=7, frames=2, fps=10)\n\n# make an Actor that plays a Sprite\nrabbit = Actor(idle)",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#controlling-animations",
+    "href": "course/u5m1/u5m1-cheatsheet.html#controlling-animations",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Controlling animations",
+    "text": "Controlling animations\nfox.sprite gets the Sprite the Actor is playing. Setting it switches the animation. Setting the same Sprite again restarts it only if it has finished, so it is safe to set every frame.\nidle = Sprite(\"fox\", 32, 32, row=0)\nattack = Sprite(\"fox\", 32, 32, row=3, loop=False)  # plays once\nfox = Actor(idle)\nfox.sprite = attack  # same Sprite again: replays only if it has finished\nif fox.animation_finished:  # True once a loop=False Sprite ends\n    fox.sprite = idle\nfox.frame  # current frame number, starting at 0\nfox.pause_animation()  # freezes on the current frame\nfox.resume_animation()  # resumes animation on current frame",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#tile-map-constants",
+    "href": "course/u5m1/u5m1-cheatsheet.html#tile-map-constants",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Tile map constants",
+    "text": "Tile map constants\nHelpful constants for 2D games using a tilemap.\n# our tile map constants\nTILE_SIZE = 18  # length of a tile, in pixels\nMAP_WIDTH = 30  # width of the tilemap, in tiles\nMAP_HEIGHT = 20  # height of the tilemap, in tiles\nSCALE = 2  # global scaling factor\n# can use to compute screen dimensions\nWIDTH = TILE_SIZE * MAP_WIDTH * SCALE\nHEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#tilesheets-tilesets-and-tilemaps",
+    "href": "course/u5m1/u5m1-cheatsheet.html#tilesheets-tilesets-and-tilemaps",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Tilesheets, tilesets, and tilemaps",
+    "text": "Tilesheets, tilesets, and tilemaps\n\n\nTilesheet: a .png image file that contains many small images (tiles) arranged in a grid. Each tile is a piece of the world (grass, wall, water, etc.). This is the art asset created by the artist.\nTileset: a .tsx file created in Tiled that defines how to use a tilesheet. It tells Tiled things like tile size, spacing, and any extra data. It references a tilesheet. (Tileset and tilesheet are often used interchangeably.)\nTilemap: a .tmx file created in Tiled that defines the actual level layout. It uses one or more tilesets and organizes tiles into layers (ground, walls, hazards, etc.). This is the level design.\n\nNote: the tilesheet, tileset, and tilemap must all be stored in the maps folder of your project.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#importing-a-tilemap",
+    "href": "course/u5m1/u5m1-cheatsheet.html#importing-a-tilemap",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Importing a tilemap",
+    "text": "Importing a tilemap\n\nUse load_tile_map_actors() to import your map made in Tiled into your game based on tile map layers.\n\ntmx_name: path to the TMX file defining the tilemap, created in Tiled.\nscale: scaling factor applied to the map for display in Pygame.\n\nTo get individual lists of Actors from each Tiled layer, use the layer name. Using different layers allows you to treat each list of Actors differently.\nmap_layers = load_tile_map_actors(\"L1.tmx\", scale=SCALE)\nground = map_layers[\"ground\"]  # ground / background scenery to draw\nwalls = map_layers[\"walls\"]  # obstacles for player to collide with\nhazards = map_layers[\"hazards\"]  # \"bad\" objects for player collision\nhearts = map_layers[\"hearts\"]  # \"good\" objects or collectables",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#wall-collisions",
+    "href": "course/u5m1/u5m1-cheatsheet.html#wall-collisions",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Wall collisions",
+    "text": "Wall collisions\nExample of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction.\n# left keyboard button pressed\nif keyboard.LEFT:\n    rabbit.x -= 2  # move to left\n    rabbit.sprite = walk_left  # change to left sprite\n    # check for collision\n    collision_index = rabbit.collidelist(walls)\n    # did collision occur after moving to left?\n    if collision_index != -1:\n        # if so, put character's left edge on right edge of wall\n        rabbit.left = walls[collision_index].right",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html",
+    "href": "course/u4m1/u4m1-cheatsheet.html",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "",
+    "text": "Every code block has a copy button (top right). Download the printable PDF.",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html#assets",
+    "href": "course/u4m1/u4m1-cheatsheet.html#assets",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "Assets",
+    "text": "Assets\n\n\n\n\nFolder\nHolds\nFile types\n\n\n\n\nimages\npictures for Actors\n.png\n\n\nsounds\nsound effects\n.wav or .ogg\n\n\nmusic\nbackground music\n.ogg or .mp3\n\n\n\nAsset names follow the same rules as Python variables: all lowercase, no spaces, only letters, numbers and underscores, and they must begin with a letter. Refer to an asset by its name without the extension: \"alien\", not \"alien.png\".",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html#lists",
+    "href": "course/u4m1/u4m1-cheatsheet.html#lists",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "Lists",
+    "text": "Lists\n\n\nLists: data type used to organize a collection of items.\nItems in lists can be ints, strings, Actors, etc.\nIt is an ordered sequence of individual elements.\nAccessible by index.\n\nNote: indexes start at 0! You can also use negative indexes, which count from the end.\nnums = [2, 4, 6, 8, 10, 12]\nnums[0]  # accesses 1st element - index 0\nnums[2]  # accesses 3rd element - index 2\nnums[-1]  # accesses last element\nnums[1] = 8  # updates 2nd element\nprint(nums)  # prints the new list",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html#list-operations",
+    "href": "course/u4m1/u4m1-cheatsheet.html#list-operations",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "List operations",
+    "text": "List operations\n\n\nDefinition: creating a list using square brackets [].\nAccess: getting a value by index.\nUpdate: replacing a value at an index.\nlen(name_of_list): returns how many items are in the list.\n.append(item): adds item to the end of the list.\n.remove(item): removes item by value.\n.pop(index): removes and returns the item at index. Removes the last item if no index is provided.\n.clear(): removes all items.\n\npets = [\"cat\", \"dog\", \"fish\"]\npets[1]  # dog\npets[0] = \"pig\"  # [\"pig\", \"dog\", \"fish\"]\nlen(pets)  # 3\npets.remove(\"fish\")  # [\"pig\", \"dog\"]\npets.append(\"rat\")  # [\"pig\", \"dog\", \"rat\"]\nitem = pets.pop(0)  # [\"dog\", \"rat\"]\nitem = pets.pop()  # [\"dog\"]\npets.clear()  # []",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html#looping-over-a-list",
+    "href": "course/u4m1/u4m1-cheatsheet.html#looping-over-a-list",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "Looping over a list",
+    "text": "Looping over a list\n\n\nA for loop goes through each item in a list one at a time.\nThe loop starts at the first item and continues to the end.\nThe loop iteration variable stores the current item.\nThe loop runs once for each item in the list.\n\n\n\nList variable names are typically plural (enemies) and our iteration variable names are typically singular (enemy).\nThe iteration variable grabs a single element from the list at a time, in order.",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html#drawing-a-list-of-actors",
+    "href": "course/u4m1/u4m1-cheatsheet.html#drawing-a-list-of-actors",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "Drawing a list of Actors",
+    "text": "Drawing a list of Actors\nWe use a for loop to iterate/loop over a list of Actors. This shows how to draw each Actor in a list.\ndef draw():\n    screen.clear()\n    for enemy in enemies:  # one Actor at a time, in order\n        enemy.draw()",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html#moving-a-list-of-actors",
+    "href": "course/u4m1/u4m1-cheatsheet.html#moving-a-list-of-actors",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "Moving a list of Actors",
+    "text": "Moving a list of Actors\nAnother loop/list example: iterate over a list of Actors to change each individual Actor’s position by its own velocity variables.\ndef update():\n    for enemy in enemies:  # each Actor moves by its own velocity\n        enemy.x += enemy.velocity_x\n        enemy.y += enemy.velocity_y",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html#collisions-with-a-list",
+    "href": "course/u4m1/u4m1-cheatsheet.html#collisions-with-a-list",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "Collisions with a list",
+    "text": "Collisions with a list\nplayer.collidelist(enemies) returns the index of the enemy in the list that collided with player, or -1 if there was no collision. Use != -1 just to know whether a collision happened (a lose condition). Keep the index to know which item was hit, then pop() that item from the list.\n# check for enemy collision with list\nif player.collidelist(enemies) != -1:  # -1 means no collision\n    game.lose()  # game over\n\n# check for collectible collision with list\ncollision_index = player.collidelist(gems)  # index of the gem hit\nif collision_index != -1:\n    # collected gem, remove from list\n    gems.pop(collision_index)\n    game.score += 1",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-cheatsheet.html#putting-it-all-together",
+    "href": "course/u4m1/u4m1-cheatsheet.html#putting-it-all-together",
+    "title": "Lists & Loops Cheat Sheet",
+    "section": "Putting it all together",
+    "text": "Putting it all together\n\nDefine lists as global variables at the top so they can be accessed across the program.\nIn this program we periodically add enemies to the screen, so start() empties the list (at start and restart) and starts a clock interval that calls spawn_enemy() every 5 seconds.\nspawn_enemy() creates a new enemy Actor, sets its own pos and velocity, and appends it to the list. These apply to that one single Actor, and the variable enemy does not exist outside this function: you have to reach that Actor by iterating through enemies!\ndraw() loops over the list to draw each Actor; update() loops over it to move each Actor, then uses collidelist() for a lose condition and to collect gems.\n\n# globals\nenemies = []\n\n\n# runs once at beginning\ndef start():\n    enemies.clear()\n    clock.schedule_interval(spawn_enemy, 5)\n\n\n# create spawn callback function\ndef spawn_enemy():\n    enemy = Actor(\"alien\")\n    enemy.pos = (100, 100)\n    enemy.velocity_x = random.randint(1, 5)\n    enemy.velocity_y = random.randint(1, 5)\n    enemies.append(enemy)\n\n\ndef draw():\n    screen.clear()\n    for enemy in enemies:  # one Actor at a time, in order\n        enemy.draw()\n    for gem in gems:\n        gem.draw()\n    player.draw()\n\n\ndef update():\n    for enemy in enemies:  # each Actor moves by its own velocity\n        enemy.x += enemy.velocity_x\n        enemy.y += enemy.velocity_y\n\n    # check for enemy collision with list\n    if player.collidelist(enemies) != -1:  # -1 means no collision\n        game.lose()  # game over\n\n    # check for collectible collision with list\n    collision_index = player.collidelist(gems)  # index of the gem hit\n    if collision_index != -1:\n        # collected gem, remove from list\n        gems.pop(collision_index)\n        game.score += 1",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html",
+    "href": "course/u3m2/u3m2-cheatsheet.html",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "",
+    "text": "Every code block has a copy button (top right). Download the printable PDF.\nPygame Zero event hooks · buttons and keys · clock",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#mouse-clicks-on_mouse_down",
+    "href": "course/u3m2/u3m2-cheatsheet.html#mouse-clicks-on_mouse_down",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "Mouse clicks: on_mouse_down()",
+    "text": "Mouse clicks: on_mouse_down()\nA function that is called when a mouse button is pressed. pos is a tuple (x, y) with the coordinate where the mouse clicked; button is the mouse button that was pressed. You must store pos in a global variable to use it in update() or draw().\ndef on_mouse_down(pos, button):  # called when a mouse button is pressed\n    global click_pos  # so update() and draw() can use the click\n    if button == mouse.LEFT:  # which button was pressed\n        click_pos = pos  # (x, y) where the mouse clicked",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#mouse-buttons-mouse.button_name",
+    "href": "course/u3m2/u3m2-cheatsheet.html#mouse-buttons-mouse.button_name",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "Mouse buttons: mouse.<BUTTON_NAME>",
+    "text": "Mouse buttons: mouse.&lt;BUTTON_NAME&gt;\nConstants that represent the buttons on the mouse. Use them to compare with the button that was pressed inside on_mouse_down().\nmouse.LEFT  # left button\nmouse.MIDDLE  # middle button\nmouse.RIGHT  # right button\nmouse.WHEEL_UP  # scroll up\nmouse.WHEEL_DOWN  # scroll down",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#key-pressed-on_key_down",
+    "href": "course/u3m2/u3m2-cheatsheet.html#key-pressed-on_key_down",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "Key pressed: on_key_down()",
+    "text": "Key pressed: on_key_down()\nFunction called when a key is pressed. key represents the key that was pressed. This happens once for each time the key is pressed. Event-based!\ndef on_key_down(key):  # called once per key press\n    if key == keys.LEFT:  # the left key was pressed\n        pass  # do action when left key pressed",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#key-released-on_key_up",
+    "href": "course/u3m2/u3m2-cheatsheet.html#key-released-on_key_up",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "Key released: on_key_up()",
+    "text": "Key released: on_key_up()\nFunction called when a key is released. key represents the key that was released. This happens once for each time the key is released. Event-based!\ndef on_key_up(key):  # called once per key release\n    if key == keys.LEFT:  # the left key was released\n        pass  # do action when left key released",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#key-constants-keys.key_name",
+    "href": "course/u3m2/u3m2-cheatsheet.html#key-constants-keys.key_name",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "Key constants: keys.<KEY_NAME>",
+    "text": "Key constants: keys.&lt;KEY_NAME&gt;\nConstants that represent keys on the keyboard. Use them in an event listener (not update()!) to compare with key. See the rest.\nkeys.LEFT  # left arrow key\nkeys.A  # A key\nkeys.SPACE  # space bar\nkeys.ESCAPE  # Esc key",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#keyboard-polling-keyboard.key_name",
+    "href": "course/u3m2/u3m2-cheatsheet.html#keyboard-polling-keyboard.key_name",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "Keyboard polling: keyboard.<key_name>",
+    "text": "Keyboard polling: keyboard.&lt;key_name&gt;\nA Boolean expression (True/False) that tells you if the key is currently pressed. Use it in update() or in your own functions. This happens as long as the key remains pressed. Polling!\ndef update():\n    if keyboard.left:  # True while the left key is pressed\n        pass  # do something\n    if keyboard.right:  # True while the right key is pressed\n        pass  # do something",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#events-vs.-polling",
+    "href": "course/u3m2/u3m2-cheatsheet.html#events-vs.-polling",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "Events vs. polling",
+    "text": "Events vs. polling\n\n\n\n\n\n\n\n\n\n\nEvent-based input\nPolling input\n\n\n\n\nIdea\nsomething happens → you react\nyou keep checking if something happened\n\n\nExp\nText message notification. Interrupts.\nNotifications silenced. You have to check your phone.\n\n\nGame design\nmouse input, keyboard input, timer event\nchecking keyboard in update()\n\n\nUse case\nsomething should happen once, as an immediate response to an action (e.g. jump button pressed)\nsomething should continue to happen in response to an action (e.g. move while arrow pressed)\n\n\n\ndef on_key_down(key):\n    if key == keys.UP:  # up key pressed\n        player.y -= 10  # once per press\ndef update():\n    if keyboard.d:  # D key held down\n        player.x += 1  # every frame",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#start",
+    "href": "course/u3m2/u3m2-cheatsheet.html#start",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "start()",
+    "text": "start()\n\nAutomatically called before the game begins: place code here to run once at the beginning.\nUsed to set up the initial state.\nUseful later when we restart our games to reset the state and play again!\n\ndef start():  # runs once before draw()/update()\n    global countdown_timer\n    robot.pos = 250, 250  # reset position\n    countdown_timer = 5  # reset timer",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#callback-functions",
+    "href": "course/u3m2/u3m2-cheatsheet.html#callback-functions",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "Callback functions",
+    "text": "Callback functions\n\nCallback functions are functions you will define that will be called when a clock event occurs.\nWe pass just their name (no parentheses) to the clock.schedule() calls. Callbacks can not have arguments.\n# scheduled callback for moving character to random position\ndef move_character():\n    robot.x = random.randint(50, WIDTH - 50)\n    robot.y = random.randint(50, HEIGHT - 50)\nPlace the clock.schedule() calls elsewhere in the code, but be careful where you put them! If you place one somewhere that gets executed every frame, you may end up scheduling a rapidly growing number of callbacks and crash your program. Placing it in start() triggers it once at the beginning:\ndef start():\n    robot.pos = (WIDTH // 2, HEIGHT // 2)\n    clock.schedule_interval(move_character, 2.0)  # every 2 seconds",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#clock.schedule_uniquecallback-delay",
+    "href": "course/u3m2/u3m2-cheatsheet.html#clock.schedule_uniquecallback-delay",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "clock.schedule_unique(callback, delay)",
+    "text": "clock.schedule_unique(callback, delay)\nWaits delay seconds, then calls callback. It cancels any previously scheduled calls to that callback function, so it only will execute once until it is scheduled again.\nclock.schedule_unique(trex_jump, 0.5)  # call trex_jump in 0.5 s, just once",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#clock.schedulecallback-delay",
+    "href": "course/u3m2/u3m2-cheatsheet.html#clock.schedulecallback-delay",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "clock.schedule(callback, delay)",
+    "text": "clock.schedule(callback, delay)\nWaits delay seconds, then calls callback. This adds the scheduled callback to any other calls of it already scheduled.\nclock.schedule(trex_jump, 0.5)  # also call trex_jump in 0.5 s",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#clock.schedule_intervalcallback-interval",
+    "href": "course/u3m2/u3m2-cheatsheet.html#clock.schedule_intervalcallback-interval",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "clock.schedule_interval(callback, interval)",
+    "text": "clock.schedule_interval(callback, interval)\nCalls callback every interval seconds. Be careful to call schedule_interval() only once for a specific callback function. Otherwise, you will schedule additional intervals!\nclock.schedule_interval(spawn_coin, 3.0)  # call spawn_coin every 3 seconds",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#clock.unschedulecallback",
+    "href": "course/u3m2/u3m2-cheatsheet.html#clock.unschedulecallback",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "clock.unschedule(callback)",
+    "text": "clock.unschedule(callback)\nclock.unschedule(trex_jump)  # cancel all scheduled calls to trex_jump",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-cheatsheet.html#clock.clear",
+    "href": "course/u3m2/u3m2-cheatsheet.html#clock.clear",
+    "title": "Event-Driven Programming Cheat Sheet",
+    "section": "clock.clear()",
+    "text": "clock.clear()\nclock.clear()  # unschedule everything",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#actor-extensions-1",
+    "href": "course/u5m1/u5m1-slides.html#actor-extensions-1",
+    "title": "Advanced Pygame Zero",
+    "section": "Actor Extensions",
+    "text": "Actor Extensions\nplayer.angle  # gets current angle in degrees\nplayer.angle += 1  # increments angle by 1\nplayer.scale  # gets current Actor scaling factor\nplayer.scale = 2.0  # sets the Actor scaling factor\nplayer.flip_v = True  # flips the Actor vertically\nplayer.flip_v = False  # turns off vertical flip, default\nplayer.flip_h = True  # flips the Actor horizontally\nplayer.flip_h = False  # turns off horizontal flip, default",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#sprite",
+    "href": "course/u5m1/u5m1-slides.html#sprite",
+    "title": "Advanced Pygame Zero",
+    "section": "Sprite",
+    "text": "Sprite\nidle = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n              row=0, frames=2, fps=3)\n\n\nUse Sprite to make an animation from a spritesheet in the sprites folder for an Actor.\n\nimage_name: sprite sheet filename\nframe_width: width of each frame in pixels\nframe_height: height of frame in pixels\nrow (optional): row to start from, counting from 0. Defaults to 0.\nframes (optional): number of frames. Defaults to the whole row.\nfps (optional): frames per second. Defaults to 10.\ntransparent_color (optional): color to make see-through. Defaults to none.\nloop (optional): False plays once. Defaults to True.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#playing-a-sprite",
+    "href": "course/u5m1/u5m1-slides.html#playing-a-sprite",
+    "title": "Advanced Pygame Zero",
+    "section": "Playing a Sprite",
+    "text": "Playing a Sprite\nActors can play Sprites. Give it a Sprite instead of an image name.\nwalk_left = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n                   row=6, frames=2, fps=10)\nwalk_right = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n                    row=7, frames=2, fps=10)\n# make an Actor that plays a Sprite\nrabbit = Actor(idle)\n...\nrabbit.sprite = walk_right",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#controlling-animations",
+    "href": "course/u5m1/u5m1-slides.html#controlling-animations",
+    "title": "Advanced Pygame Zero",
+    "section": "Controlling Animations",
+    "text": "Controlling Animations\nidle = Sprite(\"fox\", 32, 32, row=0)\nattack = Sprite(\"fox\", 32, 32, row=3, loop=False)  # plays once\nfox = Actor(idle)\nfox.sprite = attack  # same Sprite again: replays only if it has finished\nif fox.animation_finished:  # True once a loop=False Sprite ends\n    fox.sprite = idle\nfox.frame  # current frame number, starting at 0\nfox.pause_animation()  # freezes on the current frame\nfox.resume_animation()  # resumes animation on current frame",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#tilesheets-tilesets-tilemaps",
+    "href": "course/u5m1/u5m1-slides.html#tilesheets-tilesets-tilemaps",
+    "title": "Advanced Pygame Zero",
+    "section": "Tilesheets / Tilesets / Tilemaps",
+    "text": "Tilesheets / Tilesets / Tilemaps\n\n\nTilesheet: a .png image file that contains many small images (tiles) arranged in a grid. Each tile is a piece of the world (grass, wall, water, etc.). This is the art asset created by the artist.\nTileset: a .tsx file created in Tiled that defines how to use a tilesheet. It tells Tiled things like tile size, spacing, and any extra data. It references a tilesheet. (Tileset and tilesheet are often used interchangeably.)\nTilemap: a .tmx file created in Tiled that defines the actual level layout. It uses one or more tilesets and organizes tiles into layers (ground, walls, hazards, etc.). This is the level design.\n\nNote: the tilesheet, tileset, and tilemap must all be stored in the maps folder of your project.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#import-tilemap",
+    "href": "course/u5m1/u5m1-slides.html#import-tilemap",
+    "title": "Advanced Pygame Zero",
+    "section": "Import Tilemap",
+    "text": "Import Tilemap\n\nUse load_tile_map_actors() to import your map made in Tiled into your game based on tile map layers.\n\ntmx_name: path to the TMX file defining the tilemap, created in Tiled.\nscale: scaling factor applied to the map for display in Pygame.\n\nmap_layers = load_tile_map_actors(\"L1.tmx\", scale=SCALE)\nground = map_layers[\"ground\"]  # ground / background scenery to draw\nwalls = map_layers[\"walls\"]  # obstacles for player to collide with\nhazards = map_layers[\"hazards\"]  # \"bad\" objects for player collision\nhearts = map_layers[\"hearts\"]  # \"good\" objects or collectables",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#pygame-constants",
+    "href": "course/u5m1/u5m1-slides.html#pygame-constants",
+    "title": "Advanced Pygame Zero",
+    "section": "Pygame Constants",
+    "text": "Pygame Constants\nYou can create your own constants to compute screen size!\n# our tile map constants\nTILE_SIZE = 18  # length of a tile, in pixels\nMAP_WIDTH = 30  # width of the tilemap, in tiles\nMAP_HEIGHT = 20  # height of the tilemap, in tiles\nSCALE = 2  # global scaling factor\n# can use to compute screen dimensions\nWIDTH = TILE_SIZE * MAP_WIDTH * SCALE\nHEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#tilemap-collisions-1",
+    "href": "course/u5m1/u5m1-slides.html#tilemap-collisions-1",
+    "title": "Advanced Pygame Zero",
+    "section": "TileMap Collisions",
+    "text": "TileMap Collisions",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#handling-wall-collisions",
+    "href": "course/u5m1/u5m1-slides.html#handling-wall-collisions",
+    "title": "Advanced Pygame Zero",
+    "section": "Handling Wall Collisions",
+    "text": "Handling Wall Collisions\n# left keyboard button pressed\nif keyboard.LEFT:\n    rabbit.x -= 2  # move to left\n    rabbit.sprite = walk_left  # change to left sprite\n    # check for collision\n    collision_index = rabbit.collidelist(walls)\n    # did collision occur after moving to left?\n    if collision_index != -1:\n        # if so, put character's left edge on right edge of wall\n        rabbit.left = walls[collision_index].right",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-slides.html#creating-a-list",
+    "href": "course/u4m1/u4m1-slides.html#creating-a-list",
+    "title": "Lists & Loops",
+    "section": "Creating a List",
+    "text": "Creating a List\n\n\nLists: data type used to organize a collection of items.\nItems in lists can be ints, strings, Actors, etc.\nIt is an ordered sequence of individual elements.\nAccessible by index.\n\nnums = [2, 4, 6, 8, 10, 12]\n\n\n\n\n\n\n\n\n\n\n\n\nindex\n0\n1\n2\n3\n4\n5\n\n\n\n\nvalue\n2\n4\n6\n8\n10\n12\n\n\nname\nnums[0]\nnums[1]\nnums[2]\nnums[3]\nnums[4]\nnums[5]",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-slides.html#list-operations",
+    "href": "course/u4m1/u4m1-slides.html#list-operations",
+    "title": "Lists & Loops",
+    "section": "List Operations",
+    "text": "List Operations\n\n\nDefinition: creating a list using square brackets [].\nAccess: getting a value by index.\nUpdate: replacing a value at an index.\nlen(name_of_list): returns how many items are in the list.\n.append(item): adds item to the end of the list.\n.remove(item): removes item by value.\n.pop(index): removes and returns the item at index. Removes the last item if no index is provided.\n.clear(): removes all items.",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-slides.html#example",
+    "href": "course/u4m1/u4m1-slides.html#example",
+    "title": "Lists & Loops",
+    "section": "Example",
+    "text": "Example\nfruits = [\"pear\", \"fig\", \"cherry\"]\nfruits[1]  # fig\nfruits[0] = \"grape\"  # [\"grape\", \"fig\", \"cherry\"]\nlen(fruits)  # 3\nfruits.remove(\"cherry\")  # [\"grape\", \"fig\"]\nfruits.append(\"apple\")  # [\"grape\", \"fig\", \"apple\"]\nitem = fruits.pop()  # [\"grape\", \"fig\"]\nitem = fruits.pop(0)  # [\"fig\"]\nfruits.clear()  # []",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-slides.html#iterating-over-a-list",
+    "href": "course/u4m1/u4m1-slides.html#iterating-over-a-list",
+    "title": "Lists & Loops",
+    "section": "Iterating Over a List",
+    "text": "Iterating Over a List\n\n\nA for loop goes through each item in a list one at a time.\nThe loop starts at the first item and continues to the end.\nThe loop iteration variable stores the current item.\nThe loop runs once for each item in the list.",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-slides.html#creating-a-list-of-actors",
+    "href": "course/u4m1/u4m1-slides.html#creating-a-list-of-actors",
+    "title": "Lists & Loops",
+    "section": "Creating a List of Actors",
+    "text": "Creating a List of Actors\n\n\n\nDefine the list as a global.\nFigure out where to add new Actors. This example does it based on an interval.\nCreate a function to create a new Actor and append it to the list.\n\n\n# globals\nenemies = []\n\n\n# runs once at beginning\ndef start():\n    enemies.clear()\n    clock.schedule_interval(spawn_enemy, 5)\n\n\n# create spawn callback function\ndef spawn_enemy():\n    enemy = Actor(\"alien\")\n    enemy.pos = (100, 100)\n    enemy.velocity_x = random.randint(1, 5)\n    enemy.velocity_y = random.randint(1, 5)\n    enemies.append(enemy)",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-slides.html#drawing-a-list-of-actors",
+    "href": "course/u4m1/u4m1-slides.html#drawing-a-list-of-actors",
+    "title": "Lists & Loops",
+    "section": "Drawing a List of Actors",
+    "text": "Drawing a List of Actors\n\nWe use a for loop to iterate/loop over a list of Actors.\n\n\n\nList variable names are typically plural (enemies) and our iteration variable names are typically singular (enemy).\nThe iteration variable grabs a single element from the list at a time, in order.\nThis shows how to draw all Actors in the list on the screen.\n\ndef draw():\n    screen.clear()\n    for enemy in enemies:  # one Actor at a time, in order\n        enemy.draw()",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-slides.html#moving-a-list-of-actors",
+    "href": "course/u4m1/u4m1-slides.html#moving-a-list-of-actors",
+    "title": "Lists & Loops",
+    "section": "Moving a List of Actors",
+    "text": "Moving a List of Actors\nYou can use the same style of for loop in update().\nSee the example below, where we update each individual Actor’s position based on its own velocity.\ndef update():\n    for enemy in enemies:  # each Actor moves by its own velocity\n        enemy.x += enemy.velocity_x\n        enemy.y += enemy.velocity_y",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m1/u4m1-slides.html#collisions-with-a-list-of-actors",
+    "href": "course/u4m1/u4m1-slides.html#collisions-with-a-list-of-actors",
+    "title": "Lists & Loops",
+    "section": "Collisions with a List of Actors",
+    "text": "Collisions with a List of Actors\n\ncollidelist(): similar to colliderect(), but called on one Actor to detect if there’s a collision with a list of Actors.\nReturns the index of the Actor in the list causing the collision (-1 if none).\n\n# check for enemy collision with list\nif player.collidelist(enemies) != -1:  # -1 means no collision\n    game.lose()  # game over\n\n# check for collectible collision with list\ncollision_index = player.collidelist(gems)  # index of the gem hit\nif collision_index != -1:\n    # collected gem, remove from list\n    gems.pop(collision_index)\n    game.score += 1",
+    "crumbs": [
+      "U4M1 · Lists & Loops",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#event-driven-programming",
+    "href": "course/u3m2/u3m2-slides.html#event-driven-programming",
+    "title": "Event-Driven Programming",
+    "section": "Event-Driven Programming",
+    "text": "Event-Driven Programming\nPer Wikipedia, “In computer programming, event-driven programming is a programming paradigm in which the flow of the program is determined by events such as user actions (mouse clicks, key presses), timers, sensor outputs, or messages from other programs or threads.”\nEvents include but are not limited to:\n\nKey presses\nMouse clicks\nMouse movements\nTimers\n\n\nhttps://pgzero-plus.readthedocs.io/en/latest/hooks.html",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#understanding-order",
+    "href": "course/u3m2/u3m2-slides.html#understanding-order",
+    "title": "Event-Driven Programming",
+    "section": "Understanding Order",
+    "text": "Understanding Order\nstart()\nwhile game_has_not_ended():\n    process_input()\n    update()\n    draw()",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#event-listener",
+    "href": "course/u3m2/u3m2-slides.html#event-listener",
+    "title": "Event-Driven Programming",
+    "section": "Event Listener",
+    "text": "Event Listener\nAn event listener is a bit of code that listens/waits for an event to occur (button press, mouse click, timer expiration) and executes a series of actions when the event occurs.\nEvent listeners allow the game/program to change during gameplay/execution.\nCan be confusing at first. Event listeners seem asynchronous from draw()/update(), but we can think about it as interrupting that flow to tell us something has happened.",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#mouse-events-1",
+    "href": "course/u3m2/u3m2-slides.html#mouse-events-1",
+    "title": "Event-Driven Programming",
+    "section": "Mouse Events",
+    "text": "Mouse Events\ndef on_mouse_down(pos, button):\n    print(f\"Mouse button {button} clicked at {pos}.\")\n\n\nNote: There are also on_mouse_move & on_mouse_up listener functions. But not as commonly used.\n\npos is provided as a tuple, a list-like object that uses parentheses and cannot be changed.\npos = (x, y)\npos[0]  # x\npos[1]  # y\nbutton = button that was clicked",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#mouse-buttons",
+    "href": "course/u3m2/u3m2-slides.html#mouse-buttons",
+    "title": "Event-Driven Programming",
+    "section": "Mouse Buttons",
+    "text": "Mouse Buttons\ndef on_mouse_down(pos, button):\n    if button == mouse.LEFT:\n        print(\"Left mouse button clicked.\")\n    elif button == mouse.RIGHT:\n        print(\"Right mouse button clicked.\")\n    else:\n        print(\"Other mouse button clicked.\")\n\n\nmouse.LEFT  # left button\nmouse.MIDDLE  # middle button\nmouse.RIGHT  # right button\nmouse.WHEEL_UP  # scroll up\nmouse.WHEEL_DOWN  # scroll down\n\nButton constants: mouse.button_name (Button Constants)\n\nNote: There’s also on_mouse_move & on_mouse_up listener functions.",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#events-vs.-polling",
+    "href": "course/u3m2/u3m2-slides.html#events-vs.-polling",
+    "title": "Event-Driven Programming",
+    "section": "Events vs. Polling",
+    "text": "Events vs. Polling\n\n\n\n\n\n\n\n\n\n\nEvent-based input\nPolling input\n\n\n\n\nIdea\nsomething happens → you react\nyou keep checking if something happened\n\n\nExp\nText message notification. Interrupts.\nNotifications silenced. You have to check your phone.\n\n\nGame design\nmouse input, keyboard input, timer event\nchecking keyboard in update()\n\n\nUse case\nsomething should happen once, as an immediate response to an action (e.g. jump button pressed)\nsomething should continue to happen in response to an action (e.g. move while arrow pressed)",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#event-based-keyboard-inputs-key-event-listeners",
+    "href": "course/u3m2/u3m2-slides.html#event-based-keyboard-inputs-key-event-listeners",
+    "title": "Event-Driven Programming",
+    "section": "Event-Based Keyboard Inputs: Key Event Listeners",
+    "text": "Event-Based Keyboard Inputs: Key Event Listeners\ndef on_key_down(key):\n    print(\"A key was pressed\")\n\ndef on_key_up(key):\n    print(\"A key was released\")\nKey Constants",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#key-event-listeners-keys",
+    "href": "course/u3m2/u3m2-slides.html#key-event-listeners-keys",
+    "title": "Event-Driven Programming",
+    "section": "Key Event Listeners: Keys",
+    "text": "Key Event Listeners: Keys\ndef on_key_down(key):\n    if key == keys.UP:\n        print(\"Up key was pressed\")\n    elif key == keys.DOWN:\n        print(\"Down key was pressed\")\n\ndef on_key_up(key):\n    if key == keys.UP:\n        print(\"Up key was released\")\n    elif key == keys.DOWN:\n        print(\"Down key was released\")\nKey Constants",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#polling-inputs-keyboard-polling-in-update",
+    "href": "course/u3m2/u3m2-slides.html#polling-inputs-keyboard-polling-in-update",
+    "title": "Event-Driven Programming",
+    "section": "Polling Inputs: Keyboard Polling in update()",
+    "text": "Polling Inputs: Keyboard Polling in update()\n\n\n# Moves Actor as long as key is pressed\ndef update():\n    # checks if D key is pressed\n    if keyboard.d:\n        player.x += 1\n    # checks if A key is pressed\n    if keyboard.a:\n        player.x -= 1\n\nNote: Can’t use key in update(). That info is not passed to us like in keyboard event listeners. Must use keyboard.up, keyboard.a in update().\nkeyboard.&lt;key&gt; gives us a True/False value based on whether that key is pressed. Remains True if it is pressed.\nKey Constants",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#event-based-vs.-polling-inputs",
+    "href": "course/u3m2/u3m2-slides.html#event-based-vs.-polling-inputs",
+    "title": "Event-Driven Programming",
+    "section": "Event-Based vs. Polling Inputs",
+    "text": "Event-Based vs. Polling Inputs\n\n\nEvent-Based Inputs\nMoves Actor up when key pressed. Happens once per press because on_key_down triggers once.\ndef on_key_down(key):\n    if key == keys.UP:  # up key pressed\n        player.y -= 10  # once per press\nGood for single actions\nExp: jump, show other image\n\nPolling Inputs\nMoves Actor as long as key is pressed. Happens continuously because update() is called repeatedly.\ndef update():\n    if keyboard.d:  # D key held down\n        player.x += 1  # every frame\nGood for continuous actions\nExp: movement, play animation",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#callback-functions",
+    "href": "course/u3m2/u3m2-slides.html#callback-functions",
+    "title": "Event-Driven Programming",
+    "section": "Callback Functions",
+    "text": "Callback Functions\n\nCallback functions are functions you will define that will be called when a clock event occurs.\nIn this case move_character is the callback function:\n# scheduled callback for moving character to random position\ndef move_character():\n    robot.x = random.randint(50, WIDTH - 50)\n    robot.y = random.randint(50, HEIGHT - 50)\nScheduled with the clock elsewhere in code:\nclock.schedule_interval(move_character, 2.0)  # every 2 seconds",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#make-something-happen-later",
+    "href": "course/u3m2/u3m2-slides.html#make-something-happen-later",
+    "title": "Event-Driven Programming",
+    "section": "Make something happen later",
+    "text": "Make something happen later\nPygame Zero docs: Clock\nWe can create our time-based events using Clock methods!\n\nclock.schedule_unique(callback, delay)\n\nWaits for delay seconds, then calls the function callback. It cancels any previously scheduled calls to callback, so it only will execute once until it is scheduled again.\nExp: Game start delay, Game over delay before main menu.\n\nclock.schedule(callback, delay)\n\nWaits for delay seconds, then calls the function callback. This will add this callback to any other callback scheduled.\nExp: Spawning enemies, Triggering delayed sound.",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#make-something-happen-periodically",
+    "href": "course/u3m2/u3m2-slides.html#make-something-happen-periodically",
+    "title": "Event-Driven Programming",
+    "section": "Make something happen periodically",
+    "text": "Make something happen periodically\nPygame Zero docs: Clock\nInstead of scheduling something to occur after a delay, we can schedule something to occur at an interval, every X seconds. We will use this the most!\n\nclock.schedule_interval(callback, interval)\n\nSchedules callback to execute every interval seconds.\nExp: Periodically spawn items, Auto move NPC\n\n\nBe careful where you put schedule_interval()! Often put in start() or other places where we know it will only execute once. Otherwise a new interval is added every frame, and the calls pile up fast!",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m2/u3m2-slides.html#make-things-stop-happening",
+    "href": "course/u3m2/u3m2-slides.html#make-things-stop-happening",
+    "title": "Event-Driven Programming",
+    "section": "Make things stop happening!",
+    "text": "Make things stop happening!\nPygame Zero docs: Clock\nWe can cancel scheduled callbacks and scheduled intervals!\n\nclock.unschedule(callback)\n\nCancels all previously scheduled callbacks for that function.\nExp: Cancel spawning and timer for game over screen.\n\nclock.clear()\n\nCancels everything!\nExp: Stop spawning when moving to new level",
+    "crumbs": [
+      "U3M2 · Event-Driven Programming",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CS4040: Game Design & Simulation",
+    "section": "",
+    "text": "Module\nSlides\nCheat sheet\n\n\n\n\nU3M1 · Pygame Zero Basics\nslides\nweb · PDF\n\n\nU3M2 · Event-Driven Programming\nslides\nweb · PDF\n\n\nU3M3 · Collisions & Game State\nslides\nweb · PDF\n\n\nU4M1 · Lists & Loops\nslides\nweb · PDF\n\n\nU4M2 · Sounds & Music\nslides\nweb · PDF\n\n\nU5M1 · Advanced Pygame Zero\nslides\nweb · PDF",
+    "crumbs": [
+      "{{< var course.code >}}: {{< var course.name >}}"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#introduction-to-pygame-zero",
+    "href": "course/u3m1/u3m1-slides.html#introduction-to-pygame-zero",
+    "title": "Pygame Zero Basics",
+    "section": "Introduction to Pygame Zero",
+    "text": "Introduction to Pygame Zero\n\nA library that makes it easier to create games by hiding some of the more complex Pygame syntax.\nIt provides functions to handle graphics, sound, and events like key/mouse input to create 2D games.\nFor more complex games, developers typically use game engines, like Godot, Unity and Unreal Engine.\n\n\nhttps://pgzero-plus.readthedocs.io/en/latest/introduction.html",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#pygame-zero-setup",
+    "href": "course/u3m1/u3m1-slides.html#pygame-zero-setup",
+    "title": "Pygame Zero Basics",
+    "section": "Pygame Zero Setup",
+    "text": "Pygame Zero Setup\n\nEvery Pygame Zero program starts with two import lines and ends with pgzrun.go().\n# program must start with these two lines\nimport pgzrun\nfrom pgzero.builtins import *\n\n...\n\npgzrun.go()  # program must always end with this",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#the-game-loop",
+    "href": "course/u3m1/u3m1-slides.html#the-game-loop",
+    "title": "Pygame Zero Basics",
+    "section": "The Game Loop",
+    "text": "The Game Loop\nWhen the program runs, Pygame Zero calls start() once. Then draw() and update() are called over and over until the window is closed.\nstart() → draw() → update() → draw() → update() → …\nYou cannot change the names of these functions! Pygame Zero looks for these exact names.",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#the-game-loop-1",
+    "href": "course/u3m1/u3m1-slides.html#the-game-loop-1",
+    "title": "Pygame Zero Basics",
+    "section": "The Game Loop",
+    "text": "The Game Loop\nYou can think of it as an infinite flipbook that is updated between frames.\n\n\nhttps://www.mattlayman.com/blog/2019/teach-kid-code-pygame-zero/",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#basic-game-structure",
+    "href": "course/u3m1/u3m1-slides.html#basic-game-structure",
+    "title": "Pygame Zero Basics",
+    "section": "Basic Game Structure",
+    "text": "Basic Game Structure\n\n\n\n# program must start with these two lines\nimport pgzrun\nfrom pgzero.builtins import *\n\n# Pygame Constants\nWIDTH = 500  # width of game window\nHEIGHT = 500  # height of game window\nTITLE = \"Name of Game\"  # title in game window\n\n# define global variables\nalien = Actor(\"alien\")\n\n\n# runs once at beginning before draw()/update()\ndef start():\n    alien.pos = (200, 200)  # sets initial position\n\n\n# displays the new frame\ndef draw():\n    screen.clear()  # clears the screen\n    screen.fill(\"darkslateblue\")  # fills background color\n    alien.draw()  # draws the new sprite\n\n\n# updates game state between drawing of each frame\ndef update():\n    pass  # pass means do nothing, can't have empty function\n\n\npgzrun.go()  # program must always end with this\n\n\n\n\nstart(): called once when the game starts, before the game loop begins. Set up the game’s starting state here.\nupdate(): called repeatedly (about 60 times per second) to change the game’s state: move characters, check conditions, change variables.\ndraw(): called repeatedly to draw the current state of the game: backgrounds, shapes and characters.",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#graphical-user-interface-gui",
+    "href": "course/u3m1/u3m1-slides.html#graphical-user-interface-gui",
+    "title": "Pygame Zero Basics",
+    "section": "Graphical User Interface (GUI)",
+    "text": "Graphical User Interface (GUI)\n\n\nA window with visual elements that lets the user interact with the code behind the scenes.\n\nThe origin (0, 0) is the top-left corner of the window. x increases to the right and y increases down, so the bottom-right corner is (WIDTH, HEIGHT).\n\nWIDTH: constant that sets the screen width\nHEIGHT: constant that sets the screen height",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#tuples",
+    "href": "course/u3m1/u3m1-slides.html#tuples",
+    "title": "Pygame Zero Basics",
+    "section": "Tuples",
+    "text": "Tuples\n\nA tuple stores several values in parentheses, separated by commas. Positions and colors are tuples. You read one value with square brackets and an index starting at 0, but you cannot change one value: you replace the whole tuple.\nnew_pos = (300, 400)\nnew_pos[0]  # 300, the x-coordinate\nnew_pos[1]  # 400, the y-coordinate\nnew_pos[0] = 100  # ERROR! Cannot modify a tuple\nnew_pos = (100, 400)  # correct: assign an entirely new tuple",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#drawing-order",
+    "href": "course/u3m1/u3m1-slides.html#drawing-order",
+    "title": "Pygame Zero Basics",
+    "section": "Drawing Order",
+    "text": "Drawing Order\n\n\n\n\n# Pygame Zero constants\nWIDTH = 712\nHEIGHT = 508\nTITLE = \"Demo Game\"\ndef draw():\n    # runs top to bottom, so draw back to front\n    screen.clear()  # remove the previous frame\n    screen.fill(\"darkslateblue\")  # background first\n    screen.draw.filled_circle((100, 100), 50, \"red\")\n    screen.draw.filled_circle((125, 125), 25, \"yellow\")  # drawn last, so on top",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#drawing-rectangles-and-lines",
+    "href": "course/u3m1/u3m1-slides.html#drawing-rectangles-and-lines",
+    "title": "Pygame Zero Basics",
+    "section": "Drawing Rectangles and Lines",
+    "text": "Drawing Rectangles and Lines\n# screen.draw.rect((x, y), (width, height), \"color\")\nscreen.draw.rect((0, 0), (100, 200), \"blue\")  # outlined rectangle\n# screen.draw.filled_rect((x, y), (width, height), \"color\")\nscreen.draw.filled_rect((25, 50), (50, 80), \"red\")  # filled rectangle\n# screen.draw.line((x1, y1), (x2, y2), \"color\")\nscreen.draw.line((0, 0), (100, 100), \"purple\")",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#drawing-circles-and-colors",
+    "href": "course/u3m1/u3m1-slides.html#drawing-circles-and-colors",
+    "title": "Pygame Zero Basics",
+    "section": "Drawing Circles and Colors",
+    "text": "Drawing Circles and Colors\n# screen.draw.circle((x, y), radius, \"color\")\nscreen.draw.circle((250, 150), 60, \"purple\")  # outlined circle\n# screen.draw.filled_circle((x, y), radius, \"color\")\nscreen.draw.filled_circle((120, 120), 40, \"red\")  # filled circle\n\n\n\n\nWrite a color as\nExample\nMeaning\n\n\n\n\na color name string\n\"darkturquoise\"\nany name from the Pygame Zero color list\n\n\nan RGB tuple\n(150, 0, 100)\nred = 150, green = 0, blue = 100, each from 0 to 255",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#drawing-text",
+    "href": "course/u3m1/u3m1-slides.html#drawing-text",
+    "title": "Pygame Zero Basics",
+    "section": "Drawing Text",
+    "text": "Drawing Text\nAdd text with screen.draw.text(). You can also set color, position anchor, font size, background color, word wrap and more (text tutorial).\nscreen.draw.text(\"hello\", (20, 200))  # top-left corner at (20, 200)\nscreen.draw.text(\"hello\", (100, 100), fontsize=32)\nscreen.draw.text(\"hello\", (0, 100), fontsize=32, color=\"orange\")\nscreen.draw.text(\"hello world\", centery=50, right=300)\nscreen.draw.text(\"BARK!\", midtop=(400, 0), color=\"red\")",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#objects",
+    "href": "course/u3m1/u3m1-slides.html#objects",
+    "title": "Pygame Zero Basics",
+    "section": "Objects",
+    "text": "Objects\nIn Pygame Zero, many things in our program are objects. An object contains:\n\nData: information about the object, such as its position and image\nBehavior: things the object can do, such as draw()",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#the-actor",
+    "href": "course/u3m1/u3m1-slides.html#the-actor",
+    "title": "Pygame Zero Basics",
+    "section": "The Actor",
+    "text": "The Actor\nAn Actor is a graphic you draw in the window, like a sprite in Scratch.\nrobot = Actor(\"robot_idle\")  # image: images/robot_idle.png\nrobot.pos = (WIDTH // 2, HEIGHT // 2)  # center of the robot\ndef draw():\n    screen.clear()\n    robot.draw()  # draw the Actor at its current position",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#moving-and-changing-an-actor",
+    "href": "course/u3m1/u3m1-slides.html#moving-and-changing-an-actor",
+    "title": "Pygame Zero Basics",
+    "section": "Moving and Changing an Actor",
+    "text": "Moving and Changing an Actor\nImages go in the images folder. Use the name without .png.\ndef update():\n    robot.x += 1  # move right 1 pixel every frame (~60 per second)\nif robot.image == \"robot_idle\":\n    robot.image = \"robot_jump\"\nelif robot.image == \"robot_jump\":\n    robot.image = \"robot_idle\"",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#actor-positions",
+    "href": "course/u3m1/u3m1-slides.html#actor-positions",
+    "title": "Pygame Zero Basics",
+    "section": "Actor Positions",
+    "text": "Actor Positions\n\n\n# a point, an (x, y) tuple: get or set\nalien.pos = (100, 50)  # center\nalien.topleft = (10, 10)  # top-left corner\nalien.midright = (20, 20)  # middle of the right edge\nalien.midtop  # also midbottom, topright, bottomleft...\n# one coordinate, an int: get or set\nalien.x  # center x\nalien.y  # center y\nalien.top  # top edge y (smallest y)\nalien.bottom  # bottom edge y (largest y)\nalien.left  # left edge x (smallest x)\nalien.right  # right edge x (largest x)\nalien.width  # width in pixels (read only)\nalien.height  # height in pixels (read only)",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#global-variables-1",
+    "href": "course/u3m1/u3m1-slides.html#global-variables-1",
+    "title": "Pygame Zero Basics",
+    "section": "Global Variables",
+    "text": "Global Variables\nIn Pygame Zero, we write almost all our code in functions. How do we keep data across functions, or across many calls to update()?\nGlobal variables!\n\nDefine them outside all functions, at the top of the file.\nAny function can read them freely.\nA function that changes one needs one extra step…",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#the-global-keyword",
+    "href": "course/u3m1/u3m1-slides.html#the-global-keyword",
+    "title": "Pygame Zero Basics",
+    "section": "The global Keyword",
+    "text": "The global Keyword\n\nThe global keyword tells Python that a variable inside a function refers to the global variable defined outside it.\n\n\n\n\n\n\n\nYou do not need global when you are…\nYou do need global when you are…\n\n\n\n\nonly reading the variable\nreassigning the variable to a new value\n\n\nchanging something inside it (an Actor’s position, appending to a list)\nchanging an int, float, bool, str or tuple\n\n\n\nUse global variables sparingly: they make programs harder to understand and debug.",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#global-variable-example",
+    "href": "course/u3m1/u3m1-slides.html#global-variable-example",
+    "title": "Pygame Zero Basics",
+    "section": "Global Variable Example",
+    "text": "Global Variable Example\nalien = Actor(\"alien_green\")\nframe = 0  # global variable: how many frames so far\n\n\ndef start():\n    alien.pos = (0, 250)\n\n\ndef draw():\n    screen.clear()\n    alien.draw()\n\n\ndef update():\n    global frame  # we reassign frame, so we need global\n    frame += 1\n    if frame % 10 == 0:  # every 10 frames\n        alien.x += 1",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#actor-variables-1",
+    "href": "course/u3m1/u3m1-slides.html#actor-variables-1",
+    "title": "Pygame Zero Basics",
+    "section": "Actor Variables",
+    "text": "Actor Variables\nAn alternative to global variables: attach your own variables to an Actor with dot notation. Only use them for values that belong to that Actor.\n\nBuilt-in: x, y, pos, image…\nYour own: anything you create, like velocity_x",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-slides.html#actor-variable-example",
+    "href": "course/u3m1/u3m1-slides.html#actor-variable-example",
+    "title": "Pygame Zero Basics",
+    "section": "Actor Variable Example",
+    "text": "Actor Variable Example\nalien = Actor(\"alien_beige\")\n\n\ndef start():\n    alien.pos = (0, 500)  # pos is built in\n    alien.velocity_x = 1  # velocity_x is ours\n    alien.velocity_y = -1  # velocity_y is ours\n\n\ndef draw():\n    screen.clear()\n    alien.draw()\n\n\ndef update():\n    alien.x += alien.velocity_x\n    alien.y += alien.velocity_y",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#hitbox",
+    "href": "course/u3m3/u3m3-slides.html#hitbox",
+    "title": "Collisions & Game State",
+    "section": "Hitbox",
+    "text": "Hitbox\nPer Wikipedia, “A hitbox is an invisible shape commonly used in video games for real-time collision detection. It is often a rectangle or cuboid that is attached to and follows a visible object, though circular or spheroidal shapes are also common.”\nIn Pygame, we have a rectangular hitbox around an Actor’s image.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#detecting-collisions",
+    "href": "course/u3m3/u3m3-slides.html#detecting-collisions",
+    "title": "Collisions & Game State",
+    "section": "Detecting Collisions",
+    "text": "Detecting Collisions\n\ncolliderect(): method called on one Actor to detect if there’s a collision with another Actor.\nReturns True if there’s a collision, False otherwise.\nAlso works between Actors and Rectangles.\n\nunicorn = Actor(\"unicorn\")\nmonster = Actor(\"monster\")\n\nif unicorn.colliderect(monster):\n    # game over",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#detecting-collisions-with-multiple-actors",
+    "href": "course/u3m3/u3m3-slides.html#detecting-collisions-with-multiple-actors",
+    "title": "Collisions & Game State",
+    "section": "Detecting Collisions with Multiple Actors",
+    "text": "Detecting Collisions with Multiple Actors\nplayer = Actor(\"p1\")  # create player Actor\nbat = Actor(\"bat\")  # create bat enemy Actor\ncoin = Actor(\"coin\")  # create coin Actor\n...\nif player.colliderect(bat):  # collision with enemy\n    player.health -= 1\nif player.colliderect(coin):  # collision with coin\n    player.money += 1",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#the-game-object",
+    "href": "course/u3m3/u3m3-slides.html#the-game-object",
+    "title": "Collisions & Game State",
+    "section": "The game Object",
+    "text": "The game Object\n\ngame stores information about your game’s state.\nKeeps everything in one place.\n\n\n\nInstead of lots of globals:\nscore = 0\nlevel = 1\ntimer = 0\n\nUse:\ngame.score = 0\ngame.level = 1\ngame.timer = 0",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#game",
+    "href": "course/u3m3/u3m3-slides.html#game",
+    "title": "Collisions & Game State",
+    "section": "game",
+    "text": "game\ngame  # object that stores information about the game's state\ngame.state  # str: \"playing\", \"won\", \"lost\", \"over\" or \"paused\"\ngame.score  # int: starts at 0. Update it in your code.\ngame.level  # int: starts at 1. Update it in your code.\ngame.timer  # float: seconds since game started. Auto-updates.\ngame.frame_count  # int: frames since game started. Auto-updates.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#what-is-game-state",
+    "href": "course/u3m3/u3m3-slides.html#what-is-game-state",
+    "title": "Collisions & Game State",
+    "section": "What is Game State",
+    "text": "What is Game State\n\n\"playing\" → normal gameplay\n\"won\" → player won\n\"lost\" → player lost\n\"over\" → game is over (no difference between win/lose)\n\"paused\" → temporarily stopped\n\nCheck using:\nif game.state == \"playing\":\n    player.x += 3\nUpdate using: game.win(), game.lose(), game.over(), etc.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#changing-state-ending-a-game",
+    "href": "course/u3m3/u3m3-slides.html#changing-state-ending-a-game",
+    "title": "Collisions & Game State",
+    "section": "Changing State / Ending a Game",
+    "text": "Changing State / Ending a Game\n# each one also cancels everything scheduled on the clock\ngame.win()  # sets game.state to \"won\"\ngame.lose()  # sets game.state to \"lost\"\ngame.over()  # sets game.state to \"over\"\ngame.pause()  # sets game.state to \"paused\"\ngame.resume()  # sets game.state back to \"playing\"\nWhile paused, game.timer and Sprite animations stop, but update() and the clock keep running.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#restarting-a-game",
+    "href": "course/u3m3/u3m3-slides.html#restarting-a-game",
+    "title": "Collisions & Game State",
+    "section": "Restarting a Game",
+    "text": "Restarting a Game\nInstead of ending, we can restart a game by adding a number!\ngame.win(2.5)  # like game.win(), then restart after 2.5 seconds\ngame.lose(3)  # like game.lose(), then restart after 3 seconds\ngame.over(5)  # like game.over(), then restart after 5 seconds\n\nEverything listed before still happens right away: changes game.state to \"won\", \"lost\" or \"over\" and clears the clock.\nThen, after that many seconds, it restarts the game: resets game (score 0, level 1, timer 0, state \"playing\") and runs the start() function again.\n\nNote: these do not execute unless game.state is \"playing\" when they are called. They are skipped otherwise, to prevent multiple restarts from being scheduled when called repeatedly in update().",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#heads-up-display-hud",
+    "href": "course/u3m3/u3m3-slides.html#heads-up-display-hud",
+    "title": "Collisions & Game State",
+    "section": "Heads-Up Display (HUD)",
+    "text": "Heads-Up Display (HUD)\n\nShows the player info about the current game state.\nCommon HUD elements: score, health, lives, time, items, etc.\nHUD elements are drawn on top of the game, at the end of draw().\n\n\ndef draw():\n    screen.clear()\n    # ... draw the actors and scene here, then the HUD on top\n    screen.draw.text(f\"Score: {game.score}\", midleft=(20, 20))\n    screen.draw.text(f\"Time: {int(game.timer)}\", center=(WIDTH // 2, 20))\n    screen.draw.text(f\"Level: {game.level}\", midright=(WIDTH - 20, 20))\n    if game.state == \"lost\":\n        screen.draw.text(\"Game over!\", center=(WIDTH // 2, HEIGHT // 2))\n    if game.state == \"won\":\n        screen.draw.text(\"You won!\", center=(WIDTH // 2, HEIGHT // 2))",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#example",
+    "href": "course/u3m3/u3m3-slides.html#example",
+    "title": "Collisions & Game State",
+    "section": "Example",
+    "text": "Example\nCheck state in draw().\ndef start():  # runs at the beginning and again on every restart\n    player.pos = (200, 200)\n    enemy.pos = (400, 400)\n    key.pos = (450, 200)  # reach the key to win\ndef draw():\n    screen.clear()\n    key.draw()\n    if game.state != \"lost\":  # draw player if \"playing\" or \"won\"\n        player.draw()\n    if game.state != \"won\":  # draw enemy if \"playing\" or \"lost\"\n        enemy.draw()\n    if game.state == \"won\":\n        screen.draw.text(\"You won!\", midtop=(250, 20))\n    if game.state == \"lost\":\n        screen.draw.text(\"Game over\", midtop=(250, 20))",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#example-continued",
+    "href": "course/u3m3/u3m3-slides.html#example-continued",
+    "title": "Collisions & Game State",
+    "section": "Example (continued)",
+    "text": "Example (continued)\nThe first 2 lines prevent the rest of update() from running by returning if game.state is not \"playing\". Change state and trigger a restart with game.lose().\ndef update():\n    if game.state != \"playing\":  # not playing: skip the rest\n        return\n    player.x += 1\n    if player.colliderect(enemy):\n        game.lose(5)  # \"lost\", then restart after 5 seconds\n    if player.colliderect(key):\n        game.win(3)  # \"won\", then restart after 3 seconds",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m2/u4m2-slides.html#sounds-1",
+    "href": "course/u4m2/u4m2-slides.html#sounds-1",
+    "title": "Sounds & Music",
+    "section": "Sounds",
+    "text": "Sounds\nPygame Zero docs: Sounds\n\nUsed to play short sound effects, not music!\nStore files in a folder called sounds (similar to images)\nFilenames must be lowercase without spaces (.ogg or .wav)\nFunctions are called like so: sounds.&lt;filename&gt;.&lt;function&gt;()\n\nsounds.thunder.play()  # plays the sound file called \"thunder\"\nsounds.thunder.play(10)  # plays \"thunder\" 10 times\nsounds.thunder.play(-1)  # plays \"thunder\" forever on a loop\nsounds.thunder.stop()  # stops the \"thunder\" sound\nsounds.thunder.get_length()  # gets the duration in seconds",
+    "crumbs": [
+      "U4M2 · Sounds & Music",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m2/u4m2-slides.html#music-1",
+    "href": "course/u4m2/u4m2-slides.html#music-1",
+    "title": "Sounds & Music",
+    "section": "Music",
+    "text": "Music\nPygame Zero docs: Music\n\nUsed to play music and longer audio files.\nStore files in a folder called music (similar to sounds)\nFilenames must be lowercase without spaces (.ogg or .mp3)\n\nmusic.play(\"interlude\")  # plays file \"interlude\" on a loop\nmusic.play_once(\"interlude\")  # plays file \"interlude\" once\nmusic.queue(\"jam\")  # queues \"jam\" to play after the current track\nmusic.is_playing()  # returns True if music is playing\nmusic.stop()  # stops the music",
+    "crumbs": [
+      "U4M2 · Sounds & Music",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u4m2/u4m2-slides.html#music-functions-contd",
+    "href": "course/u4m2/u4m2-slides.html#music-functions-contd",
+    "title": "Sounds & Music",
+    "section": "Music Functions (cont’d)",
+    "text": "Music Functions (cont’d)\nPygame Zero docs: Music\nmusic.pause()  # pauses the current track\nmusic.unpause()  # resumes the current track\nmusic.fadeout(2.5)  # fades out the current track over 2.5 seconds\nmusic.set_volume(0.5)  # sets volume to 0.5 (0 = silent, 1 = max)\nmusic.get_volume()  # gets the current volume setting",
+    "crumbs": [
+      "U4M2 · Sounds & Music",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html",
+    "href": "course/u3m1/u3m1-cheatsheet.html",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "",
+    "text": "Every code block has a copy button (top right). Download the printable PDF.",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#key-terms",
+    "href": "course/u3m1/u3m1-cheatsheet.html#key-terms",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Key terms",
+    "text": "Key terms\n\nscreen: the object for the game window you draw on.\nActor: a built-in class for a picture you draw and move on the screen.\ntuple: values in parentheses that can’t be changed one at a time, like (x, y) positions and RGB colors.\nPygame Zero docs · color names · text options",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#assets",
+    "href": "course/u3m1/u3m1-cheatsheet.html#assets",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Assets",
+    "text": "Assets\n\n\n\n\nFolder\nHolds\nFile types\n\n\n\n\nimages\npictures for Actors\n.png\n\n\nsounds\nsound effects\n.wav or .ogg\n\n\nmusic\nbackground music\n.ogg or .mp3\n\n\n\nAsset names follow the same rules as Python variables: all lowercase, no spaces, only letters, numbers and underscores, and they must begin with a letter. Refer to an asset by its name without the extension: \"alien\", not \"alien.png\".",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#program-structure",
+    "href": "course/u3m1/u3m1-cheatsheet.html#program-structure",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Program structure",
+    "text": "Program structure\n\nEvery Pygame Zero program starts with two import lines and ends with pgzrun.go().\n# program must start with these two lines\nimport pgzrun\nfrom pgzero.builtins import *\n\n...\n\npgzrun.go()  # program must always end with this\n# Pygame Zero constants\nWIDTH = 712\nHEIGHT = 508\nTITLE = \"Demo Game\"\n\n\nstart(): called once when the game starts, before the game loop begins. Set up the game’s starting state here.\nupdate(): called repeatedly (about 60 times per second) to change the game’s state: move characters, check conditions, change variables.\ndraw(): called repeatedly to draw the current state of the game: backgrounds, shapes and characters.",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#colors",
+    "href": "course/u3m1/u3m1-cheatsheet.html#colors",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Colors",
+    "text": "Colors\n\n\n\n\nWrite a color as\nExample\nMeaning\n\n\n\n\na color name string\n\"darkturquoise\"\nany name from the Pygame Zero color list\n\n\nan RGB tuple\n(150, 0, 100)\nred = 150, green = 0, blue = 100, each from 0 to 255",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#screen",
+    "href": "course/u3m1/u3m1-cheatsheet.html#screen",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Screen",
+    "text": "Screen\n\nThe origin (0, 0) is the top-left corner of the window. x increases to the right and y increases down, so the bottom-right corner is (WIDTH, HEIGHT).\nscreen.clear()  # removes everything from the window\nscreen.fill(\"darkslateblue\")  # fill with a color name\nscreen.fill((0, 0, 0))  # or with an RGB tuple\n# screen.draw.rect((x, y), (width, height), \"color\")\nscreen.draw.rect((0, 0), (100, 200), \"blue\")  # outlined rectangle\n# screen.draw.filled_rect((x, y), (width, height), \"color\")\nscreen.draw.filled_rect((25, 50), (50, 80), \"red\")  # filled rectangle\n# screen.draw.line((x1, y1), (x2, y2), \"color\")\nscreen.draw.line((0, 0), (100, 100), \"purple\")\n# screen.draw.circle((x, y), radius, \"color\")\nscreen.draw.circle((250, 150), 60, \"purple\")  # outlined circle\n# screen.draw.filled_circle((x, y), radius, \"color\")\nscreen.draw.filled_circle((120, 120), 40, \"red\")  # filled circle\nscreen.draw.text(\"hello\", (20, 200))  # top-left corner at (20, 200)\nscreen.draw.text(\"hello\", (100, 100), fontsize=32)\nscreen.draw.text(\"hello\", (0, 100), fontsize=32, color=\"orange\")\nscreen.draw.text(\"hello world\", centery=50, right=300)\nscreen.draw.text(\"BARK!\", midtop=(400, 0), color=\"red\")",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#actors",
+    "href": "course/u3m1/u3m1-cheatsheet.html#actors",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Actors",
+    "text": "Actors\nrobot = Actor(\"robot_idle\")  # image: images/robot_idle.png\nrobot.pos = (WIDTH // 2, HEIGHT // 2)  # center of the robot\nif robot.image == \"robot_idle\":\n    robot.image = \"robot_jump\"\nelif robot.image == \"robot_jump\":\n    robot.image = \"robot_idle\"\nrobot.scale = 2  # twice as large (1 = original, 0.5 = half)\nrobot.angle = 45  # rotate 45 degrees counterclockwise\nrobot.flip_h = True  # flip horizontally (also flip_v)\nrobot.flip_h = False  # turn the flip back off",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#actor-positions",
+    "href": "course/u3m1/u3m1-cheatsheet.html#actor-positions",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Actor positions",
+    "text": "Actor positions\n# one coordinate, an int: get or set\nalien.x  # center x\nalien.y  # center y\nalien.top  # top edge y (smallest y)\nalien.bottom  # bottom edge y (largest y)\nalien.left  # left edge x (smallest x)\nalien.right  # right edge x (largest x)\nalien.width  # width in pixels (read only)\nalien.height  # height in pixels (read only)\n# a point, an (x, y) tuple: get or set\nalien.pos = (100, 50)  # center\nalien.topleft = (10, 10)  # top-left corner\nalien.midright = (20, 20)  # middle of the right edge\nalien.midtop  # also midbottom, topright, bottomleft...\nalien.x += 1  # move right 1 pixel\nalien.x -= 1  # move left 1 pixel\nalien.y += 1  # move down 1 pixel\nalien.y -= 1  # move up 1 pixel",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#tuples",
+    "href": "course/u3m1/u3m1-cheatsheet.html#tuples",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Tuples",
+    "text": "Tuples\n\nA tuple stores several values in parentheses, separated by commas. Positions and colors are tuples. You read one value with square brackets and an index starting at 0, but you cannot change one value: you replace the whole tuple.\nnew_pos = (300, 400)\nnew_pos[0]  # 300, the x-coordinate\nnew_pos[1]  # 400, the y-coordinate\nnew_pos[0] = 100  # ERROR! Cannot modify a tuple\nnew_pos = (100, 400)  # correct: assign an entirely new tuple",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m1/u3m1-cheatsheet.html#global-and-actor-variables",
+    "href": "course/u3m1/u3m1-cheatsheet.html#global-and-actor-variables",
+    "title": "Pygame Zero Basics Cheat Sheet",
+    "section": "Global and Actor variables",
+    "text": "Global and Actor variables\n\nThe global keyword tells Python that a variable inside a function refers to the global variable defined outside it.\n\n\n\n\n\n\n\nYou do not need global when you are…\nYou do need global when you are…\n\n\n\n\nonly reading the variable\nreassigning the variable to a new value\n\n\nchanging something inside it (an Actor’s position, appending to a list)\nchanging an int, float, bool, str or tuple\n\n\n\nA global frame counter (frame = 0 at the top of the file):\ndef update():\n    global frame  # we reassign frame, so we need global\n    frame += 1\n    if frame % 10 == 0:  # every 10 frames\n        alien.x += 1\nActor variables attach your own values to one Actor, no global needed:\ndef start():\n    alien.pos = (0, 500)  # pos is built in\n    alien.velocity_x = 1  # velocity_x is ours\n    alien.velocity_y = -1  # velocity_y is ours\ndef update():\n    alien.x += alien.velocity_x\n    alien.y += alien.velocity_y",
+    "crumbs": [
+      "U3M1 · Pygame Zero Basics",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html",
+    "href": "course/u3m3/u3m3-cheatsheet.html",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "",
+    "text": "Every code block has a copy button (top right). Download the printable PDF.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#assets",
+    "href": "course/u3m3/u3m3-cheatsheet.html#assets",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Assets",
+    "text": "Assets\n\n\n\n\nFolder\nHolds\nFile types\n\n\n\n\nimages\npictures for Actors\n.png\n\n\nsounds\nsound effects\n.wav or .ogg\n\n\nmusic\nbackground music\n.ogg or .mp3\n\n\n\nAsset names follow the same rules as Python variables: all lowercase, no spaces, only letters, numbers and underscores, and they must begin with a letter. Refer to an asset by its name without the extension: \"alien\", not \"alien.png\".",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#collisions",
+    "href": "course/u3m3/u3m3-cheatsheet.html#collisions",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Collisions",
+    "text": "Collisions\ncolliderect() is a Boolean expression: True if Actor actor1 has collided with Actor actor2, False otherwise.\nif actor1.colliderect(actor2):  # True if actor1 collided with actor2\n    game.over()",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#the-game-object",
+    "href": "course/u3m3/u3m3-cheatsheet.html#the-game-object",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "The game object",
+    "text": "The game object\ngame is an object variable storing information about the game’s state.\ngame  # object that stores information about the game's state\ngame.state  # str: \"playing\", \"won\", \"lost\", \"over\" or \"paused\"\ngame.score  # int: starts at 0. Update it in your code.\ngame.level  # int: starts at 1. Update it in your code.\ngame.timer  # float: seconds since game started. Auto-updates.\ngame.frame_count  # int: frames since game started. Auto-updates.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#score-level-and-timer",
+    "href": "course/u3m3/u3m3-cheatsheet.html#score-level-and-timer",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Score, level and timer",
+    "text": "Score, level and timer\ngame.score = 0  # sets the player's score\ngame.score += 10  # adds points to the score\ngame.level = 1  # stores the current level number\ngame.level += 1  # moves to the next level\nif game.timer &gt; 5:  # checks if a certain amount of time has passed\nf\"{game.timer:.2f}\"  # timer as a string, rounded to 2 decimal places\nf\"{int(game.timer)}\"  # timer as a string, decimals dropped (whole number)",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#game-states",
+    "href": "course/u3m3/u3m3-cheatsheet.html#game-states",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Game states",
+    "text": "Game states\ngame.state is a string variable that tracks the state of the game. Up to you to implement!\n\n\n\n\n\n\n\nState\nMeaning\n\n\n\n\n\"playing\"\nDefault value. The game is running.\n\n\n\"won\"\nThe game is won. Set with game.win().\n\n\n\"lost\"\nThe game is lost. Set with game.lose().\n\n\n\"over\"\nThe game is over. Set with game.over(), used when there is no difference between win/lose.\n\n\n\"paused\"\nNot used presently in our games, but could be useful in the future!\n\n\n\nYou can add your own states! Just set game.state equal to any string. You define the value, check it elsewhere in your code, and implement what happens in that state. Other useful states could be \"menu\" or \"credits\".",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#checking-and-changing-state",
+    "href": "course/u3m3/u3m3-cheatsheet.html#checking-and-changing-state",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Checking and changing state",
+    "text": "Checking and changing state\nif game.state == \"playing\":  # run code only when the game is active\nif game.state != \"won\":  # run code only when the game was not won\n# each one also cancels everything scheduled on the clock\ngame.win()  # sets game.state to \"won\"\ngame.lose()  # sets game.state to \"lost\"\ngame.over()  # sets game.state to \"over\"\nAdding a number restarts the game after that many seconds, by resetting game and running start() again:\ngame.win(2.5)  # like game.win(), then restart after 2.5 seconds\ngame.lose(3)  # like game.lose(), then restart after 3 seconds\ngame.over(5)  # like game.over(), then restart after 5 seconds",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#reset-pause-and-resume",
+    "href": "course/u3m3/u3m3-cheatsheet.html#reset-pause-and-resume",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Reset, pause and resume",
+    "text": "Reset, pause and resume\nWhile paused, game.timer and Sprite animations stop, but update() and the clock keep running.\ngame.reset()  # resets state, score, level, timer and frame_count\ngame.pause()  # sets game.state to \"paused\"\ngame.resume()  # sets game.state back to \"playing\"",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#example-game-state-in-a-game",
+    "href": "course/u3m3/u3m3-cheatsheet.html#example-game-state-in-a-game",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Example: game state in a game",
+    "text": "Example: game state in a game\nstart() is called automatically at the beginning. It resets the game and initializes values. draw() uses game.state to decide what to draw. update() returns right away unless the game is \"playing\", then calls game.lose() or game.win() when the player hits the enemy or the key.\ndef start():  # runs at the beginning and again on every restart\n    player.pos = (200, 200)\n    enemy.pos = (400, 400)\n    key.pos = (450, 200)  # reach the key to win\n\n\ndef draw():\n    screen.clear()\n    key.draw()\n    if game.state != \"lost\":  # draw player if \"playing\" or \"won\"\n        player.draw()\n    if game.state != \"won\":  # draw enemy if \"playing\" or \"lost\"\n        enemy.draw()\n    if game.state == \"won\":\n        screen.draw.text(\"You won!\", midtop=(250, 20))\n    if game.state == \"lost\":\n        screen.draw.text(\"Game over\", midtop=(250, 20))\n\n\ndef update():\n    if game.state != \"playing\":  # not playing: skip the rest\n        return\n    player.x += 1\n    if player.colliderect(enemy):\n        game.lose(5)  # \"lost\", then restart after 5 seconds\n    if player.colliderect(key):\n        game.win(3)  # \"won\", then restart after 3 seconds",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#heads-up-display-hud",
+    "href": "course/u3m3/u3m3-cheatsheet.html#heads-up-display-hud",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Heads-up display (HUD)",
+    "text": "Heads-up display (HUD)\nAn example of displaying the score, time (as a whole number), level and a game over message in draw():\ndef draw():\n    screen.clear()\n    # ... draw the actors and scene here, then the HUD on top\n    screen.draw.text(f\"Score: {game.score}\", midleft=(20, 20))\n    screen.draw.text(f\"Time: {int(game.timer)}\", center=(WIDTH // 2, 20))\n    screen.draw.text(f\"Level: {game.level}\", midright=(WIDTH - 20, 20))\n    if game.state == \"lost\":\n        screen.draw.text(\"Game over!\", center=(WIDTH // 2, HEIGHT // 2))\n    if game.state == \"won\":\n        screen.draw.text(\"You won!\", center=(WIDTH // 2, HEIGHT // 2))",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m2/u4m2-cheatsheet.html",
+    "href": "course/u4m2/u4m2-cheatsheet.html",
+    "title": "Sounds & Music Cheat Sheet",
+    "section": "",
+    "text": "Every code block has a copy button (top right). Download the printable PDF.",
+    "crumbs": [
+      "U4M2 · Sounds & Music",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m2/u4m2-cheatsheet.html#assets",
+    "href": "course/u4m2/u4m2-cheatsheet.html#assets",
+    "title": "Sounds & Music Cheat Sheet",
+    "section": "Assets",
+    "text": "Assets\nCreate subfolders called images, sounds and music. Pygame Zero looks in them to find your images, sounds and music.\n\n\n\n\nFolder\nHolds\nFile types\n\n\n\n\nimages\npictures for Actors\n.png\n\n\nsounds\nsound effects\n.wav or .ogg\n\n\nmusic\nbackground music\n.ogg or .mp3\n\n\n\nAsset names follow the same rules as Python variables: all lowercase, no spaces, only letters, numbers and underscores, and they must begin with a letter. Refer to an asset by its name without the extension: \"alien\", not \"alien.png\".",
+    "crumbs": [
+      "U4M2 · Sounds & Music",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m2/u4m2-cheatsheet.html#sounds",
+    "href": "course/u4m2/u4m2-cheatsheet.html#sounds",
+    "title": "Sounds & Music Cheat Sheet",
+    "section": "Sounds",
+    "text": "Sounds\nPlays shorter .ogg or .wav audio files. These are for sound effects in your game! Sound functions are called in this format: sounds.&lt;filename&gt;.&lt;function&gt;() (docs).\nsounds.thunder.play()  # plays the sound file called \"thunder\"\nsounds.thunder.play(10)  # plays \"thunder\" 10 times\nsounds.thunder.play(-1)  # plays \"thunder\" forever on a loop\nsounds.thunder.stop()  # stops the \"thunder\" sound\nsounds.thunder.get_length()  # gets the duration in seconds",
+    "crumbs": [
+      "U4M2 · Sounds & Music",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m2/u4m2-cheatsheet.html#music",
+    "href": "course/u4m2/u4m2-cheatsheet.html#music",
+    "title": "Sounds & Music Cheat Sheet",
+    "section": "Music",
+    "text": "Music\nPlays longer .ogg or .mp3 audio files. These are for background music in your game! (docs)\nmusic.play(\"interlude\")  # plays file \"interlude\" on a loop\nmusic.play_once(\"interlude\")  # plays file \"interlude\" once\nmusic.queue(\"jam\")  # queues \"jam\" to play after the current track\nmusic.is_playing()  # returns True if music is playing\nmusic.stop()  # stops the music\nmusic.is_playing(\"jam\")  # returns True if \"jam\" is playing\nmusic.is_paused()  # returns True if the music is paused\nmusic.pause()  # pauses the current track\nmusic.unpause()  # resumes the current track\nmusic.fadeout(2.5)  # fades out the current track over 2.5 seconds\nmusic.set_volume(0.5)  # sets volume to 0.5 (0 = silent, 1 = max)\nmusic.get_volume()  # gets the current volume setting",
+    "crumbs": [
+      "U4M2 · Sounds & Music",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u4m2/u4m2-cheatsheet.html#tone",
+    "href": "course/u4m2/u4m2-cheatsheet.html#tone",
+    "title": "Sounds & Music Cheat Sheet",
+    "section": "Tone",
+    "text": "Tone\nGenerates sounds using a built-in synthesizer. tone.play(pitch, duration) plays a tone at a certain pitch for a specified length in seconds. volume goes from 0 (silent) to 1 (max), default 0.8. waveform can be \"sin\" (default), \"square\", \"saw\" or \"triangle\".\ntone.play(\"E4\", 0.5)  # plays an E in octave 4 for 0.5 seconds\ntone.play(\"A#5\", 0.25)  # plays an A sharp in octave 5 for 0.25 seconds\ntone.play(\"Bb3\", 0.75)  # plays a B flat in octave 3 for 0.75 seconds\ntone.play(\"C4\", 1, volume=0.5)  # plays C4 for 1 second at half volume\ntone.play(\"C4\", 1, waveform=\"square\")  # plays C4 for 1 second, square wave",
+    "crumbs": [
+      "U4M2 · Sounds & Music",
+      "Cheat sheet"
+    ]
+  }
+]
