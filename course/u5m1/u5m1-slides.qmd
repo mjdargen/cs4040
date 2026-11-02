@@ -45,7 +45,7 @@ Actors can play Sprites. Give it a Sprite instead of an image name.
 
 # TileMaps
 
-## Tilesheets / Tilesets / Tilemaps {.smaller}
+## Tilesheets / Tilesets / Tilemaps
 
 {{< include concepts/_tile-files.qmd >}}
 

@@ -5,7 +5,12 @@ $presentation-heading-font-weight: 700;
 
 /*-- scss:rules --*/
 .reveal pre.sourceCode code { max-height: 560px; }
-.reveal .slide-subtitle { color: #666; }
+.reveal .slide-subtitle { color: #9aa5d6; } // muted, but readable on the dark background
+
+// Code comments: Dracula's own comment color (#6272a4) is too dim to read when
+// projected (3:1 contrast). This lighter version of it passes 4.5:1 and still
+// stands apart from the code.
+.reveal div.sourceCode code span.co { color: #8b95c9; }
 
 // Wrap a long code block in ::: {.code-small} to shrink just that block.
 .reveal .code-small pre.sourceCode code { font-size: 0.72em; line-height: 1.25; }

@@ -38,7 +38,7 @@ You can think of it as an infinite flipbook that is updated between frames.
 https://www.mattlayman.com/blog/2019/teach-kid-code-pygame-zero/
 :::
 
-## Basic Game Structure {.smaller}
+## Basic Game Structure
 
 :::: {.columns}
 ::: {.column width="58%"}
@@ -74,7 +74,7 @@ A window with visual elements that lets the user interact with the code behind t
 
 {{< include concepts/_tuples.qmd >}}
 
-## Drawing Order {.smaller}
+## Drawing Order
 
 :::: {.columns}
 ::: {.column width="45%"}
@@ -141,7 +141,7 @@ Images go in the `images` folder. Use the name without `.png`.
 ```{.python include="code/actor_basics.py" snippet="image" dedent=4}
 ```
 
-## Actor Positions {.smaller}
+## Actor Positions
 
 :::: {.columns}
 ::: {.column width="68%"}

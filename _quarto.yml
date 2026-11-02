@@ -66,6 +66,7 @@ filters:
 format:
   revealjs:
     theme: [dracula, course/shared/styles/slides.scss] # or dark, night...
+    highlight-style: dracula # code colors to match the dracula theme (comment color tweaked in slides.scss)
     slide-number: true
     code-line-numbers: false
     preview-links: auto
