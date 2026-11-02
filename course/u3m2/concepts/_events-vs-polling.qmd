@@ -1,0 +1,7 @@
+<!-- Module concept: event-based vs. polling input. Used by u3m2-slides.qmd, u3m2-cheatsheet.qmd -->
+| | **Event-based input** | **Polling input** |
+|------|---------------|---------------|
+| Idea | something happens → you react | you keep checking if something happened |
+| Exp | Text message notification. Interrupts. | Notifications silenced. You have to check your phone. |
+| Game design | mouse input, keyboard input, timer event | checking `keyboard` in `update()` |
+| Use case | something should happen **once**, as an immediate response to an action (e.g. jump button pressed) | something should **continue** to happen in response to an action (e.g. move while arrow pressed) |

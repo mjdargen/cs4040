@@ -1,0 +1,149 @@
+---
+title: "Event-Driven Programming Cheat Sheet"
+subtitle: "{{< var course.code >}} · Unit 3"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+  typst: default
+---
+
+::: {.content-visible when-format="html"}
+Every code block has a copy button (top right). [Download the printable PDF](u3m2-cheatsheet.pdf).
+:::
+
+[Pygame Zero event hooks]({{< var pgzero.docs >}}/hooks.html) · [buttons and keys]({{< var pgzero.docs >}}/hooks.html#buttons-and-keys) · [clock]({{< var pgzero.docs >}}/builtins.html#clock)
+
+## Mouse clicks: `on_mouse_down()`
+
+A function that is called when a mouse button is pressed. `pos` is a tuple `(x, y)` with the coordinate where the mouse clicked; `button` is the mouse button that was pressed. You must store `pos` in a global variable to use it in `update()` or `draw()`.
+
+```python
+def on_mouse_down(pos, button):  # called when a mouse button is pressed
+    global click_pos  # so update() and draw() can use the click
+    if button == mouse.LEFT:  # which button was pressed
+        click_pos = pos  # (x, y) where the mouse clicked
+```
+
+## Mouse buttons: `mouse.<BUTTON_NAME>`
+
+Constants that represent the buttons on the mouse. Use them to compare with the `button` that was pressed inside `on_mouse_down()`.
+
+```{.python include="code/mouse_buttons.py" snippet="buttons" dedent=4}
+```
+
+## Key pressed: `on_key_down()`
+
+Function called when a key is pressed. `key` represents the key that was pressed. This happens once for each time the key is pressed. Event-based!
+
+```python
+def on_key_down(key):  # called once per key press
+    if key == keys.LEFT:  # the left key was pressed
+        pass  # do action when left key pressed
+```
+
+## Key released: `on_key_up()`
+
+Function called when a key is released. `key` represents the key that was released. This happens once for each time the key is released. Event-based!
+
+```python
+def on_key_up(key):  # called once per key release
+    if key == keys.LEFT:  # the left key was released
+        pass  # do action when left key released
+```
+
+## Key constants: `keys.<KEY_NAME>`
+
+Constants that represent keys on the keyboard. Use them in an event listener (not `update()`!) to compare with `key`. See [the rest]({{< var pgzero.docs >}}/hooks.html#buttons-and-keys).
+
+```python
+keys.LEFT  # left arrow key
+keys.A  # A key
+keys.SPACE  # space bar
+keys.ESCAPE  # Esc key
+```
+
+## Keyboard polling: `keyboard.<key_name>`
+
+A Boolean expression (`True`/`False`) that tells you if the key is currently pressed. Use it in `update()` or in your own functions. This happens as long as the key remains pressed. Polling!
+
+```python
+def update():
+    if keyboard.left:  # True while the left key is pressed
+        pass  # do something
+    if keyboard.right:  # True while the right key is pressed
+        pass  # do something
+```
+
+## Events vs. polling
+
+{{< include concepts/_events-vs-polling.qmd >}}
+
+```{.python include="code/events_vs_polling.py" snippet="event"}
+```
+
+```{.python include="code/events_vs_polling.py" snippet="polling"}
+```
+
+## `start()`
+
+- Automatically called before the game begins: place code here to run once at the beginning.
+- Used to set up the initial state.
+- Useful later when we restart our games to reset the state and play again!
+
+```python
+def start():  # runs once before draw()/update()
+    global countdown_timer
+    robot.pos = 250, 250  # reset position
+    countdown_timer = 5  # reset timer
+```
+
+## Callback functions
+
+{{< include concepts/_callbacks.qmd >}}
+
+We pass just their name (no parentheses) to the `clock.schedule()` calls. Callbacks can not have arguments.
+
+```{.python include="code/clock_callback.py" snippet="callback"}
+```
+
+Place the `clock.schedule()` calls elsewhere in the code, but be careful where you put them! If you place one somewhere that gets executed every frame, you may end up scheduling a rapidly growing number of callbacks and crash your program. Placing it in `start()` triggers it once at the beginning:
+
+```{.python include="code/clock_callback.py" snippet="start"}
+```
+
+## `clock.schedule_unique(callback, delay)`
+
+Waits `delay` seconds, then calls `callback`. It cancels any previously scheduled calls to that callback function, so it only will execute once until it is scheduled again.
+
+```python
+clock.schedule_unique(trex_jump, 0.5)  # call trex_jump in 0.5 s, just once
+```
+
+## `clock.schedule(callback, delay)`
+
+Waits `delay` seconds, then calls `callback`. This adds the scheduled callback to any other calls of it already scheduled.
+
+```python
+clock.schedule(trex_jump, 0.5)  # also call trex_jump in 0.5 s
+```
+
+## `clock.schedule_interval(callback, interval)`
+
+Calls `callback` every `interval` seconds. Be careful to call `schedule_interval()` only once for a specific callback function. Otherwise, you will schedule additional intervals!
+
+```python
+clock.schedule_interval(spawn_coin, 3.0)  # call spawn_coin every 3 seconds
+```
+
+## `clock.unschedule(callback)`
+
+```python
+clock.unschedule(trex_jump)  # cancel all scheduled calls to trex_jump
+```
+
+## `clock.clear()`
+
+```python
+clock.clear()  # unschedule everything
+```

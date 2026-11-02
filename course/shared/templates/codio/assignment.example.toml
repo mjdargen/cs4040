@@ -1,0 +1,29 @@
+# Template for a module's Codio assignment. Copy to course/<module>/codio/assignment.toml.
+# Read by course/tools/build_codio.py. Paths starting with / are from the repo root;
+# others are relative to the module folder. Page titles come from each page's `title:`.
+
+[assignment]
+build = false                          # true = build_codio.py builds this module
+title = "Module Title"
+folder = "module-title"                # name of the built folder and zip
+
+[files]
+examples = "/e0[0-5]*.py"              # repo examples students get (glob)
+solutions = []                         # private, local only, e.g. ["/l01.py"]; go to .guides/secure
+starter = "/course/shared/templates/starter.py"
+starter_copies = []                    # starter copied under these names, e.g. ["l01.py"]
+images = "/images"                     # becomes images/ for students
+codio_config = "/course/shared/templates/codio"
+extra = { "update.py" = "/utils/update.py" }
+
+# One [[page]] per Codio page, in order. Keep `id` the same across rebuilds so
+# Codio keeps student progress (any unique UUID for a new page).
+# open = file shown beside the page with the Graphics Viewer; terminal = true opens a terminal.
+[[page]]
+source = "content/00-overview.qmd"
+id = "00000000-0000-0000-0000-000000000000"
+
+# [[page]]
+# source = "content/01-example.qmd"
+# id = "..."
+# open = "e00starter.py"

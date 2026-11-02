@@ -1,0 +1,22 @@
+{
+  "commands": {
+    "Run": "python3 {{filepath}}"
+  },
+  "preview": {
+    "Graphics Viewer": "https://{{domain3050}}/",
+    "Box URL": "http://{{domain3000}}/",
+    "Box URL SSL": "https://{{domain3000}}/",
+    "Virtual Desktop": "https://{{domain3050}}/",
+    "Project Index (static)": "https://{{domain}}/{{index}}",
+    "Current File (static)": "https://{{domain}}/{{filepath}}"
+  },
+  "debugger": [
+    {
+      "type": "PYTHON3",
+      "command": "{{filepath}}",
+      "before": "",
+      "uuid": "6c228c3f-596c-c44a-399f-5d86a7e17bf9",
+      "name": "Debug"
+    }
+  ]
+}

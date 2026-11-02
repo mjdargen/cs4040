@@ -1,0 +1,10 @@
+<!-- Module concept: tuples. Used by content/08-content-actors.qmd, u3m1-slides.qmd, u3m1-cheatsheet.qmd -->
+A **tuple** stores several values in parentheses, separated by commas. Positions and colors are tuples. You read one value with square brackets and an index starting at 0, but you cannot change one value: you replace the whole tuple.
+
+```python
+new_pos = (300, 400)
+new_pos[0]  # 300, the x-coordinate
+new_pos[1]  # 400, the y-coordinate
+new_pos[0] = 100  # ERROR! Cannot modify a tuple
+new_pos = (100, 400)  # correct: assign an entirely new tuple
+```

@@ -1,0 +1,3 @@
+<!-- Concept: naming the list and the loop variable. Used by u4m1 slides and cheat sheet. -->
+- List variable names are typically plural (`enemies`) and our iteration variable names are typically singular (`enemy`).
+- The iteration variable grabs a single element from the list at a time, in order.

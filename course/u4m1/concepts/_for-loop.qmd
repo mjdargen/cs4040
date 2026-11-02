@@ -1,0 +1,5 @@
+<!-- Concept: how a for loop walks through a list. Used by u4m1 slides and cheat sheet. -->
+- A `for` loop goes through each item in a list one at a time.
+- The loop starts at the first item and continues to the end.
+- The loop iteration variable stores the current item.
+- The loop runs once for each item in the list.

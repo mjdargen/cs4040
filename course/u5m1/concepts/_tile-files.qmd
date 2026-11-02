@@ -1,0 +1,6 @@
+<!-- Module concept: tilesheet vs tileset vs tilemap. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+- **Tilesheet**: a `.png` image file that contains many small images (tiles) arranged in a grid. Each tile is a piece of the world (grass, wall, water, etc.). This is the art asset created by the artist.
+- **Tileset**: a `.tsx` file created in Tiled that defines how to use a tilesheet. It tells Tiled things like tile size, spacing, and any extra data. It references a tilesheet. (*Tileset* and *tilesheet* are often used interchangeably.)
+- **Tilemap**: a `.tmx` file created in Tiled that defines the actual level layout. It uses one or more tilesets and organizes tiles into layers (ground, walls, hazards, etc.). This is the level design.
+
+**Note:** the tilesheet, tileset, and tilemap must all be stored in the `maps` folder of your project.

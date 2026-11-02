@@ -1,0 +1,9 @@
+<!-- Concept: the list operations used in this course. Used by u4m1 slides and cheat sheet. -->
+- **Definition**: creating a list using square brackets `[]`.
+- **Access**: getting a value by index.
+- **Update**: replacing a value at an index.
+- **`len(name_of_list)`**: returns how many items are in the list.
+- **`.append(item)`**: adds item to the end of the list.
+- **`.remove(item)`**: removes item by value.
+- **`.pop(index)`**: removes and returns the item at index. Removes the last item if no index is provided.
+- **`.clear()`**: removes all items.

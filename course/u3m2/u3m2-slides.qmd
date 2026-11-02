@@ -1,0 +1,224 @@
+---
+title: "Event-Driven Programming"
+subtitle: "{{< var course.code >}} · Unit 3: 2D Game Development"
+format:
+  revealjs: default
+  pptx: default
+---
+
+## Event-Driven Programming
+
+Per Wikipedia, "In computer programming, **event-driven programming** is a programming paradigm in which the flow of the program is determined by **events** such as user actions (mouse clicks, key presses), timers, sensor outputs, or messages from other programs or threads."
+
+Events include but are not limited to:
+
+- Key presses
+- Mouse clicks
+- Mouse movements
+- Timers
+
+::: notes
+{{< var pgzero.docs >}}/hooks.html
+:::
+
+## Understanding Order
+
+```python
+start()
+while game_has_not_ended():
+    process_input()
+    update()
+    draw()
+```
+
+## Event Listener
+
+An **event listener** is a bit of code that listens/waits for an event to occur (button press, mouse click, timer expiration) and executes a series of actions when the event occurs.
+
+Event listeners allow the game/program to change during gameplay/execution.
+
+Can be confusing at first. Event listeners seem asynchronous from `draw()`/`update()`, but we can think about it as interrupting that flow to tell us something has happened.
+
+# Mouse Events
+
+## Mouse Events
+
+```python
+def on_mouse_down(pos, button):
+    print(f"Mouse button {button} clicked at {pos}.")
+```
+
+:::: {.columns}
+::: {.column width="45%"}
+**Note**: There are also `on_mouse_move` & `on_mouse_up` listener functions. But not as commonly used.
+:::
+::: {.column width="55%"}
+`pos` is provided as a tuple, a list-like object that uses parentheses and cannot be changed.
+
+```python
+pos = (x, y)
+pos[0]  # x
+pos[1]  # y
+```
+
+`button` = button that was clicked
+:::
+::::
+
+## Mouse Buttons
+
+```{.python include="code/mouse_buttons.py" snippet="listener"}
+```
+
+:::: {.columns}
+::: {.column width="50%"}
+```{.python include="code/mouse_buttons.py" snippet="buttons" dedent=4}
+```
+:::
+::: {.column width="50%"}
+Button constants: `mouse.button_name` ([Button Constants]({{< var pgzero.docs >}}/hooks.html#buttons-and-keys))
+:::
+::::
+
+**Note**: There's also `on_mouse_move` & `on_mouse_up` listener functions.
+
+# Keyboard Events
+
+## Events vs. Polling {.smaller}
+
+{{< include concepts/_events-vs-polling.qmd >}}
+
+## Event-Based Keyboard Inputs: Key Event Listeners
+
+```python
+def on_key_down(key):
+    print("A key was pressed")
+
+def on_key_up(key):
+    print("A key was released")
+```
+
+[Key Constants]({{< var pgzero.docs >}}/hooks.html#buttons-and-keys)
+
+## Key Event Listeners: Keys
+
+```python
+def on_key_down(key):
+    if key == keys.UP:
+        print("Up key was pressed")
+    elif key == keys.DOWN:
+        print("Down key was pressed")
+
+def on_key_up(key):
+    if key == keys.UP:
+        print("Up key was released")
+    elif key == keys.DOWN:
+        print("Down key was released")
+```
+
+[Key Constants]({{< var pgzero.docs >}}/hooks.html#buttons-and-keys){.absolute bottom=0 right=0}
+
+## Polling Inputs: Keyboard Polling in `update()`
+
+:::: {.columns}
+::: {.column width="58%"}
+```python
+# Moves Actor as long as key is pressed
+def update():
+    # checks if D key is pressed
+    if keyboard.d:
+        player.x += 1
+    # checks if A key is pressed
+    if keyboard.a:
+        player.x -= 1
+```
+:::
+::: {.column width="42%"}
+**Note**: Can't use `key` in `update()`. That info is not passed to us like in keyboard event listeners. Must use `keyboard.up`, `keyboard.a` in `update()`.
+
+`keyboard.<key>` gives us a `True`/`False` value based on whether that key is pressed. Remains `True` if it is pressed.
+
+[Key Constants]({{< var pgzero.docs >}}/hooks.html#buttons-and-keys)
+:::
+::::
+
+## Event-Based vs. Polling Inputs {.smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+**Event-Based Inputs**
+
+Moves Actor up when key pressed. Happens once per press because `on_key_down` triggers once.
+
+```{.python include="code/events_vs_polling.py" snippet="event"}
+```
+
+**Good for single actions**\
+Exp: jump, show other image
+:::
+::: {.column width="50%"}
+**Polling Inputs**
+
+Moves Actor as long as key is pressed. Happens continuously because `update()` is called repeatedly.
+
+```{.python include="code/events_vs_polling.py" snippet="polling"}
+```
+
+**Good for continuous actions**\
+Exp: movement, play animation
+:::
+::::
+
+# Clock Events
+
+## Callback Functions
+
+{{< include concepts/_callbacks.qmd >}}
+
+In this case `move_character` is the callback function:
+
+```{.python include="code/clock_callback.py" snippet="callback"}
+```
+
+Scheduled with the clock elsewhere in code:
+
+```{.python include="code/clock_callback.py" snippet="schedule" dedent=4}
+```
+
+## Make something happen later
+
+[Pygame Zero docs: Clock]({{< var pgzero.docs >}}/builtins.html#clock)
+
+We can create our time-based events using Clock methods!
+
+- `clock.schedule_unique(callback, delay)`
+  - Waits for `delay` seconds, then calls the function `callback`. It cancels any previously scheduled calls to `callback`, so it only will execute once until it is scheduled again.
+  - Exp: Game start delay, Game over delay before main menu.
+- `clock.schedule(callback, delay)`
+  - Waits for `delay` seconds, then calls the function `callback`. This will add this callback to any other callback scheduled.
+  - Exp: Spawning enemies, Triggering delayed sound.
+
+## Make something happen periodically
+
+[Pygame Zero docs: Clock]({{< var pgzero.docs >}}/builtins.html#clock)
+
+Instead of scheduling something to occur after a delay, we can schedule something to occur at an interval, every X seconds. We will use this the most!
+
+- `clock.schedule_interval(callback, interval)`
+  - Schedules `callback` to execute every `interval` seconds.
+  - Exp: Periodically spawn items, Auto move NPC
+
+Be careful where you put `schedule_interval()`! Often put in `start()` or other places where we know it will only execute once. Otherwise a new interval is added every frame, and the calls pile up fast!
+
+## Make things stop happening!
+
+[Pygame Zero docs: Clock]({{< var pgzero.docs >}}/builtins.html#clock)
+
+We can cancel scheduled callbacks and scheduled intervals!
+
+- `clock.unschedule(callback)`
+  - Cancels all previously scheduled callbacks for that function.
+  - Exp: Cancel spawning and timer for game over screen.
+- `clock.clear()`
+  - Cancels everything!
+  - Exp: Stop spawning when moving to new level

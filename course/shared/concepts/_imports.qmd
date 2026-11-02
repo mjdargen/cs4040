@@ -1,0 +1,12 @@
+<!-- Shared concept: used by readings, slides and cheat sheets in every pgzero module. -->
+Every Pygame Zero program starts with two import lines and ends with `pgzrun.go()`.
+
+```python
+# program must start with these two lines
+import pgzrun
+from pgzero.builtins import *
+
+...
+
+pgzrun.go()  # program must always end with this
+```

@@ -1,0 +1,99 @@
+---
+title: "Collisions & Game State Cheat Sheet"
+subtitle: "{{< var course.code >}} · Unit 3"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+  typst: default
+---
+
+::: {.content-visible when-format="html"}
+Every code block has a copy button (top right). [Download the printable PDF](u3m3-cheatsheet.pdf).
+:::
+
+## Assets
+
+{{< include /course/shared/concepts/_asset-rules.qmd >}}
+
+## Collisions
+
+`colliderect()` is a Boolean expression: `True` if Actor `actor1` has collided with Actor `actor2`, `False` otherwise.
+
+```python
+if actor1.colliderect(actor2):  # True if actor1 collided with actor2
+    game.over()
+```
+
+## The `game` object
+
+`game` is an object variable storing information about the game's state.
+
+```{.python include="code/game_object.py" snippet="attributes" dedent=4}
+```
+
+## Score, level and timer
+
+```python
+game.score = 0  # sets the player's score
+game.score += 10  # adds points to the score
+game.level = 1  # stores the current level number
+game.level += 1  # moves to the next level
+if game.timer > 5:  # checks if a certain amount of time has passed
+f"{game.timer:.2f}"  # timer as a string, rounded to 2 decimal places
+f"{int(game.timer)}"  # timer as a string, decimals dropped (whole number)
+```
+
+## Game states
+
+`game.state` is a string variable that tracks the state of the game. Up to you to implement!
+
+| State | Meaning |
+|---|---|
+| `"playing"` | Default value. The game is running. |
+| `"won"` | The game is won. Set with `game.win()`. |
+| `"lost"` | The game is lost. Set with `game.lose()`. |
+| `"over"` | The game is over. Set with `game.over()`, used when there is no difference between win/lose. |
+| `"paused"` | Not used presently in our games, but could be useful in the future! |
+
+You can add your own states! Just set `game.state` equal to any string. You define the value, check it elsewhere in your code, and implement what happens in that state. Other useful states could be `"menu"` or `"credits"`.
+
+## Checking and changing state
+
+```python
+if game.state == "playing":  # run code only when the game is active
+if game.state != "won":  # run code only when the game was not won
+```
+
+```{.python include="code/game_object.py" snippet="end" dedent=4}
+```
+
+Adding a number restarts the game after that many seconds, by resetting `game` and running `start()` again:
+
+```{.python include="code/game_object.py" snippet="restart" dedent=4}
+```
+
+## Reset, pause and resume
+
+While paused, `game.timer` and Sprite animations stop, but `update()` and the clock keep running.
+
+```python
+game.reset()  # resets state, score, level, timer and frame_count
+```
+
+```{.python include="code/game_object.py" snippet="pause" dedent=4}
+```
+
+## Example: game state in a game
+
+`start()` is called automatically at the beginning. It resets the game and initializes values. `draw()` uses `game.state` to decide what to draw. `update()` returns right away unless the game is `"playing"`, then calls `game.lose()` or `game.win()` when the player hits the enemy or the key.
+
+```{.python include="code/game_state_example.py" snippet="program"}
+```
+
+## Heads-up display (HUD)
+
+An example of displaying the score, time (as a whole number), level and a game over message in `draw()`:
+
+```{.python include="code/hud.py" snippet="draw"}
+```

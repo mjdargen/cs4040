@@ -1,0 +1,5 @@
+<!-- Shared concept: the two ways to write a color. -->
+| Write a color as | Example | Meaning |
+|---|---|---|
+| a color name string | `"darkturquoise"` | any name from the [Pygame Zero color list]({{< var pgzero.colors >}}) |
+| an RGB tuple | `(150, 0, 100)` | red = 150, green = 0, blue = 100, each from 0 to 255 |

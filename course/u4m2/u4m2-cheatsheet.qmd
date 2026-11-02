@@ -1,0 +1,51 @@
+---
+title: "Sounds & Music Cheat Sheet"
+subtitle: "{{< var course.code >}} · Unit 4"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+  typst: default
+---
+
+::: {.content-visible when-format="html"}
+Every code block has a copy button (top right). [Download the printable PDF](u4m2-cheatsheet.pdf).
+:::
+
+## Assets
+
+Create subfolders called `images`, `sounds` and `music`. Pygame Zero looks in them to find your images, sounds and music.
+
+{{< include /course/shared/concepts/_asset-rules.qmd >}}
+
+## Sounds
+
+Plays shorter `.ogg` or `.wav` audio files. These are for sound effects in your game! Sound functions are called in this format: `sounds.<filename>.<function>()` ([docs]({{< var pgzero.docs >}}/builtins.html#sounds)).
+
+```{.python include="code/sounds.py" snippet="sounds" dedent=4}
+```
+
+## Music
+
+Plays longer `.ogg` or `.mp3` audio files. These are for background music in your game! ([docs]({{< var pgzero.docs >}}/builtins.html#music))
+
+```{.python include="code/music.py" snippet="play" dedent=4}
+```
+
+```{.python include="code/music.py" snippet="status" dedent=4}
+```
+
+```{.python include="code/music.py" snippet="control" dedent=4}
+```
+
+## Tone
+
+Generates sounds using a built-in synthesizer. `tone.play(pitch, duration)` plays a tone at a certain pitch for a specified length in seconds. `volume` goes from 0 (silent) to 1 (max), default 0.8. `waveform` can be `"sin"` (default), `"square"`, `"saw"` or `"triangle"`.
+
+```python
+tone.play("E4", 0.5)  # plays an E in octave 4 for 0.5 seconds
+tone.play("A#5", 0.25)  # plays an A sharp in octave 5 for 0.25 seconds
+tone.play("Bb3", 0.75)  # plays a B flat in octave 3 for 0.75 seconds
+tone.play("C4", 1, volume=0.5)  # plays C4 for 1 second at half volume
+tone.play("C4", 1, waveform="square")  # plays C4 for 1 second, square wave
+```

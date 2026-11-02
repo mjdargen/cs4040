@@ -1,0 +1,8 @@
+#!/bin/sh
+# Stops a commit that would publish a private file (see course/tools/check_private.py).
+# Turn it on once in each clone:  git config core.hooksPath .githooks
+if command -v python >/dev/null 2>&1; then
+    exec python course/tools/check_private.py
+else
+    exec python3 course/tools/check_private.py
+fi

@@ -1,0 +1,5 @@
+<!-- Concept: what a list is. Used by u4m1 slides and cheat sheet. -->
+- **Lists**: data type used to organize a collection of items.
+- Items in lists can be ints, strings, Actors, etc.
+- It is an ordered sequence of individual elements.
+- Accessible by index.

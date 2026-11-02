@@ -1,0 +1,2 @@
+<!-- Module concept: what a callback function is. Used by u3m2-slides.qmd, u3m2-cheatsheet.qmd -->
+**Callback functions** are functions you will define that will be called when a clock event occurs.

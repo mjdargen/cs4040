@@ -1,0 +1,4 @@
+<!-- Shared concept: the three Pygame Zero functions. -->
+- **`start()`**: called once when the game starts, before the game loop begins. Set up the game's starting state here.
+- **`update()`**: called repeatedly (about 60 times per second) to change the game's state: move characters, check conditions, change variables.
+- **`draw()`**: called repeatedly to draw the current state of the game: backgrounds, shapes and characters.

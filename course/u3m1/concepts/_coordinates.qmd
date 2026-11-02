@@ -1,0 +1,2 @@
+<!-- Module concept: the screen coordinate system. -->
+The origin `(0, 0)` is the **top-left** corner of the window. `x` increases to the right and `y` increases **down**, so the bottom-right corner is `(WIDTH, HEIGHT)`.

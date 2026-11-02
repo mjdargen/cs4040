@@ -1,0 +1,8 @@
+<!-- Shared concept: where assets go and how to name them. -->
+| Folder | Holds | File types |
+|---|---|---|
+| `images` | pictures for Actors | `.png` |
+| `sounds` | sound effects | `.wav` or `.ogg` |
+| `music` | background music | `.ogg` or `.mp3` |
+
+Asset names follow the same rules as Python variables: all lowercase, no spaces, only letters, numbers and underscores, and they must begin with a letter. Refer to an asset by its name without the extension: `"alien"`, not `"alien.png"`.

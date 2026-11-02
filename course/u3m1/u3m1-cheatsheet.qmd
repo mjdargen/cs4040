@@ -1,0 +1,102 @@
+---
+title: "Pygame Zero Basics Cheat Sheet"
+subtitle: "{{< var course.code >}} · Unit 3"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+  typst: default
+---
+
+::: {.content-visible when-format="html"}
+Every code block has a copy button (top right). [Download the printable PDF](u3m1-cheatsheet.pdf).
+:::
+
+## Key terms
+
+- **`screen`**: the object for the game window you draw on.
+- **`Actor`**: a built-in class for a picture you draw and move on the screen.
+- **tuple**: values in parentheses that can't be changed one at a time, like `(x, y)` positions and RGB colors.
+- [Pygame Zero docs]({{< var pgzero.docs >}}) · [color names]({{< var pgzero.colors >}}) · [text options]({{< var pgzero.ptext >}})
+
+## Assets
+
+{{< include /course/shared/concepts/_asset-rules.qmd >}}
+
+## Program structure
+
+{{< include /course/shared/concepts/_imports.qmd >}}
+
+```{.python include="code/draw_order.py" snippet="constants"}
+```
+
+{{< include /course/shared/concepts/_game-loop.qmd >}}
+
+## Colors
+
+{{< include /course/shared/concepts/_colors.qmd >}}
+
+## Screen
+
+{{< include concepts/_coordinates.qmd >}}
+
+```{.python include="code/drawing_shapes.py" snippet="fill" dedent=4}
+```
+
+```{.python include="code/drawing_shapes.py" snippet="rect" dedent=4}
+```
+
+```{.python include="code/drawing_shapes.py" snippet="line" dedent=4}
+```
+
+```{.python include="code/drawing_shapes.py" snippet="circle" dedent=4}
+```
+
+```{.python include="code/drawing_shapes.py" snippet="text" dedent=4}
+```
+
+## Actors
+
+```{.python include="code/actor_basics.py" snippet="create"}
+```
+
+```{.python include="code/actor_basics.py" snippet="position" dedent=4}
+```
+
+```{.python include="code/actor_basics.py" snippet="image" dedent=4}
+```
+
+```{.python include="code/actor_basics.py" snippet="properties" dedent=4}
+```
+
+## Actor positions
+
+```{.python include="code/actor_positions.py" snippet="single" dedent=4}
+```
+
+```{.python include="code/actor_positions.py" snippet="pairs" dedent=4}
+```
+
+```{.python include="code/actor_positions.py" snippet="move" dedent=4}
+```
+
+## Tuples
+
+{{< include concepts/_tuples.qmd >}}
+
+## Global and Actor variables
+
+{{< include concepts/_global-rules.qmd >}}
+
+A global frame counter (`frame = 0` at the top of the file):
+
+```{.python include="code/global_frame.py" snippet="update"}
+```
+
+Actor variables attach your own values to one Actor, no `global` needed:
+
+```{.python include="code/actor_variables.py" snippet="start"}
+```
+
+```{.python include="code/actor_variables.py" snippet="update"}
+```

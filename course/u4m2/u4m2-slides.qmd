@@ -1,0 +1,41 @@
+---
+title: "Sounds & Music"
+subtitle: "{{< var course.code >}} · Unit 4: Iteration, Data, and Design"
+format:
+  revealjs: default
+  pptx: default
+---
+
+# Sounds
+
+## Sounds
+
+[Pygame Zero docs: Sounds]({{< var pgzero.docs >}}/builtins.html#sounds)
+
+- Used to play short sound effects, not music!
+- Store files in a folder called `sounds` (similar to `images`)
+- Filenames must be lowercase without spaces (`.ogg` or `.wav`)
+- Functions are called like so: `sounds.<filename>.<function>()`
+
+```{.python include="code/sounds.py" snippet="sounds" dedent=4}
+```
+
+# Music
+
+## Music
+
+[Pygame Zero docs: Music]({{< var pgzero.docs >}}/builtins.html#music)
+
+- Used to play music and longer audio files.
+- Store files in a folder called `music` (similar to `sounds`)
+- Filenames must be lowercase without spaces (`.ogg` or `.mp3`)
+
+```{.python include="code/music.py" snippet="play" dedent=4}
+```
+
+## Music Functions (cont'd)
+
+[Pygame Zero docs: Music]({{< var pgzero.docs >}}/builtins.html#music)
+
+```{.python include="code/music.py" snippet="control" dedent=4}
+```

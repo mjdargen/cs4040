@@ -1,0 +1,11 @@
+/*-- scss:defaults --*/
+$presentation-font-size-root: 34px;
+$code-block-font-size: 0.72em;
+$presentation-heading-font-weight: 700;
+
+/*-- scss:rules --*/
+.reveal pre.sourceCode code { max-height: 560px; }
+.reveal .slide-subtitle { color: #666; }
+
+// Wrap a long code block in ::: {.code-small} to shrink just that block.
+.reveal .code-small pre.sourceCode code { font-size: 0.72em; line-height: 1.25; }

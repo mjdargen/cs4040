@@ -1,0 +1,5 @@
+<!-- Module concept: load_tile_map_actors(). Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+Use `load_tile_map_actors()` to import your map made in Tiled into your game based on tile map layers.
+
+- `tmx_name`: path to the TMX file defining the tilemap, created in Tiled.
+- `scale`: scaling factor applied to the map for display in Pygame.

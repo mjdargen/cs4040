@@ -1,0 +1,11 @@
+# Course-wide values used with {{< var ... >}}. Change once, updates everywhere.
+course:
+  code: CS4040
+  name: Game Design & Simulation
+  instructor: Mr. D
+  site: https://dargen.io/cs4040 # where the course website is published
+pgzero:
+  docs: https://pgzero-plus.readthedocs.io/en/latest
+  colors: https://pgzero-plus.readthedocs.io/en/latest/colors_ref.html
+  ptext: https://pgzero-plus.readthedocs.io/en/latest/ptext.html
+  actors: https://pgzero-plus.readthedocs.io/en/latest/builtins.html#actors

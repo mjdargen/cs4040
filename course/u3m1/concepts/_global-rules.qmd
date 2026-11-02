@@ -1,0 +1,7 @@
+<!-- Module concept: when a function needs the global keyword. -->
+The `global` keyword tells Python that a variable inside a function refers to the global variable defined outside it.
+
+| You do **not** need `global` when you are... | You **do** need `global` when you are... |
+|---|---|
+| only *reading* the variable | *reassigning* the variable to a new value |
+| changing something *inside* it (an Actor's position, appending to a list) | changing an `int`, `float`, `bool`, `str` or tuple |

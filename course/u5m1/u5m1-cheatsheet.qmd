@@ -1,0 +1,85 @@
+---
+title: "Advanced Pygame Zero Cheat Sheet"
+subtitle: "{{< var course.code >}} · Unit 5"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+  typst: default
+---
+
+::: {.content-visible when-format="html"}
+Every code block has a copy button (top right). [Download the printable PDF](u5m1-cheatsheet.pdf).
+:::
+
+## Assets
+
+{{< include /course/shared/concepts/_asset-rules.qmd >}}
+
+This module adds two more folders: keep your spritesheets in `sprites`, and your tilemaps, tilesets, and tilesheets in `maps`.
+
+## Actor extensions
+
+Additional functionality added to Actors:
+
+```{.python include="code/actor_extensions.py" snippet="extensions" dedent=4}
+```
+
+```{.python include="code/actor_extensions.py" snippet="visibility" dedent=4}
+```
+
+## Collision rectangle
+
+A custom collision rectangle is centered on the Actor. The first line makes it 10 wide and 20 tall; the second makes it 50 wide and 20 tall, with its center moved by (5, -5).
+
+```{.python include="code/actor_extensions.py" snippet="collision_rect" dedent=4}
+```
+
+In `draw()`:
+
+```{.python include="code/actor_extensions.py" snippet="debug_rect" dedent=4}
+```
+
+## Sprites
+
+{{< include concepts/_sprite-params.qmd >}}
+
+```{.python include="code/rabbit_game.py" snippet="sprites"}
+```
+
+## Controlling animations
+
+`fox.sprite` gets the Sprite the Actor is playing. Setting it switches the animation. Setting the same Sprite again restarts it only if it has finished, so it is safe to set every frame.
+
+```{.python include="code/fox_animation.py" snippet="sprites"}
+```
+
+```{.python include="code/fox_animation.py" snippet="control" dedent=4}
+```
+
+## Tile map constants
+
+Helpful constants for 2D games using a tilemap.
+
+```{.python include="code/rabbit_game.py" snippet="constants"}
+```
+
+## Tilesheets, tilesets, and tilemaps
+
+{{< include concepts/_tile-files.qmd >}}
+
+## Importing a tilemap
+
+{{< include concepts/_load-tile-map.qmd >}}
+
+To get individual lists of Actors from each Tiled layer, use the layer name. Using different layers allows you to treat each list of Actors differently.
+
+```{.python include="code/rabbit_game.py" snippet="layers"}
+```
+
+## Wall collisions
+
+Example of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction.
+
+```{.python include="code/rabbit_game.py" snippet="wall_collision" dedent=4}
+```

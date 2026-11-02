@@ -1,0 +1,84 @@
+# Course website: slides, cheat sheets and readings, built from course/.
+# Lives at the repo root so pages can quote the real examples (e04bouncing.py)
+# and use the real asset folders. Run `quarto render` from the repo root.
+# Modules live in course/ in folders named u<unit>m<module>: u3m1, u3m2, ...
+project:
+  type: website
+  output-dir: _build/site
+  # What `quarto render` builds: home page, slides, cheat sheets.
+  # When a module gets lesson or lab pages, list them here too
+  # (e.g. - "course/u3m1/content/*.qmd") and add them to the sidebar.
+  render:
+    - index.qmd
+    - "course/*/*-slides.qmd"
+    - "course/*/*-cheatsheet.qmd"
+
+website:
+  title: "CS4040 Game Design & Simulation"
+  page-navigation: true
+  sidebar:
+    style: docked
+    search: true
+    contents:
+      - index.qmd
+      - section: "U3M1 · Pygame Zero Basics"
+        contents:
+          - text: "Slides"
+            href: course/u3m1/u3m1-slides.qmd
+          - text: "Cheat sheet"
+            href: course/u3m1/u3m1-cheatsheet.qmd
+      - section: "U3M2 · Event-Driven Programming"
+        contents:
+          - text: "Slides"
+            href: course/u3m2/u3m2-slides.qmd
+          - text: "Cheat sheet"
+            href: course/u3m2/u3m2-cheatsheet.qmd
+      - section: "U3M3 · Collisions & Game State"
+        contents:
+          - text: "Slides"
+            href: course/u3m3/u3m3-slides.qmd
+          - text: "Cheat sheet"
+            href: course/u3m3/u3m3-cheatsheet.qmd
+      - section: "U4M1 · Lists & Loops"
+        contents:
+          - text: "Slides"
+            href: course/u4m1/u4m1-slides.qmd
+          - text: "Cheat sheet"
+            href: course/u4m1/u4m1-cheatsheet.qmd
+      - section: "U4M2 · Sounds & Music"
+        contents:
+          - text: "Slides"
+            href: course/u4m2/u4m2-slides.qmd
+          - text: "Cheat sheet"
+            href: course/u4m2/u4m2-cheatsheet.qmd
+      - section: "U5M1 · Advanced Pygame Zero"
+        contents:
+          - text: "Slides"
+            href: course/u5m1/u5m1-slides.qmd
+          - text: "Cheat sheet"
+            href: course/u5m1/u5m1-cheatsheet.qmd
+
+# One Python filter pulls code from .py files and handles Codio markup (course/tools/course_filter.py).
+filters:
+  - course/tools/course_filter.py
+
+# Themes and print layout for the whole course, set once here.
+format:
+  revealjs:
+    theme: [dracula, course/shared/styles/slides.scss] # or dark, night...
+    slide-number: true
+    code-line-numbers: false
+    preview-links: auto
+  html:
+    theme:
+      light: flatly   # flatly and darkly are a matched pair (same Lato font and layout)
+      dark: darkly
+    respect-user-color-scheme: true # follow the student's light/dark setting
+    code-copy: true
+    toc: true
+    format-links: false
+  typst:
+    include-in-header: course/shared/styles/cheatsheet.typ
+    columns: 2
+    margin: {x: 0.45in, y: 0.4in}
+    fontsize: 8.5pt

@@ -1,10 +1,21 @@
-# CS4040 — Game Design
+# CS4040 — Game Design & Simulation
 
-Python game development examples and supporting assets for **CS4040 Game Design**, an introductory computer science course. The programs are designed to accompany class lessons and give students a starting point for experimenting with graphics, input, animation, game mechanics, and larger projects.
+Example games, starter code and art for **CS4040 Game Design & Simulation**. You'll write 2D games in Python with **[Pygame Zero Plus](https://github.com/mjdargen/pgzero)**, a version of [Pygame Zero](https://github.com/lordmauve/pgzero) with extra features for making games.
 
-The examples use **[Pygame Zero Plus](https://github.com/mjdargen/pgzero)**, an independently maintained fork of [Pygame Zero](https://github.com/lordmauve/pgzero) with additional features for teaching and developing 2D games.
+## Slides and cheat sheets
 
-## Getting started
+**Course home page: [dargen.io/cs4040](https://dargen.io/cs4040/)**
+
+| Module                                      | Slides                                                          | Cheat sheet                                                                                                                        |
+| ------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Unit 3 · Module 1: Pygame Zero Basics       | [slides](https://dargen.io/cs4040/course/u3m1/u3m1-slides.html) | [web](https://dargen.io/cs4040/course/u3m1/u3m1-cheatsheet.html) · [PDF](https://dargen.io/cs4040/course/u3m1/u3m1-cheatsheet.pdf) |
+| Unit 3 · Module 2: Event-Driven Programming | [slides](https://dargen.io/cs4040/course/u3m2/u3m2-slides.html) | [web](https://dargen.io/cs4040/course/u3m2/u3m2-cheatsheet.html) · [PDF](https://dargen.io/cs4040/course/u3m2/u3m2-cheatsheet.pdf) |
+| Unit 3 · Module 3: Collisions & Game State  | [slides](https://dargen.io/cs4040/course/u3m3/u3m3-slides.html) | [web](https://dargen.io/cs4040/course/u3m3/u3m3-cheatsheet.html) · [PDF](https://dargen.io/cs4040/course/u3m3/u3m3-cheatsheet.pdf) |
+| Unit 4 · Module 1: Lists & Loops            | [slides](https://dargen.io/cs4040/course/u4m1/u4m1-slides.html) | [web](https://dargen.io/cs4040/course/u4m1/u4m1-cheatsheet.html) · [PDF](https://dargen.io/cs4040/course/u4m1/u4m1-cheatsheet.pdf) |
+| Unit 4 · Module 2: Sounds & Music           | [slides](https://dargen.io/cs4040/course/u4m2/u4m2-slides.html) | [web](https://dargen.io/cs4040/course/u4m2/u4m2-cheatsheet.html) · [PDF](https://dargen.io/cs4040/course/u4m2/u4m2-cheatsheet.pdf) |
+| Unit 5 · Module 1: Advanced Pygame Zero     | [slides](https://dargen.io/cs4040/course/u5m1/u5m1-slides.html) | [web](https://dargen.io/cs4040/course/u5m1/u5m1-cheatsheet.html) · [PDF](https://dargen.io/cs4040/course/u5m1/u5m1-cheatsheet.pdf) |
+
+## Getting started on your own computer
 
 1. Install Pygame Zero Plus. It also installs pygame and numpy.
 
@@ -22,63 +33,74 @@ The examples use **[Pygame Zero Plus](https://github.com/mjdargen/pgzero)**, an 
 
    `--pre` includes alpha and beta releases. If you have installed the original Pygame Zero (`pgzero`) or pygame before, see [switching to Pygame Zero Plus](https://github.com/mjdargen/pgzero#switching-from-pygame-zero-pygame-or-an-older-fork) first.
 
-2. Clone this repository and open it in your Python editor (such as VS Code):
+2. Get this repository: clone it, or use **Code → Download ZIP** at the top of this page and unzip it.
 
    ```bash
    git clone https://github.com/mjdargen/cs4040.git
    cd cs4040
    ```
 
-3. Open and run an example using your editor's Run button or `python <filename>.py` from the repository root.
+3. Open the folder in your editor (such as VS Code) and run an example with the Run button, or with `python e00starter.py` from this folder.
 
-To install everything this repository uses, including the packages for the utilities below, run `python -m pip install -r requirements.txt` from the repository root instead of step 1.
+Keep your games in this folder, next to `images/`, `sounds/` and the other asset folders. Pygame Zero Plus looks for images, sounds and music in folders beside the program you run.
 
-Keep the asset directories next to the example programs so Pygame Zero Plus can find their images, sprites, sounds, and music. Many of the examples begin with `import pgzrun` and `from pgzero.builtins import *` and end with `pgzrun.go()`; the explicit built-ins import also helps Python editors recognize Pygame Zero names.
+Every program starts with `import pgzrun` and `from pgzero.builtins import *`, and ends with `pgzrun.go()`. [e00starter.py](e00starter.py) is a blank game to start from.
 
-## Assets and credits
+### Getting the latest examples and art
 
-These files are a mix of teaching assets and third-party resources. **The code repository and the media assets do not all share one license.** Each asset directory has a README describing known sources and any attribution or license details that still need verification.
+[utils/update.py](utils/update.py) sets up any folder for this class, with no git needed. Copy it into the folder you work in and run it there (use `python3` on macOS and Linux):
 
-| Directory                     | Contents and attribution                                                                                          |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| [fonts/](fonts/README.md)     | Pixel and monospaced fonts; individual credits and license notes                                                  |
-| [images/](images/README.md)   | Static sprites, characters, backgrounds, and other images                                                         |
-| [maps/](maps/README.md)       | Tiled maps, tilesets, and map graphics                                                                            |
-| [music/](music/README.md)     | Background music; **includes third-party game soundtrack arrangements with unverified redistribution permission** |
-| [sounds/](sounds/README.md)   | Sound effects and source/licensing notes                                                                          |
-| [sprites/](sprites/README.md) | Animated sprite sheets, editable source files, and per-sprite animation documentation                             |
+| Command                       | What it does                                   |
+| ----------------------------- | ---------------------------------------------- |
+| `python update.py pygame`     | installs or updates Pygame Zero Plus           |
+| `python update.py all`        | copies in all the examples and the art folders |
+| `python update.py examples 5` | copies in examples `e00` through `e05` only    |
+| `python update.py assets`     | copies in just the art folders                 |
+| `python update.py`            | lists everything else it can do                |
 
-Please follow each original creator's licensing terms before reusing or redistributing assets in your own projects.
+It downloads the newest files from this repository each time, so run it again whenever new examples are added. It replaces the example files with fresh copies, so make your changes in your own file (copy the example and rename it), not in the example itself.
 
-## Utilities
+## Example games
 
-To make sprite sheets and tile sheets from other art (sheets, strips, GIFs, Aseprite and Piskel files, and tile sets with gaps), use **[Sprite Studio](https://dargen.io/sprite-studio/)** in your browser. It shows previews of the sheet and its animations before you download, and writes the `Sprite(...)` code for you.
+The examples are numbered in the order we use them in class: [e00starter.py](e00starter.py) is a blank game, and each one after it adds something new (drawing, moving, the keyboard and mouse, collisions, lists, sound, animated sprites and more). Open one, run it, then change it and see what happens.
 
-The [utils/](utils/) folder has scripts for preparing game assets:
+## Art, sounds and music
 
-| Script                   | What it does                                                                                                                                        |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `spritesheet_creator.py` | Combines PNG and GIF animations into one sprite sheet, with documentation                                                                           |
-| `spritesheet_packer.py`  | Stacks PNG animation strips into a sprite sheet, one strip per row                                                                                  |
-| `spritesheet_cropper.py` | Removes padding around the frames of a sprite sheet                                                                                                 |
-| `piskel_unpacker.py`     | Exports frames from Piskel files                                                                                                                    |
-| `sprite_documenter.py`   | Writes documentation for Aseprite sprite files                                                                                                      |
-| `tile_packer.py`         | Removes the margins around each tile of a tileset or sprite sheet                                                                                   |
-| `resolve_tilemaps.py`    | Moves Tiled maps, and the tilesets and images they use, from Downloads, the Desktop or the project folder into `maps/`, and fixes the paths in them |
-| `convert_audio.py`       | Converts WAV and MP3 files to OGG, moving the originals to `audio_originals/`                                                                       |
-| `lowercase_filenames.py` | Renames asset files to lowercase names that Pygame Zero Plus can load                                                                               |
-| `update.py`              | Sets up a workspace with Pygame Zero Plus and this repository's games                                                                               |
+| Folder                        | What's in it                                              |
+| ----------------------------- | --------------------------------------------------------- |
+| [images/](images/README.md)   | Characters, objects and backgrounds you can use as Actors |
+| [sprites/](sprites/README.md) | Animated sprite sheets, with notes on each animation      |
+| [sounds/](sounds/README.md)   | Sound effects                                             |
+| [music/](music/README.md)     | Background music                                          |
+| [maps/](maps/README.md)       | Tiled maps and tile sets                                  |
+| [fonts/](fonts/README.md)     | Pixel and monospaced fonts                                |
 
-`update.py` is for setting up a separate folder to work in. Copy it into that folder and run it there: `python update.py pygame` installs Pygame Zero Plus, and `python update.py all` copies in the examples and assets (use `python3` on macOS and Linux). Run it with no options to see everything it can do. It works on Windows, macOS and Linux with Python 3.6 or newer, and needs nothing else installed, not even git.
+Each folder's README lists where its files came from. Not all of them share one license, so check before using them in something you publish outside class.
 
-The other utilities need Python 3.7 or newer and [Pillow](https://pypi.org/project/pillow/), which `requirements.txt` installs. A few also need other programs:
+## Making your own sprites
 
-- `convert_audio.py` needs [ffmpeg](https://ffmpeg.org/).
-- `sprite_documenter.py` needs [Aseprite](https://www.aseprite.org/) and its command-line tool.
-- The scripts with windows (`spritesheet_creator.py`, `spritesheet_packer.py` and `spritesheet_cropper.py`) use tkinter, which comes with Python on Windows and macOS. On Linux, install it with your package manager, e.g. `sudo apt install python3-tk`.
+**[Sprite Studio](https://dargen.io/sprite-studio/)** turns your own art into sprite sheets in your browser: sheets, strips, GIFs, Aseprite and Piskel files, and tile sets. It previews the animations and writes the `Sprite(...)` code for you.
 
-[pygame_examples/glcube.py](pygame_examples/glcube.py) also needs PyOpenGL, which `requirements.txt` installs.
+The [utils/](utils/) folder also has Python scripts for preparing art and sound:
 
-## Framework
+| Script                   | What it does                                                                  |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| `spritesheet_creator.py` | Combines PNG and GIF animations into one sprite sheet                         |
+| `spritesheet_packer.py`  | Stacks PNG animation strips into a sprite sheet, one strip per row            |
+| `spritesheet_cropper.py` | Removes padding around the frames of a sprite sheet                           |
+| `piskel_unpacker.py`     | Exports frames from Piskel files                                              |
+| `sprite_documenter.py`   | Writes notes for Aseprite sprite files                                        |
+| `tile_packer.py`         | Removes the gaps around each tile of a tile set                               |
+| `resolve_tilemaps.py`    | Moves Tiled maps and their tile sets into `maps/` and fixes the paths in them |
+| `convert_audio.py`       | Converts WAV and MP3 files to OGG                                             |
+| `lowercase_filenames.py` | Renames files to lowercase names that Pygame Zero Plus can load               |
 
-This repository contains examples and assets, not the underlying framework. For source code, installation, and framework documentation, see **[Pygame Zero Plus](https://github.com/mjdargen/pgzero)**.
+To install everything these scripts need, run `python -m pip install -r requirements.txt` from this folder. `convert_audio.py` also needs [ffmpeg](https://ffmpeg.org/), and `sprite_documenter.py` needs [Aseprite](https://www.aseprite.org/). On Linux, the scripts with windows need tkinter (`sudo apt install python3-tk`).
+
+## Pygame Zero Plus
+
+This repository has examples and art, not Pygame Zero Plus itself. For its documentation, see **[pgzero-plus.readthedocs.io](https://pgzero-plus.readthedocs.io/en/latest/)**; for its source code, see **[mjdargen/pgzero](https://github.com/mjdargen/pgzero)**.
+
+---
+
+_Teachers: how the slides, cheat sheets and Codio assignments are made is in [course/README.md](course/README.md)._
