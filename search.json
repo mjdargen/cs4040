@@ -290,7 +290,7 @@
     "href": "course/u3m2/u3m2-cheatsheet.html#events-vs.-polling",
     "title": "Event-Driven Programming Cheat Sheet",
     "section": "Events vs. polling",
-    "text": "Events vs. polling\n\n\n\n\n\n\n\n\n\n\nEvent-based input\nPolling input\n\n\n\n\nIdea\nsomething happens → you react\nyou keep checking if something happened\n\n\nExp\nText message notification. Interrupts.\nNotifications silenced. You have to check your phone.\n\n\nGame design\nmouse input, keyboard input, timer event\nchecking keyboard in update()\n\n\nUse case\nsomething should happen once, as an immediate response to an action (e.g. jump button pressed)\nsomething should continue to happen in response to an action (e.g. move while arrow pressed)\n\n\n\ndef on_key_down(key):\n    if key == keys.UP:  # up key pressed\n        player.y -= 10  # once per press\ndef update():\n    if keyboard.d:  # D key held down\n        player.x += 1  # every frame",
+    "text": "Events vs. polling\n\n\n\n\n\n\n\n\n\n\nEvent-based input\nPolling input\n\n\n\n\nIdea\nsomething happens → you react\nyou keep checking if something happened\n\n\nExp\nText notification when phone on loud. Interrupts.\nNotifications silenced. You have to check your phone.\n\n\nGame design\nmouse input, keyboard input, timer event\nchecking keyboard in update()\n\n\nUse case\nsomething should happen once, as an immediate response to an action (e.g. jump button pressed)\nsomething should continue to happen in response to an action (e.g. move while arrow pressed)\n\n\n\ndef on_key_down(key):\n    if key == keys.UP:  # up key pressed\n        player.y -= 10  # once per press\ndef update():\n    if keyboard.d:  # D key held down\n        player.x += 1  # every frame",
     "crumbs": [
       "U3M2 · Event-Driven Programming",
       "Cheat sheet"
@@ -620,7 +620,7 @@
     "href": "course/u3m2/u3m2-slides.html#events-vs.-polling",
     "title": "Event-Driven Programming",
     "section": "Events vs. Polling",
-    "text": "Events vs. Polling\n\n\n\n\n\n\n\n\n\n\nEvent-based input\nPolling input\n\n\n\n\nIdea\nsomething happens → you react\nyou keep checking if something happened\n\n\nExp\nText message notification. Interrupts.\nNotifications silenced. You have to check your phone.\n\n\nGame design\nmouse input, keyboard input, timer event\nchecking keyboard in update()\n\n\nUse case\nsomething should happen once, as an immediate response to an action (e.g. jump button pressed)\nsomething should continue to happen in response to an action (e.g. move while arrow pressed)",
+    "text": "Events vs. Polling\n\n\n\n\n\n\n\n\n\n\nEvent-based input\nPolling input\n\n\n\n\nIdea\nsomething happens → you react\nyou keep checking if something happened\n\n\nExp\nText notification when phone on loud. Interrupts.\nNotifications silenced. You have to check your phone.\n\n\nGame design\nmouse input, keyboard input, timer event\nchecking keyboard in update()\n\n\nUse case\nsomething should happen once, as an immediate response to an action (e.g. jump button pressed)\nsomething should continue to happen in response to an action (e.g. move while arrow pressed)",
     "crumbs": [
       "U3M2 · Event-Driven Programming",
       "Slides"
