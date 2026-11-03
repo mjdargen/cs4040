@@ -38,8 +38,7 @@ def move_coin():
     coin.y = random.randint(20, HEIGHT - 20)
     # if coin is accidentally placed on bomb or robot, call again
     if coin.colliderect(bomb) or coin.colliderect(robot):
-        coin.x = random.randint(20, WIDTH - 20)
-        coin.y = random.randint(20, HEIGHT - 20)
+        move_coin()
 
 
 # relocates bomb to a new location
