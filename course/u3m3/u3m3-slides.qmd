@@ -12,7 +12,7 @@ format:
 
 Per Wikipedia, "A hitbox is an invisible shape commonly used in video games for real-time collision detection. It is often a rectangle or cuboid that is attached to and follows a visible object, though circular or spheroidal shapes are also common."
 
-In Pygame, we have a rectangular hitbox around an Actor's image.
+In Pygame, we have a rectangular hitbox around an Actor's image, including any transparent space.
 
 ![](media/hitbox.png){fig-align="center" width="85%"}
 
@@ -27,7 +27,7 @@ unicorn = Actor("unicorn")
 monster = Actor("monster")
 
 if unicorn.colliderect(monster):
-    # game over
+    game.lose()
 ```
 
 ## Detecting Collisions with Multiple Actors
@@ -41,6 +41,19 @@ if player.colliderect(bat):  # collision with enemy
     player.health -= 1
 if player.colliderect(coin):  # collision with coin
     player.money += 1
+```
+
+## Collisions Are Checked Every Frame
+
+- `update()` runs about 60 times per second.
+- If two Actors stay overlapped, `colliderect()` is `True` **every frame**.
+- Collect a coin and leave it there? `player.money += 1` runs 60 times a second!
+- Fix: move the coin (or the enemy) away right after the collision.
+
+```python
+if player.colliderect(coin):
+    player.money += 1
+    coin.x = random.randint(20, WIDTH - 20)  # move it so it's only collected once
 ```
 
 # Game State
@@ -76,6 +89,8 @@ game.timer = 0
 ```{.python include="code/game_object.py" snippet="attributes" dedent=4}
 ```
 
+`game.timer` only counts while the game is `"playing"`.
+
 ## What is Game State
 
 - `"playing"` → normal gameplay
@@ -93,27 +108,58 @@ if game.state == "playing":
 
 Update using: `game.win()`, `game.lose()`, `game.over()`, etc.
 
-## Changing State / Ending a Game
+## Ending a Game
 
 ```{.python include="code/game_object.py" snippet="end" dedent=4}
 ```
+
+- Changes `game.state` to `"won"`, `"lost"` or `"over"` and clears the clock.
+- These only work while `game.state` is `"playing"`. Once the game has ended, extra calls are ignored.
+
+## Pausing a Game
 
 ```{.python include="code/game_object.py" snippet="pause" dedent=4}
 ```
 
 While paused, `game.timer` and Sprite animations stop, but `update()` and the clock keep running.
 
-## Restarting a Game
+## Ending and Restarting
 
-Instead of ending, we can restart a game by adding a number!
+Add a number to restart the game after that many seconds:
 
 ```{.python include="code/game_object.py" snippet="restart" dedent=4}
 ```
 
-- Everything listed before still happens right away: changes `game.state` to `"won"`, `"lost"` or `"over"` and clears the clock.
-- Then, after that many seconds, it restarts the game: resets `game` (score 0, level 1, timer 0, state `"playing"`) and runs the `start()` function again.
+- Everything from before still happens right away: changes `game.state` and clears the clock.
+- After that many seconds, the game restarts:
+  - `game` is reset: score 0, level 1, timer 0, state `"playing"`.
+  - Your `start()` function runs again.
 
-**Note:** these do not execute unless `game.state` is `"playing"` when they are called. They are skipped otherwise, to prevent multiple restarts from being scheduled when called repeatedly in `update()`.
+**Note:** because these are skipped unless `game.state` is `"playing"`, it's safe to call them in `update()` every frame. Only the first call schedules a restart.
+
+## Restarting Right Now
+
+```python
+game.restart()  # starts a new game right away, from any state
+```
+
+- Use it when the player presses a key to play again.
+- Does the same reset as above: resets `game`, then runs `start()` again.
+
+**The rule:** `win()`, `lose()` or `over()` to **end** the game. `restart()` to **start a new one**.
+
+## What Goes in `start()`?
+
+- `start()` runs when the game begins **and again on every restart**.
+- Restarting only resets the values inside `game`. Everything else is up to `start()`.
+- Put everything a fresh game needs in `start()`: Actor positions **and** your own variables.
+
+```python
+def start():
+    player.pos = (200, 200)
+    enemy.pos = (400, 400)
+    player.lives = 3  # set here, not at the top of the file!
+```
 
 ## Heads-Up Display (HUD)
 
