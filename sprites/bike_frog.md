@@ -1,5 +1,5 @@
 # bike_frog.aseprite
-**Image Size:** 1024x64
+**Image Size:** 960x64
 
 **Frame Size:** 64x64
 

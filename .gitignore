@@ -24,6 +24,8 @@ TODO.md
 /images/*/
 /utils/input_piskels/
 /utils/output_assets/
+/maps/restricted/
+/sprites/restricted/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

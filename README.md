@@ -83,19 +83,16 @@ Each folder's README lists where its files came from. Not all of them share one 
 
 The [utils/](utils/) folder also has Python scripts for preparing art and sound:
 
-| Script                   | What it does                                                                  |
-| ------------------------ | ----------------------------------------------------------------------------- |
-| `spritesheet_creator.py` | Combines PNG and GIF animations into one sprite sheet                         |
-| `spritesheet_packer.py`  | Stacks PNG animation strips into a sprite sheet, one strip per row            |
-| `spritesheet_cropper.py` | Removes padding around the frames of a sprite sheet                           |
-| `piskel_unpacker.py`     | Exports frames from Piskel files                                              |
-| `sprite_documenter.py`   | Writes notes for Aseprite sprite files                                        |
-| `tile_packer.py`         | Removes the gaps around each tile of a tile set                               |
-| `resolve_tilemaps.py`    | Moves Tiled maps and their tile sets into `maps/` and fixes the paths in them |
-| `convert_audio.py`       | Converts WAV and MP3 files to OGG                                             |
-| `lowercase_filenames.py` | Renames files to lowercase names that Pygame Zero Plus can load               |
+| Script                      | What it does                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------------ |
+| `map_and_sprite_checker.py` | Checks that every map, tileset and sprite in `maps/` and `sprites/` loads correctly  |
+| `sprite_documenter.py`      | Gives every sprite a `.png`, `.aseprite` and `.md` notes, and warns if a pair disagrees |
+| `piskel_unpacker.py`        | Exports frames and a GIF from Piskel files                                           |
+| `resolve_tilemaps.py`       | Moves Tiled maps and their tile sets into `maps/` and fixes the paths in them        |
+| `convert_audio.py`          | Converts WAV and MP3 files to OGG                                                    |
+| `lowercase_filenames.py`    | Renames files to lowercase names that Pygame Zero Plus can load                      |
 
-To install everything these scripts need, run `python -m pip install -r requirements.txt` from this folder. `convert_audio.py` also needs [ffmpeg](https://ffmpeg.org/), and `sprite_documenter.py` needs [Aseprite](https://www.aseprite.org/). On Linux, the scripts with windows need tkinter (`sudo apt install python3-tk`).
+To install everything these scripts need, run `python -m pip install -r requirements.txt` from this folder. `convert_audio.py` also needs [ffmpeg](https://ffmpeg.org/), and `sprite_documenter.py` needs [Aseprite](https://www.aseprite.org/). Most scripts work on the whole `sprites/` or `maps/` folder at once; for changing one sprite or tile set by hand, use Sprite Studio.
 
 ## Pygame Zero Plus
 
