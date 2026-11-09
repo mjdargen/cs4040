@@ -1,0 +1,3 @@
+<!-- Module concept: fullscreen. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+- Set `FULLSCREEN = True` at the top of your game to start in fullscreen.
+- Press **F11** to toggle any game between fullscreen and a window.

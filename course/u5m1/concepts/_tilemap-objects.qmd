@@ -1,0 +1,8 @@
+<!-- Module concept: the map, a layer, and a tile. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+A tile map is made of three kinds of thing, each inside the one before:
+
+- **The map** (`level`) holds every layer.
+- **A layer** (`walls = level["walls"]`) is a list of tiles.
+- **A tile** (`wall = walls[0]`) is one Actor on the map.
+
+Each method belongs to one of them. The variable before the dot tells you which: `level.draw()` is the map, `walls.get_tile(...)` is a layer, `wall.set_tile_image(...)` is a tile.

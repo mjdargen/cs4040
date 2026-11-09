@@ -5,7 +5,7 @@ import random
 # Pygame Constants
 WIDTH = 500
 HEIGHT = 500
-TITLE = "List Collectibles"
+TITLE = "List Collectables"
 
 # global variables
 bg = Actor("grass_bg")
@@ -17,6 +17,7 @@ coins = []  # create list
 def start():
     bg.pos = (WIDTH // 2, HEIGHT // 2)
     robot.pos = (WIDTH // 2, HEIGHT // 2)
+    robot.velocity = 5
     coins.clear()  # remove all elements from list
     # schedule coins to begin spawning
     clock.schedule_interval(spawn_coin, 1.0)

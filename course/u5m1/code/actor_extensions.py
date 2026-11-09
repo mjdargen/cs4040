@@ -28,7 +28,8 @@ def start():
     # end snippet visibility
     # start snippet collision_rect
     player.collision_rect = (10, 20)  # (width, height)
-    player.collision_rect = (50, 20, 5, -5)  # (width, height, offset_x, offset_y)
+    # (width, height, offset_x, offset_y)
+    player.collision_rect = (50, 20, 5, -5)
     # end snippet collision_rect
 
 
@@ -36,7 +37,7 @@ def draw():
     screen.clear()
     player.draw()
     # start snippet debug_rect
-    player.draw_collision_rect()  # shows the collision rect, useful for debugging
+    player.draw_collision_rect()  # outlines it in red, for debugging
     # end snippet debug_rect
 
 

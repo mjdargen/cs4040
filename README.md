@@ -94,6 +94,16 @@ The [utils/](utils/) folder also has Python scripts for preparing art and sound:
 
 To install everything these scripts need, run `python -m pip install -r requirements.txt` from this folder. `convert_audio.py` also needs [ffmpeg](https://ffmpeg.org/), and `sprite_documenter.py` needs [Aseprite](https://www.aseprite.org/). Most scripts work on the whole `sprites/` or `maps/` folder at once; for changing one sprite or tile set by hand, use Sprite Studio.
 
+## If your game lags
+
+[utils/profile_game.py](utils/profile_game.py) finds out why. Run it with your game, play as usual, then close the window. It shows how long `update()` and `draw()` take each frame (under 16.7 ms together runs at 60 frames a second) and the functions that took the most time, with any in your own file marked `YOUR GAME`:
+
+```
+python utils/profile_game.py my_game.py
+```
+
+Add `--auto` to run it without a window for a few seconds, holding the arrow keys, which gives the same results each time so you can check whether a change helped. Use `python3` on macOS and Linux.
+
 ## Pygame Zero Plus
 
 This repository has examples and art, not Pygame Zero Plus itself. For its documentation, see **[pgzero-plus.readthedocs.io](https://pgzero-plus.readthedocs.io/en/latest/)**; for its source code, see **[mjdargen/pgzero](https://github.com/mjdargen/pgzero)**.

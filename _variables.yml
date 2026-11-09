@@ -9,3 +9,6 @@ pgzero:
   colors: https://pgzero-plus.readthedocs.io/en/latest/colors_ref.html
   ptext: https://pgzero-plus.readthedocs.io/en/latest/ptext.html
   actors: https://pgzero-plus.readthedocs.io/en/latest/builtins.html#actors
+tools:
+  sprite_studio: https://mjdargen.github.io/sprite-studio/
+  tiled: https://www.mapeditor.org/

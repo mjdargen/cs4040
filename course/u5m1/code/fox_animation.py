@@ -1,6 +1,7 @@
-# Code atom: controlling an animated Actor (play once, replay, pause).
+# Code atom: controlling an animated Actor (play once, check, pause, jump to a frame).
 # Quoted by: u5m1-slides.qmd, u5m1-cheatsheet.qmd
-# "fox" is a spritesheet in the sprites folder (32 x 32 frames).
+# "fox" is a sprite sheet in the sprites folder (24 x 16 frames: idle on row 0, hurt on row 4).
+# Space: get hurt. P: pause or resume. R: restart the animation.
 import pgzrun
 from pgzero.builtins import *
 
@@ -9,30 +10,46 @@ HEIGHT = 300
 TITLE = "Controlling Animations"
 
 # start snippet sprites
-idle = Sprite("fox", 32, 32, row=0)
-attack = Sprite("fox", 32, 32, row=3, loop=False)  # plays once
+idle = Sprite("fox", frame_width=24, frame_height=16,
+              row=0, frames=5, fps=6)
+hurt = Sprite("fox", frame_width=24, frame_height=16,
+              row=4, frames=5, fps=8, loop=False)  # plays once
 fox = Actor(idle)
 # end snippet sprites
 
 
 def start():
+    fox.scale = 4
     fox.pos = (WIDTH // 2, HEIGHT // 2)
+
+
+# start snippet keys
+def on_key_down(key):
+    if key == keys.SPACE:
+        fox.sprite = hurt  # replays if it has already finished
+    if key == keys.P:
+        if fox.animation_paused:  # True while paused
+            fox.resume_animation()  # carry on from the same frame
+        else:
+            fox.pause_animation()  # freeze on the current frame
+    if key == keys.R:
+        fox.reset_animation()  # play again from the first frame
+# end snippet keys
+
+
+def update():
+    # start snippet play_once
+    if fox.sprite == hurt and fox.animation_finished:  # hurt has ended
+        fox.sprite = idle  # go back to idle
+    # end snippet play_once
 
 
 def draw():
     screen.clear()
     fox.draw()
-
-
-def update():
-    # start snippet control
-    fox.sprite = attack  # same Sprite again: replays only if it has finished
-    if fox.animation_finished:  # True once a loop=False Sprite ends
-        fox.sprite = idle
-    fox.frame  # current frame number, starting at 0
-    fox.pause_animation()  # freezes on the current frame
-    fox.resume_animation()  # resumes animation on current frame
-    # end snippet control
+    # start snippet frame
+    screen.draw.text(f"frame {fox.frame}", (10, 10))  # frame number, from 0
+    # end snippet frame
 
 
 pgzrun.go()

@@ -1,0 +1,6 @@
+<!-- Module concept: what a sprite sheet is, and Sprite Studio. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+A **sprite sheet** is one image that holds every frame of a character's animations, laid out in a grid. Each **row** is one animation (idle, walk, jump, ...), and every frame is the same size. Rows and frames are counted from 0, starting at the top left.
+
+Keep sprite sheets in the `sprites` folder. Each sheet there has a `.md` file listing its frame size and what is on each row.
+
+[Sprite Studio]({{< var tools.sprite_studio >}}) turns art from anywhere (sheets, GIFs, Aseprite files, folders of frames) into a sprite sheet that works here, and writes the `Sprite(...)` code for you.

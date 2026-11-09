@@ -3,3 +3,5 @@ Use `load_tile_map_actors()` to import your map made in Tiled into your game bas
 
 - `tmx_name`: path to the TMX file defining the tilemap, created in Tiled.
 - `scale`: scaling factor applied to the map for display in Pygame.
+
+Get each layer by its name in Tiled, like `level["walls"]`. A layer works like a list of tiles, and every tile is an Actor, so `collidelist()` and `for` loops work on it.

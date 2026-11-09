@@ -1,13 +1,14 @@
-# Code atom: a tilemap game with an animated rabbit that stops at walls.
+# Code atom: a tilemap game: an animated rabbit that stops at walls, collects
+# items and loses on hazards.
 # Quoted by: u5m1-slides.qmd, u5m1-cheatsheet.qmd
-# Needs sprites/rabbit.png (16 x 16 frames) and maps/L1.tmx made in Tiled,
-# with layers named ground, walls, hazards and hearts.
+# Needs sprites/rabbit.png (16 x 16 frames) and maps/tl1.tmx made in Tiled,
+# with layers named ground, walls, hazards and collectables.
 import pgzrun
 from pgzero.builtins import *
 
 # start snippet constants
 # our tile map constants
-TILE_SIZE = 18  # length of a tile, in pixels
+TILE_SIZE = 16  # length of a tile, in pixels
 MAP_WIDTH = 30  # width of the tilemap, in tiles
 MAP_HEIGHT = 20  # height of the tilemap, in tiles
 SCALE = 2  # global scaling factor
@@ -17,47 +18,41 @@ HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
 # end snippet constants
 TITLE = "Rabbit Tilemap"
 
-# start snippet sprites
-# define Sprites
-# start snippet idle
-idle = Sprite("rabbit", frame_width=16, frame_height=16,
-              row=0, frames=2, fps=3)
-# end snippet idle
-# start snippet walk_sprites
-walk_left = Sprite("rabbit", frame_width=16, frame_height=16,
-                   row=6, frames=2, fps=10)
-walk_right = Sprite("rabbit", frame_width=16, frame_height=16,
-                    row=7, frames=2, fps=10)
-# end snippet walk_sprites
-
-# start snippet actor
-# make an Actor that plays a Sprite
+idle = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=3)
+walk_left = Sprite("rabbit", frame_width=16, frame_height=16, row=6, frames=2, fps=8)
+walk_right = Sprite("rabbit", frame_width=16, frame_height=16, row=7, frames=2, fps=8)
 rabbit = Actor(idle)
-# end snippet actor
-# end snippet sprites
 
 # start snippet layers
-map_layers = load_tile_map_actors("L1.tmx", scale=SCALE)
-ground = map_layers["ground"]  # ground / background scenery to draw
-walls = map_layers["walls"]  # obstacles for player to collide with
-hazards = map_layers["hazards"]  # "bad" objects for player collision
-hearts = map_layers["hearts"]  # "good" objects or collectables
+level = load_tile_map_actors("tl1.tmx", scale=SCALE)
+ground = level["ground"]  # ground / background scenery to draw
+walls = level["walls"]  # obstacles for player to collide with
+hazards = level["hazards"]  # "bad" objects for player collision
+collectables = level["collectables"]  # "good" objects to collect
 # end snippet layers
 
 
 def start():
     rabbit.scale = SCALE
-    rabbit.pos = (WIDTH // 2, HEIGHT // 2)
+    rabbit.pos = (200, HEIGHT // 2)
 
 
 def draw():
     screen.clear()
-    for tile in ground + walls + hazards + hearts:
-        tile.draw()
-    rabbit.draw()
+    # start snippet draw
+    level.draw()  # draws every visible layer, in Tiled's layer order
+    rabbit.draw()  # draw the player after the map, so it is on top
+    # end snippet draw
+    if game.state == "lost":
+        screen.draw.text("Game Over", center=(WIDTH // 2, HEIGHT // 2))
+    elif game.state == "won":
+        screen.draw.text("You win!", center=(WIDTH // 2, HEIGHT // 2))
 
 
 def update():
+    if game.state != "playing":
+        return
+
     # start snippet wall_collision
     # left keyboard button pressed
     if keyboard.LEFT:
@@ -70,14 +65,40 @@ def update():
             # if so, put character's left edge on right edge of wall
             rabbit.left = walls[collision_index].right
     # end snippet wall_collision
-    if keyboard.RIGHT:
-        # start snippet switch
-        rabbit.sprite = walk_right
-        # end snippet switch
+    elif keyboard.RIGHT:
         rabbit.x += 2
+        rabbit.sprite = walk_right
         collision_index = rabbit.collidelist(walls)
         if collision_index != -1:
             rabbit.right = walls[collision_index].left
+    elif keyboard.UP:
+        rabbit.y -= 2
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
+            rabbit.top = walls[collision_index].bottom
+    elif keyboard.DOWN:
+        rabbit.y += 2
+        collision_index = rabbit.collidelist(walls)
+        if collision_index != -1:
+            rabbit.bottom = walls[collision_index].top
+    else:
+        rabbit.sprite = idle
+
+    # start snippet collect
+    # touching a collectable? take it off the map
+    item_index = rabbit.collidelist(collectables)
+    if item_index != -1:
+        collectables.pop(item_index)
+    # collected them all?
+    if len(collectables) == 0:
+        game.win()
+    # end snippet collect
+
+    # start snippet hazard
+    # touching any hazard ends the game
+    if rabbit.collidelist(hazards) != -1:
+        game.lose()
+    # end snippet hazard
 
 
 pgzrun.go()

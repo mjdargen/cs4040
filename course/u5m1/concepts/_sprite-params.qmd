@@ -1,11 +1,9 @@
-<!-- Module concept: the Sprite() parameters. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
-Use `Sprite` to make an animation from a spritesheet in the `sprites` folder for an Actor.
-
-- `image_name`: sprite sheet filename
-- `frame_width`: width of each frame in pixels
-- `frame_height`: height of frame in pixels
-- `row` (optional): row to start from, counting from 0. Defaults to `0`.
-- `frames` (optional): number of frames. Defaults to the whole row.
-- `fps` (optional): frames per second. Defaults to `10`.
-- `transparent_color` (optional): color to make see-through. Defaults to none.
-- `loop` (optional): `False` plays once. Defaults to `True`.
+<!-- Module concept: the Sprite() parameters for a sprite sheet. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+- `image_name`: sprite sheet filename in the `sprites` folder
+- `frame_width`, `frame_height`: size of each frame, in pixels
+- `row` (optional): row to start from, counting from 0. Default `0`.
+- `frames` (optional): number of frames. Default: the whole row.
+- `fps` (optional): frames per second. Default `10`.
+- `loop` (optional): `False` plays once. Default `True`.
+- `transparent_color` (optional): color to make see-through.
+- `spacing`, `margin` (optional): gaps between frames and around the sheet, in pixels.

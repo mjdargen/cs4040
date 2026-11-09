@@ -1,0 +1,5 @@
+<!-- Module concept: what col/row mean on the map and in the tileset. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+Columns and rows count from 0, starting at the top left. They mean two different grids:
+
+- **The map** is a grid of squares. `col, row` says which square, like `(5, 2)`. Each layer holds at most one tile per square.
+- **The tileset** is a grid of images. `tile_col, tile_row` says which image, like `(3, 8)`.

@@ -42,44 +42,200 @@ In `draw()`:
 
 ## Sprites
 
-{{< include concepts/_sprite-params.qmd >}}
+A `Sprite` is one animation: its frames, how fast to play them, and whether to loop. Give an Actor a Sprite instead of an image name, and it plays the animation by itself. [Docs: Sprite Animations]({{< var pgzero.docs >}}/builtins.html#sprite-animations)
 
-```{.python include="code/rabbit_game.py" snippet="sprites"}
+## Sprite from a list of images
+
+List image names from the `images` folder, in order. Only `fps` and `loop` can be given.
+
+```{.python include="code/sprites.py" snippet="image_list"}
 ```
 
-## Controlling animations
+```{.python include="code/sprites.py" snippet="alien_actor"}
+```
 
-`fox.sprite` gets the Sprite the Actor is playing. Setting it switches the animation. Setting the same Sprite again restarts it only if it has finished, so it is safe to set every frame.
+## Sprite sheets
+
+{{< include concepts/_sprite-sheets.qmd >}}
+
+## Sprite from a sprite sheet
+
+```{.python include="code/sprites.py" snippet="sheet"}
+```
+
+{{< include concepts/_sprite-params.qmd >}}
+
+## Playing and switching Sprites: `actor.sprite`
+
+Give the Actor a Sprite when you make it. Set `actor.sprite` to switch animations. Setting the Sprite that is already playing does nothing, so it is safe to do every frame.
+
+```{.python include="code/sprites.py" snippet="rabbit_actor"}
+```
+
+```{.python include="code/sprites.py" snippet="switch" dedent=4}
+```
+
+Use `actor.sprite` for Sprites and `actor.image` for image names. Whichever you set last is what the Actor shows.
+
+## Playing once: `loop=False`, `animation_finished`
+
+A Sprite made with `loop=False` stops on its last frame. `animation_finished` is `True` once it has, so you can go back to another animation. `fox.sprite == hurt` checks which animation is playing.
 
 ```{.python include="code/fox_animation.py" snippet="sprites"}
 ```
 
-```{.python include="code/fox_animation.py" snippet="control" dedent=4}
+```{.python include="code/fox_animation.py" snippet="play_once" dedent=4}
 ```
 
-## Tile map constants
+## Pausing, restarting, and frames
 
-Helpful constants for 2D games using a tilemap.
-
-```{.python include="code/rabbit_game.py" snippet="constants"}
+```{.python include="code/fox_animation.py" snippet="keys"}
 ```
+
+```{.python include="code/fox_animation.py" snippet="frame" dedent=4}
+```
+
+Setting `fox.frame` jumps to that frame. While the whole game is paused with `game.pause()`, every Actor holds its frame.
+
+## Fullscreen
+
+{{< include concepts/_fullscreen.qmd >}}
 
 ## Tilesheets, tilesets, and tilemaps
 
 {{< include concepts/_tile-files.qmd >}}
 
-## Importing a tilemap
+Make maps in [Tiled]({{< var tools.tiled >}}). [Docs: Tile Maps]({{< var pgzero.docs >}}/builtins.html#tile-maps)
+
+## Tile map constants
+
+Make your own constants and use them to compute the window size.
+
+```{.python include="code/rabbit_game.py" snippet="constants"}
+```
+
+## Loading a tilemap: `load_tile_map_actors()`
 
 {{< include concepts/_load-tile-map.qmd >}}
 
-To get individual lists of Actors from each Tiled layer, use the layer name. Using different layers allows you to treat each list of Actors differently.
+Using different layers allows you to treat each kind of tile differently.
 
 ```{.python include="code/rabbit_game.py" snippet="layers"}
 ```
 
+## The map, layers, and tiles
+
+{{< include concepts/_tilemap-objects.qmd >}}
+
+## Drawing a tilemap: `level.draw()`
+
+Draws every layer in Tiled's layer order, from the bottom of Tiled's **Layers** list to the top: background first, foreground last. To change what's in front, drag the layers into a new order in Tiled. Draw the player after the map so it is on top.
+
+```{.python include="code/rabbit_game.py" snippet="draw" dedent=4}
+```
+
+Layers hidden in Tiled aren't drawn, but still collide. Hide or show a layer in code with `hazards.visible = False` or `True`.
+
 ## Wall collisions
 
-Example of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction.
+Example of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction, putting the edge you moved against back on the wall.
 
 ```{.python include="code/rabbit_game.py" snippet="wall_collision" dedent=4}
+```
+
+## Collecting items
+
+`collidelist()` gives the index of the tile you touched in the layer. `pop()` that index to take it off the map.
+
+```{.python include="code/rabbit_game.py" snippet="collect" dedent=4}
+```
+
+## Hazards
+
+```{.python include="code/rabbit_game.py" snippet="hazard" dedent=4}
+```
+
+## Creating tiles: `level.create_tile()`
+
+{{< include concepts/_rows-and-columns.qmd >}}
+
+The **map** creates new tiles. `level.create_tile(tile_col, tile_row)` gives a new tile showing that image from the tileset. To find an image's `tile_col` and `tile_row`, count across and down the tilesheet from 0.
+
+```{.python include="code/tile_map_grid.py" snippet="create" dedent=4}
+```
+
+If your map uses only one tileset, `create_tile()` uses it automatically. If it uses more than one, name the tileset to use, as it is named in Tiled: `level.create_tile(3, 8, tileset="town")`.
+
+## Adding and removing tiles: `walls.set_tile()`, `walls.remove_tile()`
+
+A **layer** adds and removes tiles by square. A new tile isn't on the map until you add it. `set_tile()` replaces any tile already in that square, and `remove_tile()` does nothing if the square is already empty.
+
+```{.python include="code/tile_map_grid.py" snippet="add" dedent=4}
+```
+
+```{.python include="code/tile_map_grid.py" snippet="remove" dedent=4}
+```
+
+To remove a tile you touched, `pop()` the index from `collidelist()`.
+
+## Is there a tile there? `walls.get_tile()` and `if wall:`
+
+`get_tile(col, row)` gives back the tile in a square, or **`None`** if the square is empty. `None` means "nothing", and it has no methods, so using it crashes:
+
+```{.python include="code/tile_map_grid.py" snippet="crash" dedent=4}
+```
+
+`if wall:` is `True` for a tile and `False` for `None`, so the code inside only runs when there is a tile:
+
+```{.python include="code/tile_map_grid.py" snippet="find" dedent=4}
+```
+
+## Changing a tile's image: `wall.set_tile_image()`
+
+A **tile** can change which tileset image it shows. Find it with `get_tile()`, check it's there, then change it:
+
+```{.python include="code/tile_map_grid.py" snippet="image" dedent=4}
+```
+
+## Pixels and squares: `level.pos_to_map()`, `level.map_to_pos()`
+
+The **map** converts between pixels and squares. `level.pos_to_map(x, y)` gives the `col, row` of the square at a position in pixels, such as a mouse click or the player. `level.map_to_pos(col, row)` gives the position of the center of a square.
+
+```{.python include="code/tile_map_grid.py" snippet="pos_to_map" dedent=4}
+```
+
+```{.python include="code/tile_map_grid.py" snippet="map_to_pos" dedent=4}
+```
+
+Clicking to build or knock down walls:
+
+```{.python include="code/tile_map_grid.py" snippet="click"}
+```
+
+## Scrolling: `level.x`, `level.y`
+
+For a map bigger than the screen, keep the player in the middle and move the map instead. Every tile moves with `level.x` and `level.y`, and collisions, `pos_to_map()` and `map_to_pos()` keep working.
+
+```{.python include="code/scrolling_map.py" snippet="scroll"}
+```
+
+## What the map can do: `level`
+
+The map holds every layer.
+
+```{.python include="code/tile_map_grid.py" snippet="map_ref" dedent=4}
+```
+
+## What a layer can do: `walls`
+
+A layer is a list of tiles.
+
+```{.python include="code/tile_map_grid.py" snippet="layer_ref" dedent=4}
+```
+
+## What a tile can do: `wall`
+
+A tile is one Actor on the map.
+
+```{.python include="code/tile_map_grid.py" snippet="tile_ref" dedent=4}
 ```
