@@ -121,7 +121,7 @@ def check_maps(folder, subpath):
             continue
         checked += 1
         try:
-            tilemaps.load_tile_map_actors(tmx.name)
+            tilemaps.load_tile_map(tmx.name)
         except Exception as error:
             problems.append(f"{subpath}/{tmx.name}: {error}")
 
@@ -133,7 +133,7 @@ def check_maps(folder, subpath):
                 text, count = test_map_for(tsx)
                 test_map.write_text(text, encoding="utf-8")
                 loaders.maps._cache.clear()
-                placed = len(tilemaps.load_tile_map_actors(TEST_MAP)["tiles"])
+                placed = len(tilemaps.load_tile_map(TEST_MAP)["tiles"])
                 if placed != count:
                     problems.append(f"{subpath}/{tsx.name}: placed {placed} of its {count} tiles")
             except Exception as error:

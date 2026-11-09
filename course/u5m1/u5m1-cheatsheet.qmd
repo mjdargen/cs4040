@@ -114,7 +114,7 @@ Make your own constants and use them to compute the window size.
 ```{.python include="code/rabbit_game.py" snippet="constants"}
 ```
 
-## Loading a tilemap: `load_tile_map_actors()`
+## Loading a tilemap: `load_tile_map()`
 
 {{< include concepts/_load-tile-map.qmd >}}
 

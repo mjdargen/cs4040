@@ -9,7 +9,7 @@ WIDTH = 640
 HEIGHT = 480
 TITLE = "Scrolling Map"
 
-level = load_tile_map_actors("topdown_open_world.tmx", scale=2)
+level = load_tile_map("topdown_open_world.tmx", scale=2)
 walls = level["walls"]
 
 idle = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=3)

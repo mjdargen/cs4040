@@ -15,7 +15,7 @@ WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
 HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
 TITLE = "Tile Map Grid"
 
-level = load_tile_map_actors("tl1.tmx", scale=SCALE)
+level = load_tile_map("tl1.tmx", scale=SCALE)
 walls = level["walls"]
 hazards = level["hazards"]
 items = level["collectables"]

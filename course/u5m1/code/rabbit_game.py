@@ -24,7 +24,7 @@ walk_right = Sprite("rabbit", frame_width=16, frame_height=16, row=7, frames=2, 
 rabbit = Actor(idle)
 
 # start snippet layers
-level = load_tile_map_actors("tl1.tmx", scale=SCALE)
+level = load_tile_map("tl1.tmx", scale=SCALE)
 ground = level["ground"]  # ground / background scenery to draw
 walls = level["walls"]  # obstacles for player to collide with
 hazards = level["hazards"]  # "bad" objects for player collision
