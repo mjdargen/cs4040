@@ -11,17 +11,6 @@
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-cheatsheet.html#assets",
-    "href": "course/u5m1/u5m1-cheatsheet.html#assets",
-    "title": "Advanced Pygame Zero Cheat Sheet",
-    "section": "Assets",
-    "text": "Assets\n\n\n\n\nFolder\nHolds\nFile types\n\n\n\n\nimages\npictures for Actors\n.png\n\n\nsounds\nsound effects\n.wav or .ogg\n\n\nmusic\nbackground music\n.ogg or .mp3\n\n\n\nAsset names follow the same rules as Python variables: all lowercase, no spaces, only letters, numbers and underscores, and they must begin with a letter. Refer to an asset by its name without the extension: \"alien\", not \"alien.png\".\nThis module adds two more folders: keep your spritesheets in sprites, and your tilemaps, tilesets, and tilesheets in maps.",
-    "crumbs": [
-      "U5M1 · Advanced Pygame Zero",
-      "Cheat sheet"
-    ]
-  },
-  {
     "objectID": "course/u5m1/u5m1-cheatsheet.html#actor-extensions",
     "href": "course/u5m1/u5m1-cheatsheet.html#actor-extensions",
     "title": "Advanced Pygame Zero Cheat Sheet",
@@ -44,11 +33,11 @@
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-cheatsheet.html#sprites",
-    "href": "course/u5m1/u5m1-cheatsheet.html#sprites",
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#what-is-a-sprite",
+    "href": "course/u5m1/u5m1-cheatsheet.html#what-is-a-sprite",
     "title": "Advanced Pygame Zero Cheat Sheet",
-    "section": "Sprites",
-    "text": "Sprites\nA Sprite is one animation: its frames, how fast to play them, and whether to loop. Give an Actor a Sprite instead of an image name, and it plays the animation by itself. Docs: Sprite Animations",
+    "section": "What is a Sprite?",
+    "text": "What is a Sprite?\nA Sprite is one animation: its frames, how fast to play them, and whether to loop. Give an Actor a Sprite instead of an image name, and it plays the animation by itself. Docs: Sprite Animations",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"
@@ -115,17 +104,6 @@
     "title": "Advanced Pygame Zero Cheat Sheet",
     "section": "Pausing, restarting, and frames",
     "text": "Pausing, restarting, and frames\ndef on_key_down(key):\n    if key == keys.SPACE:\n        fox.sprite = hurt  # replays if it has already finished\n    if key == keys.P:\n        if fox.animation_paused:  # True while paused\n            fox.resume_animation()  # carry on from the same frame\n        else:\n            fox.pause_animation()  # freeze on the current frame\n    if key == keys.R:\n        fox.reset_animation()  # play again from the first frame\nscreen.draw.text(f\"frame {fox.frame}\", (10, 10))  # frame number, from 0\nSetting fox.frame jumps to that frame. While the whole game is paused with game.pause(), every Actor holds its frame.",
-    "crumbs": [
-      "U5M1 · Advanced Pygame Zero",
-      "Cheat sheet"
-    ]
-  },
-  {
-    "objectID": "course/u5m1/u5m1-cheatsheet.html#fullscreen",
-    "href": "course/u5m1/u5m1-cheatsheet.html#fullscreen",
-    "title": "Advanced Pygame Zero Cheat Sheet",
-    "section": "Fullscreen",
-    "text": "Fullscreen\n\n\nSet FULLSCREEN = True at the top of your game to start in fullscreen.\nPress F11 to toggle any game between fullscreen and a window.",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"

@@ -79,14 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-d59dd737b1875e7a40a594c230fb158b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-72ad122a46da8a48140464ccae1b523c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-d59dd737b1875e7a40a594c230fb158b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-cdeb8a4587433af17f083e27d5db5f3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -118,187 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
-    const toggleBodyColorMode = (bsSheetEl) => {
-      const mode = bsSheetEl.getAttribute("data-mode");
-      const bodyEl = window.document.querySelector("body");
-      if (mode === "dark") {
-        bodyEl.classList.add("quarto-dark");
-        bodyEl.classList.remove("quarto-light");
-      } else {
-        bodyEl.classList.add("quarto-light");
-        bodyEl.classList.remove("quarto-dark");
-      }
-    }
-    const toggleBodyColorPrimary = () => {
-      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
-      if (bsSheetEl) {
-        toggleBodyColorMode(bsSheetEl);
-      }
-    }
-    const setColorSchemeToggle = (alternate) => {
-      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-      for (let i=0; i < toggles.length; i++) {
-        const toggle = toggles[i];
-        if (toggle) {
-          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
-          if (alternate) {
-            toggle.classList.add("alternate");
-          } else {
-            toggle.classList.remove("alternate");
-          }
-        }
-      }
-    };
-    const toggleColorMode = (alternate) => {
-      // Switch the stylesheets
-      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
-      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-      manageTransitions('#quarto-margin-sidebar .nav-link', false);
-      if (alternate) {
-        // note: dark is layered on light, we don't disable primary!
-        enableStylesheet(alternateStylesheets);
-        for (const sheetNode of alternateStylesheets) {
-          if (sheetNode.id === "quarto-bootstrap") {
-            toggleBodyColorMode(sheetNode);
-          }
-        }
-      } else {
-        disableStylesheet(alternateStylesheets);
-        enableStylesheet(primaryStylesheets)
-        toggleBodyColorPrimary();
-      }
-      manageTransitions('#quarto-margin-sidebar .nav-link', true);
-      // Switch the toggles
-      setColorSchemeToggle(alternate)
-    }
-    // Hack to workaround the fact that safari doesn't
-    // properly recolor the scrollbar when toggling (#1455).
-    // Not run on load: stylesheets are set before first paint there, and
-    // scrolling would undo the scroll to a URL fragment (#14973).
-    // The one pixel nudge keeps the reader where they were.
-    const refreshSafariScrollbar = () => {
-      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-        manageTransitions("body", false);
-        const scrollY = window.scrollY;
-        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
-        setTimeout(() => {
-          window.scrollTo(0, scrollY);
-          manageTransitions("body", true);
-        }, 40);
-      }
-    }
-    const disableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        stylesheet.rel = 'disabled-stylesheet';
-      }
-    }
-    const enableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
-          stylesheet.rel = 'stylesheet';
-        }
-      }
-    }
-    const manageTransitions = (selector, allowTransitions) => {
-      const els = window.document.querySelectorAll(selector);
-      for (let i=0; i < els.length; i++) {
-        const el = els[i];
-        if (allowTransitions) {
-          el.classList.remove('notransition');
-        } else {
-          el.classList.add('notransition');
-        }
-      }
-    }
-    const isFileUrl = () => {
-      return window.location.protocol === 'file:';
-    }
-    const hasAlternateSentinel = () => {
-      let styleSentinel = getColorSchemeSentinel();
-      if (styleSentinel !== null) {
-        return styleSentinel === "alternate";
-      } else {
-        return false;
-      }
-    }
-    const setStyleSentinel = (alternate) => {
-      const value = alternate ? "alternate" : "default";
-      if (!isFileUrl()) {
-        window.localStorage.setItem("quarto-color-scheme", value);
-      } else {
-        localAlternateSentinel = value;
-      }
-    }
-    const getColorSchemeSentinel = () => {
-      if (!isFileUrl()) {
-        const storageValue = window.localStorage.getItem("quarto-color-scheme");
-        return storageValue != null ? storageValue : localAlternateSentinel;
-      } else {
-        return localAlternateSentinel;
-      }
-    }
-    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-      let newTheme = '';
-      if(authorPrefersDark) {
-        newTheme = isAlternate ? baseTheme : alternateTheme;
-      } else {
-        newTheme = isAlternate ? alternateTheme : baseTheme;
-      }
-      const changeGiscusTheme = () => {
-        // From: https://github.com/giscus/giscus/issues/336
-        const sendMessage = (message) => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return;
-          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-        }
-        sendMessage({
-          setConfig: {
-            theme: newTheme
-          }
-        });
-      }
-      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-      if (isGiscussLoaded) {
-        changeGiscusTheme();
-      }
-    };
-    const authorPrefersDark = false;
-    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    const darkModeDefault = queryPrefersDark.matches;
-      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-    // Dark / light mode switch
-    window.quartoToggleColorScheme = () => {
-      // Read the current dark / light value
-      let toAlternate = !hasAlternateSentinel();
-      toggleColorMode(toAlternate);
-      refreshSafariScrollbar();
-      setStyleSentinel(toAlternate);
-      toggleGiscusIfUsed(toAlternate, darkModeDefault);
-      window.dispatchEvent(new Event('resize'));
-    };
-    queryPrefersDark.addEventListener("change", e => {
-      if(window.localStorage.getItem("quarto-color-scheme") !== null)
-        return;
-      const alternate = e.matches
-      toggleColorMode(alternate);
-      refreshSafariScrollbar();
-      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
-      toggleGiscusIfUsed(alternate, darkModeDefault);
-    });
-    // Switch to dark mode if need be
-    if (hasAlternateSentinel()) {
-      toggleColorMode(true);
-    } else {
-      toggleColorMode(false);
-    }
-  </script>
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -323,9 +139,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">CS4040 Game Design &amp; Simulation</a> 
-        <div class="sidebar-tools-main">
-  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
-</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -467,44 +280,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active" data-toc-expanded="1">
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
   <li><a href="#assets" id="toc-assets" class="nav-link active" data-scroll-target="#assets">Assets</a></li>
+  <li><a href="#actors" id="toc-actors" class="nav-link" data-scroll-target="#actors">Actors</a>
+  <ul class="collapse">
   <li><a href="#actor-extensions" id="toc-actor-extensions" class="nav-link" data-scroll-target="#actor-extensions">Actor extensions</a></li>
   <li><a href="#collision-rectangle" id="toc-collision-rectangle" class="nav-link" data-scroll-target="#collision-rectangle">Collision rectangle</a></li>
-  <li><a href="#sprites" id="toc-sprites" class="nav-link" data-scroll-target="#sprites">Sprites</a></li>
+  </ul></li>
+  <li><a href="#sprites" id="toc-sprites" class="nav-link" data-scroll-target="#sprites">Sprites</a>
+  <ul class="collapse">
+  <li><a href="#what-is-a-sprite" id="toc-what-is-a-sprite" class="nav-link" data-scroll-target="#what-is-a-sprite">What is a Sprite?</a></li>
   <li><a href="#sprite-from-a-list-of-images" id="toc-sprite-from-a-list-of-images" class="nav-link" data-scroll-target="#sprite-from-a-list-of-images">Sprite from a list of images</a></li>
   <li><a href="#sprite-sheets" id="toc-sprite-sheets" class="nav-link" data-scroll-target="#sprite-sheets">Sprite sheets</a></li>
   <li><a href="#sprite-from-a-sprite-sheet" id="toc-sprite-from-a-sprite-sheet" class="nav-link" data-scroll-target="#sprite-from-a-sprite-sheet">Sprite from a sprite sheet</a></li>
   <li><a href="#playing-and-switching-sprites-actor.sprite" id="toc-playing-and-switching-sprites-actor.sprite" class="nav-link" data-scroll-target="#playing-and-switching-sprites-actor.sprite">Playing and switching Sprites: <code>actor.sprite</code></a></li>
+  </ul></li>
+  <li><a href="#advanced-sprites" id="toc-advanced-sprites" class="nav-link" data-scroll-target="#advanced-sprites">Advanced Sprites</a>
+  <ul class="collapse">
   <li><a href="#playing-once-loopfalse-animation_finished" id="toc-playing-once-loopfalse-animation_finished" class="nav-link" data-scroll-target="#playing-once-loopfalse-animation_finished">Playing once: <code>loop=False</code>, <code>animation_finished</code></a></li>
   <li><a href="#pausing-restarting-and-frames" id="toc-pausing-restarting-and-frames" class="nav-link" data-scroll-target="#pausing-restarting-and-frames">Pausing, restarting, and frames</a></li>
+  </ul></li>
   <li><a href="#fullscreen" id="toc-fullscreen" class="nav-link" data-scroll-target="#fullscreen">Fullscreen</a></li>
+  <li><a href="#tile-maps" id="toc-tile-maps" class="nav-link" data-scroll-target="#tile-maps">Tile Maps</a>
+  <ul class="collapse">
   <li><a href="#tilesheets-tilesets-and-tilemaps" id="toc-tilesheets-tilesets-and-tilemaps" class="nav-link" data-scroll-target="#tilesheets-tilesets-and-tilemaps">Tilesheets, tilesets, and tilemaps</a></li>
   <li><a href="#tile-map-constants" id="toc-tile-map-constants" class="nav-link" data-scroll-target="#tile-map-constants">Tile map constants</a></li>
   <li><a href="#loading-a-tilemap-load_tile_map" id="toc-loading-a-tilemap-load_tile_map" class="nav-link" data-scroll-target="#loading-a-tilemap-load_tile_map">Loading a tilemap: <code>load_tile_map()</code></a></li>
   <li><a href="#the-map-layers-and-tiles" id="toc-the-map-layers-and-tiles" class="nav-link" data-scroll-target="#the-map-layers-and-tiles">The map, layers, and tiles</a></li>
   <li><a href="#drawing-a-tilemap-level.draw" id="toc-drawing-a-tilemap-level.draw" class="nav-link" data-scroll-target="#drawing-a-tilemap-level.draw">Drawing a tilemap: <code>level.draw()</code></a></li>
+  </ul></li>
+  <li><a href="#tile-map-collisions" id="toc-tile-map-collisions" class="nav-link" data-scroll-target="#tile-map-collisions">Tile Map Collisions</a>
+  <ul class="collapse">
   <li><a href="#wall-collisions" id="toc-wall-collisions" class="nav-link" data-scroll-target="#wall-collisions">Wall collisions</a></li>
   <li><a href="#collecting-items" id="toc-collecting-items" class="nav-link" data-scroll-target="#collecting-items">Collecting items</a></li>
   <li><a href="#hazards" id="toc-hazards" class="nav-link" data-scroll-target="#hazards">Hazards</a></li>
+  </ul></li>
+  <li><a href="#changing-the-map-with-code" id="toc-changing-the-map-with-code" class="nav-link" data-scroll-target="#changing-the-map-with-code">Changing the Map with Code</a>
+  <ul class="collapse">
   <li><a href="#creating-tiles-level.create_tile" id="toc-creating-tiles-level.create_tile" class="nav-link" data-scroll-target="#creating-tiles-level.create_tile">Creating tiles: <code>level.create_tile()</code></a></li>
   <li><a href="#adding-and-removing-tiles-walls.set_tile-walls.remove_tile" id="toc-adding-and-removing-tiles-walls.set_tile-walls.remove_tile" class="nav-link" data-scroll-target="#adding-and-removing-tiles-walls.set_tile-walls.remove_tile">Adding and removing tiles: <code>walls.set_tile()</code>, <code>walls.remove_tile()</code></a></li>
   <li><a href="#is-there-a-tile-there-walls.get_tile-and-if-wall" id="toc-is-there-a-tile-there-walls.get_tile-and-if-wall" class="nav-link" data-scroll-target="#is-there-a-tile-there-walls.get_tile-and-if-wall">Is there a tile there? <code>walls.get_tile()</code> and <code>if wall:</code></a></li>
   <li><a href="#changing-a-tiles-image-wall.set_tile_image" id="toc-changing-a-tiles-image-wall.set_tile_image" class="nav-link" data-scroll-target="#changing-a-tiles-image-wall.set_tile_image">Changing a tile’s image: <code>wall.set_tile_image()</code></a></li>
   <li><a href="#pixels-and-squares-level.pos_to_map-level.map_to_pos" id="toc-pixels-and-squares-level.pos_to_map-level.map_to_pos" class="nav-link" data-scroll-target="#pixels-and-squares-level.pos_to_map-level.map_to_pos">Pixels and squares: <code>level.pos_to_map()</code>, <code>level.map_to_pos()</code></a></li>
   <li><a href="#scrolling-level.x-level.y" id="toc-scrolling-level.x-level.y" class="nav-link" data-scroll-target="#scrolling-level.x-level.y">Scrolling: <code>level.x</code>, <code>level.y</code></a></li>
+  </ul></li>
+  <li><a href="#what-goes-where" id="toc-what-goes-where" class="nav-link" data-scroll-target="#what-goes-where">What Goes Where</a>
+  <ul class="collapse">
   <li><a href="#what-the-map-can-do-level" id="toc-what-the-map-can-do-level" class="nav-link" data-scroll-target="#what-the-map-can-do-level">What the map can do: <code>level</code></a></li>
   <li><a href="#what-a-layer-can-do-walls" id="toc-what-a-layer-can-do-walls" class="nav-link" data-scroll-target="#what-a-layer-can-do-walls">What a layer can do: <code>walls</code></a></li>
   <li><a href="#what-a-tile-can-do-wall" id="toc-what-a-tile-can-do-wall" class="nav-link" data-scroll-target="#what-a-tile-can-do-wall">What a tile can do: <code>wall</code></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
-
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../course/u5m1/u5m1-slides.html">U5M1 · Advanced Pygame Zero</a></li><li class="breadcrumb-item"><a href="../../course/u5m1/u5m1-cheatsheet.html">Cheat sheet</a></li></ol></nav>
 <div class="quarto-title">
@@ -527,8 +360,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Every code block has a copy button (top right). <a href="u5m1-cheatsheet.pdf">Download the printable PDF</a>.</p>
-<section id="assets" class="level2">
-<h2 class="anchored" data-anchor-id="assets">Assets</h2>
+<section id="assets" class="level1">
+<h1>Assets</h1>
 <!-- Shared concept: where assets go and how to name them. -->
 <table class="caption-top table">
 <thead>
@@ -559,6 +392,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Asset names follow the same rules as Python variables: all lowercase, no spaces, only letters, numbers and underscores, and they must begin with a letter. Refer to an asset by its name without the extension: <code>"alien"</code>, not <code>"alien.png"</code>.</p>
 <p>This module adds two more folders: keep your spritesheets in <code>sprites</code>, and your tilemaps, tilesets, and tilesheets in <code>maps</code>.</p>
 </section>
+<section id="actors" class="level1">
+<h1>Actors</h1>
 <section id="actor-extensions" class="level2">
 <h2 class="anchored" data-anchor-id="actor-extensions">Actor extensions</h2>
 <p>Additional functionality added to Actors:</p>
@@ -582,8 +417,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In <code>draw()</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>player.draw_collision_rect()  <span class="co"># outlines it in red, for debugging</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="sprites" class="level2">
-<h2 class="anchored" data-anchor-id="sprites">Sprites</h2>
+</section>
+<section id="sprites" class="level1">
+<h1>Sprites</h1>
+<section id="what-is-a-sprite" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-sprite">What is a Sprite?</h2>
 <p>A <code>Sprite</code> is one animation: its frames, how fast to play them, and whether to loop. Give an Actor a Sprite instead of an image name, and it plays the animation by itself. <a href="https://pgzero-plus.readthedocs.io/en/latest/builtins.html#sprite-animations">Docs: Sprite Animations</a></p>
 </section>
 <section id="sprite-from-a-list-of-images" class="level2">
@@ -633,6 +471,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    rabbit.sprite <span class="op">=</span> idle  <span class="co"># safe every frame: restarts only if it changed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Use <code>actor.sprite</code> for Sprites and <code>actor.image</code> for image names. Whichever you set last is what the Actor shows.</p>
 </section>
+</section>
+<section id="advanced-sprites" class="level1">
+<h1>Advanced Sprites</h1>
 <section id="playing-once-loopfalse-animation_finished" class="level2">
 <h2 class="anchored" data-anchor-id="playing-once-loopfalse-animation_finished">Playing once: <code>loop=False</code>, <code>animation_finished</code></h2>
 <p>A Sprite made with <code>loop=False</code> stops on its last frame. <code>animation_finished</code> is <code>True</code> once it has, so you can go back to another animation. <code>fox.sprite == hurt</code> checks which animation is playing.</p>
@@ -659,14 +500,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>screen.draw.text(<span class="ss">f"frame </span><span class="sc">{</span>fox<span class="sc">.</span>frame<span class="sc">}</span><span class="ss">"</span>, (<span class="dv">10</span>, <span class="dv">10</span>))  <span class="co"># frame number, from 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Setting <code>fox.frame</code> jumps to that frame. While the whole game is paused with <code>game.pause()</code>, every Actor holds its frame.</p>
 </section>
-<section id="fullscreen" class="level2">
-<h2 class="anchored" data-anchor-id="fullscreen">Fullscreen</h2>
+</section>
+<section id="fullscreen" class="level1">
+<h1>Fullscreen</h1>
 <!-- Module concept: fullscreen. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
 <ul>
 <li>Set <code>FULLSCREEN = True</code> at the top of your game to start in fullscreen.</li>
 <li>Press <strong>F11</strong> to toggle any game between fullscreen and a window.</li>
 </ul>
 </section>
+<section id="tile-maps" class="level1">
+<h1>Tile Maps</h1>
 <section id="tilesheets-tilesets-and-tilemaps" class="level2">
 <h2 class="anchored" data-anchor-id="tilesheets-tilesets-and-tilemaps">Tilesheets, tilesets, and tilemaps</h2>
 <!-- Module concept: tilesheet vs tileset vs tilemap. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
@@ -724,6 +568,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>rabbit.draw()  <span class="co"># draw the player after the map, so it is on top</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Layers hidden in Tiled aren’t drawn, but still collide. Hide or show a layer in code with <code>hazards.visible = False</code> or <code>True</code>.</p>
 </section>
+</section>
+<section id="tile-map-collisions" class="level1">
+<h1>Tile Map Collisions</h1>
 <section id="wall-collisions" class="level2">
 <h2 class="anchored" data-anchor-id="wall-collisions">Wall collisions</h2>
 <p>Example of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction, putting the edge you moved against back on the wall.</p>
@@ -755,6 +602,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> rabbit.collidelist(hazards) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    game.lose()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
+</section>
+<section id="changing-the-map-with-code" class="level1">
+<h1>Changing the Map with Code</h1>
 <section id="creating-tiles-level.create_tile" class="level2">
 <h2 class="anchored" data-anchor-id="creating-tiles-level.create_tile">Creating tiles: <code>level.create_tile()</code></h2>
 <!-- Module concept: what col/row mean on the map and in the tileset. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
@@ -822,6 +672,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> rabbit.collidelist(walls) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
 <span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        level.x, level.y <span class="op">=</span> old_x, old_y  <span class="co"># hit a wall: put the map back</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
+</section>
+<section id="what-goes-where" class="level1">
+<h1>What Goes Where</h1>
 <section id="what-the-map-can-do-level" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-map-can-do-level">What the map can do: <code>level</code></h2>
 <p>The map holds every layer.</p>
@@ -853,58 +706,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    // Ensure there is a toggle, if there isn't float one in the top right
-    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const toggle = window.document.createElement('button');
-      toggle.type = "button";
-      toggle.setAttribute("role", "switch");
-      toggle.setAttribute("aria-checked", "false");
-      toggle.classList.add('top-right');
-      toggle.classList.add('quarto-color-scheme-toggle');
-      toggle.setAttribute("aria-label", "Toggle dark mode");
-      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-      const i = window.document.createElement("i");
-      i.classList.add('bi');
-      toggle.appendChild(i);
-      // Put the toggle in a landmark of its own, so that landmark navigation
-      // can reach it.
-      //
-      // The container is always a fresh direct child of body, and the toggle is
-      // never moved into page furniture that the theme or the author controls.
-      // The toggle is positioned against the page, so any ancestor that
-      // establishes a containing block captures it: a positioned element or a
-      // grid for position: absolute, and transform, filter, will-change or
-      // contain for position: fixed. A direct child of body has none of these
-      // to inherit, and the shift when one appears is silent and visual.
-      //
-      // ARIA says a document should have at most one banner, and axe reports a
-      // duplicate whether or not the banners carry distinct labels. So use a
-      // header when the page has no banner yet, and a named region otherwise.
-      //
-      // A header is a banner wherever it sits, unless it is inside sectioning
-      // content, so this cannot just look at the children of body: a custom
-      // page layout wraps the title block header in a plain div. An explicit
-      // role="banner" always counts.
-      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
-      const hasBanner = Array.from(
-        window.document.querySelectorAll('header:not([role]), [role="banner"]')
-      ).some(function(el) {
-        return el.hasAttribute("role") || el.closest(sectioning) === null;
-      });
-      const container = window.document.createElement(hasBanner ? "div" : "header");
-      if (hasBanner) {
-        container.setAttribute("role", "region");
-        container.setAttribute("aria-label", "Toggle dark mode");
-      }
-      container.classList.add('quarto-color-scheme-toggle-container');
-      container.appendChild(toggle);
-      window.document.body.appendChild(container);
-    }
-    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
