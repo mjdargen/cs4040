@@ -26,6 +26,8 @@ import zipfile
 from pathlib import Path
 
 CS4040_ZIP = "https://github.com/mjdargen/cs4040/archive/refs/heads/main.zip"
+# One file from the CS4040 repository, without downloading all of it
+CS4040_FILE = "https://raw.githubusercontent.com/mjdargen/cs4040/main/{path}"
 # Where this script lives in the CS4040 repository, for self-update
 SCRIPT_IN_REPO = "utils/update.py"
 
@@ -33,7 +35,7 @@ SCRIPT_IN_REPO = "utils/update.py"
 PGZERO_ZIP = "https://github.com/mjdargen/pgzero/archive/{version}.zip"
 PGZERO_DIR = Path.home() / "pgzero"
 
-ASSET_FOLDERS = ["images", "music", "sounds", "sprites", "fonts"]
+ASSET_FOLDERS = ["images", "music", "sounds", "sprites", "maps", "fonts"]
 EXAMPLE = re.compile(r"e(\d\d).*\.py$")
 
 # pygame-dev's pgzrun command contains this, so `pygame` knows to remove it
@@ -44,20 +46,20 @@ DEV_MARKER_FILE = ".installed-by-update-py"
 
 MODES = """\
 modes:
-  pygame               install the latest Pygame Zero Plus release (including alphas/betas),
-                       and remove pygame-dev if it was used
+  pygame               install the latest Pygame Zero Plus release, and remove
+                       pygame-dev if it was used
   pygame-dev [VERSION] use Pygame Zero Plus straight from GitHub, to test before a release;
                        VERSION is a branch, tag or commit (default: main)
-  assets               copy the images, music, sounds, sprites and fonts folders
-  images               copy the images folder, and remove the other asset folders
+  assets               copy the images, music, sounds, sprites, maps and fonts folders
+  images               copy the images folder
   examples [N]         copy all examples, or only e00 through eN
   examples START END   copy examples eSTART through eEND (inclusive)
   all [N]              copy assets and all examples, or only e00 through eN
   all START END        copy assets and examples eSTART through eEND (inclusive)
-  clean-examples       remove the example games
-  clean-assets         remove the asset folders
-  clean-all            remove the asset folders and the example games
   self-update          replace this script with the latest one from the CS4040 repository
+
+Copying never deletes anything: files from the repository replace files with
+the same name, and your own files (new images, your games, ...) are kept.
 """
 
 
@@ -87,16 +89,13 @@ def main():
         "images": lambda: copy_from_cs4040(assets=True, only_images=True),
         "examples": lambda: copy_from_cs4040(examples=True, first=first, last=last),
         "all": lambda: copy_from_cs4040(assets=True, examples=True, first=first, last=last),
-        "clean-examples": clean_examples,
-        "clean-assets": clean_assets,
-        "clean-all": lambda: (clean_assets(), clean_examples()),
         "self-update": self_update,
         "moo": moo,
     }
     if args.mode not in modes:
         parser.print_help()
         sys.exit(1)
-    if args.mode in ("assets", "images", "examples", "all", "clean-examples", "clean-assets", "clean-all"):
+    if args.mode in ("assets", "images", "examples", "all"):
         check_not_the_repository()
     modes[args.mode]()
     print("Done.")
@@ -128,18 +127,23 @@ def check_not_the_repository():
 # Downloading
 
 
+def download(url):
+    """Return the contents of url as bytes."""
+    print("Downloading {}...".format(url))
+    try:
+        with urllib.request.urlopen(url, timeout=60) as response:
+            return response.read()
+    except OSError as error:
+        sys.exit("Error: couldn't download {}: {}".format(url, error))
+
+
 def download_zip(url, into):
     """Download a GitHub zip archive and unpack it into the folder `into`.
 
     Return the folder inside it with the repository's files, and the commit
     they come from.
     """
-    print("Downloading {}...".format(url))
-    try:
-        with urllib.request.urlopen(url, timeout=60) as response:
-            data = response.read()
-    except OSError as error:
-        sys.exit("Error: couldn't download {}: {}".format(url, error))
+    data = download(url)
     with zipfile.ZipFile(io.BytesIO(data)) as archive:
         archive.extractall(str(into))
         # GitHub stores the commit in the archive's comment
@@ -159,10 +163,36 @@ def copy_from_cs4040(assets=False, examples=False, first=0, last=None, only_imag
 
 def copy_assets(repo, folders):
     print("Copying asset folders...")
-    for folder in ASSET_FOLDERS:
-        remove(Path(folder))
-        if folder in folders and (repo / folder).is_dir():
-            shutil.copytree(str(repo / folder), folder)
+    for folder in folders:
+        if (repo / folder).is_dir():
+            new, updated = copy_into(repo / folder, Path(folder))
+            print("  {}: {} new, {} updated".format(folder, new, updated))
+
+
+def copy_into(source, destination):
+    """Copy every file in the folder source into the folder destination,
+    replacing files with the same name. Files that are only in destination
+    (e.g. a student's own images) are kept. Return how many files were new
+    and how many replaced an existing file.
+    """
+    new = updated = 0
+    for folder, _, files in os.walk(str(source)):
+        target = destination / Path(folder).relative_to(source)
+        if target.exists() and not target.is_dir():
+            print("  Skipping {}: a file has the folder's name".format(target))
+            continue
+        target.mkdir(parents=True, exist_ok=True)
+        for name in files:
+            target_file = target / name
+            if target_file.is_dir():
+                print("  Skipping {}: a folder has the file's name".format(target_file))
+                continue
+            if target_file.exists():
+                updated += 1
+            else:
+                new += 1
+            shutil.copy2(os.path.join(folder, name), str(target_file))
+    return new, updated
 
 
 def example_files(folder):
@@ -171,26 +201,18 @@ def example_files(folder):
 
 def copy_examples(repo, first, last):
     print("Copying example files...")
-    clean_examples(quiet=True)
     if last is not None:
-        print("Keeping examples e{:02d} through e{:02d}...".format(first, last))
+        print("Copying examples e{:02d} through e{:02d}...".format(first, last))
+    new = updated = 0
     for path in example_files(repo):
         number = int(EXAMPLE.match(path.name).group(1))
         if number >= first and (last is None or number <= last):
-            shutil.copy(str(path), path.name)
-
-
-def clean_examples(quiet=False):
-    if not quiet:
-        print("Removing all example files...")
-    for path in example_files(Path.cwd()):
-        path.unlink()
-
-
-def clean_assets():
-    print("Removing all asset folders...")
-    for folder in ASSET_FOLDERS:
-        remove(Path(folder))
+            if Path(path.name).exists():
+                updated += 1
+            else:
+                new += 1
+            shutil.copy2(str(path), path.name)
+    print("  {} new, {} updated".format(new, updated))
 
 
 def remove(path):
@@ -286,27 +308,56 @@ def stop_using_pgzero_dev():
         remove(PGZERO_DIR)
 
 
+# pgzero-plus installs pygame-ce on Python 3.10 and newer, and pygame before
+# that. Each group of packages here installs the same files (pygame's, or
+# pgzero's and pgzrun's), so having more than one of a group installed breaks
+# them. The first package in each group is the one pgzero-plus wants.
+WANTED_PYGAME = "pygame-ce" if sys.version_info >= (3, 10) else "pygame"
+CLASHING_GROUPS = [
+    [WANTED_PYGAME, "pygame" if WANTED_PYGAME == "pygame-ce" else "pygame-ce"],
+    ["pgzero-plus", "pgzero", "pgzero-mjd"],
+]
+
+
 def update_pygame():
-    print("Removing old Pygame and Pygame Zero installations...")
     # Old copies of the framework in this folder would be used instead
     remove(Path("pgzero"))
     remove(Path("pgzrun.py"))
     stop_using_pgzero_dev()
 
-    pip("install", "--upgrade", "pip")
+    pip("install", "--upgrade", "pip", check=False)
 
-    # These packages can install overlapping `pygame` or `pgzero` imports
-    for package in ["pygame", "pygame-ce", "pgzero", "pgzero-mjd", "pgzero-plus"]:
-        if is_installed(package):
-            uninstall(package)
-        else:
-            print("Skipping {} (not installed)".format(package))
+    # Only uninstall when something clashes. Otherwise the working install is
+    # left alone until the new one has downloaded, so a failed download can't
+    # leave the computer without pygame.
+    for group in CLASHING_GROUPS:
+        installed = [package for package in group if is_installed(package)]
+        unwanted = [package for package in installed if package != group[0]]
+        if unwanted:
+            print("Removing {}, which clash with each other...".format(" and ".join(installed)))
+            # They share files, so remove all of them; installing pgzero-plus
+            # below brings back the right one.
+            for package in installed:
+                uninstall(package)
 
-    print("Installing latest Pygame Zero Plus from PyPI (including alphas/betas)...")
-    pip("install", "--no-cache-dir", "--pre", "--upgrade", "--index-url", "https://pypi.org/simple", "pgzero-plus")
+    print("Installing latest Pygame Zero Plus from PyPI...")
+    pip("install", "--no-cache-dir", "--upgrade", "--index-url", "https://pypi.org/simple", "pgzero-plus")
 
     print("Verifying installation...")
-    pip("check")
+    check = [sys.executable, "-c", "import pgzero, pygame; print(pgzero.__version__, pygame.version.ver)"]
+    result = subprocess.run(check, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+    if result.returncode != 0:
+        sys.exit("Error: Pygame Zero Plus didn't install correctly:\n{}".format(result.stderr))
+    if result.stderr.strip():
+        print(result.stderr.strip())  # e.g. Pygame Zero Plus's own warnings
+    pgzero_version, pygame_version = result.stdout.split()[-2:]
+    print("Pygame Zero Plus {} with {} {} is ready.".format(pgzero_version, WANTED_PYGAME, pygame_version))
+
+    # pip check looks at every package on this computer, so a problem it finds
+    # may have nothing to do with Pygame Zero Plus. Show it, but don't fail.
+    if not pip("check", check=False):
+        print("Note: pip found the problems above in other installed packages. "
+              "They don't affect Pygame Zero Plus.")
 
 
 def update_pygame_dev(version):
@@ -362,17 +413,18 @@ def update_pygame_dev(version):
 
 def self_update():
     script = Path(__file__).resolve()
-    with tempfile.TemporaryDirectory() as tmp:
-        repo, commit = download_zip(CS4040_ZIP, Path(tmp))
-        new = repo / SCRIPT_IN_REPO
-        if not new.is_file():
-            sys.exit("Error: {} isn't in the CS4040 repository.".format(SCRIPT_IN_REPO))
-        # Write the new copy alongside, then swap it in, so a failed copy
-        # can't leave a broken script behind
-        temporary = script.with_name(script.name + ".new")
-        shutil.copy(str(new), str(temporary))
-        os.replace(str(temporary), str(script))
-    print("Updated {} (commit {}).".format(script, commit))
+    # Only this one file is needed, so fetch it instead of the whole repository
+    new = download(CS4040_FILE.format(path=SCRIPT_IN_REPO))
+    try:
+        compile(new, SCRIPT_IN_REPO, "exec")
+    except SyntaxError as error:
+        sys.exit("Error: the downloaded {} isn't valid Python ({}), so it wasn't used.".format(SCRIPT_IN_REPO, error))
+    # Write the new copy alongside, then swap it in, so a failed write can't
+    # leave a broken script behind
+    temporary = script.with_name(script.name + ".new")
+    temporary.write_bytes(new)
+    os.replace(str(temporary), str(script))
+    print("Updated {}.".format(script))
 
 
 def moo():

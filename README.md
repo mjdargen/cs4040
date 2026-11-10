@@ -22,16 +22,16 @@ Example games, starter code and art for **CS4040 Game Design & Simulation**. You
    **Windows:**
 
    ```bash
-   python -m pip install --upgrade --pre pgzero-plus
+   python -m pip install --upgrade pgzero-plus
    ```
 
    **macOS / Linux:**
 
    ```bash
-   python3 -m pip install --upgrade --pre pgzero-plus
+   python3 -m pip install --upgrade pgzero-plus
    ```
 
-   `--pre` includes alpha and beta releases. If you have installed the original Pygame Zero (`pgzero`) or pygame before, see [switching to Pygame Zero Plus](https://github.com/mjdargen/pgzero#switching-from-pygame-zero-pygame-or-an-older-fork) first.
+   Run it again any time to get the newest version. If you have installed the original Pygame Zero (`pgzero`) or pygame before, see [switching to Pygame Zero Plus](https://github.com/mjdargen/pgzero#switching-from-pygame-zero-pygame-or-an-older-fork) first.
 
 2. Get this repository: clone it, or use **Code → Download ZIP** at the top of this page and unzip it.
 
@@ -58,7 +58,7 @@ Every program starts with `import pgzrun` and `from pgzero.builtins import *`, a
 | `python update.py assets`     | copies in just the art folders                 |
 | `python update.py`            | lists everything else it can do                |
 
-It downloads the newest files from this repository each time, so run it again whenever new examples are added. It replaces the example files with fresh copies, so make your changes in your own file (copy the example and rename it), not in the example itself.
+It downloads the newest files from this repository each time, so run it again whenever new examples are added. It never deletes anything: your own games, images and other files are kept. But it does replace files that have the same name as one in this repository, so make your changes in your own file (copy the example and rename it), not in the example itself.
 
 ## Example games
 
