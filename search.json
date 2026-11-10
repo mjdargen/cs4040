@@ -37,7 +37,7 @@
     "href": "course/u5m1/u5m1-cheatsheet.html#collision-rectangle",
     "title": "Advanced Pygame Zero Cheat Sheet",
     "section": "Collision rectangle",
-    "text": "Collision rectangle\nA custom collision rectangle is centered on the Actor. The first line makes it 10 wide and 20 tall; the second makes it 50 wide and 20 tall, with its center moved by (5, -5).\nplayer.collision_rect = (10, 20)  # (width, height)\nplayer.collision_rect = (50, 20, 5, -5)  # (width, height, offset_x, offset_y)\nIn draw():\nplayer.draw_collision_rect()  # shows the collision rect, useful for debugging",
+    "text": "Collision rectangle\nA custom collision rectangle is centered on the Actor. The first line makes it 10 wide and 20 tall; the second makes it 50 wide and 20 tall, with its center moved by (5, -5).\nplayer.collision_rect = (10, 20)  # (width, height)\n# (width, height, offset_x, offset_y)\nplayer.collision_rect = (50, 20, 5, -5)\nIn draw():\nplayer.draw_collision_rect()  # outlines it in red, for debugging",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"
@@ -48,29 +48,84 @@
     "href": "course/u5m1/u5m1-cheatsheet.html#sprites",
     "title": "Advanced Pygame Zero Cheat Sheet",
     "section": "Sprites",
-    "text": "Sprites\n\nUse Sprite to make an animation from a spritesheet in the sprites folder for an Actor.\n\nimage_name: sprite sheet filename\nframe_width: width of each frame in pixels\nframe_height: height of frame in pixels\nrow (optional): row to start from, counting from 0. Defaults to 0.\nframes (optional): number of frames. Defaults to the whole row.\nfps (optional): frames per second. Defaults to 10.\ntransparent_color (optional): color to make see-through. Defaults to none.\nloop (optional): False plays once. Defaults to True.\n\n# define Sprites\nidle = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n              row=0, frames=2, fps=3)\nwalk_left = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n                   row=6, frames=2, fps=10)\nwalk_right = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n                    row=7, frames=2, fps=10)\n\n# make an Actor that plays a Sprite\nrabbit = Actor(idle)",
+    "text": "Sprites\nA Sprite is one animation: its frames, how fast to play them, and whether to loop. Give an Actor a Sprite instead of an image name, and it plays the animation by itself. Docs: Sprite Animations",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-cheatsheet.html#controlling-animations",
-    "href": "course/u5m1/u5m1-cheatsheet.html#controlling-animations",
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#sprite-from-a-list-of-images",
+    "href": "course/u5m1/u5m1-cheatsheet.html#sprite-from-a-list-of-images",
     "title": "Advanced Pygame Zero Cheat Sheet",
-    "section": "Controlling animations",
-    "text": "Controlling animations\nfox.sprite gets the Sprite the Actor is playing. Setting it switches the animation. Setting the same Sprite again restarts it only if it has finished, so it is safe to set every frame.\nidle = Sprite(\"fox\", 32, 32, row=0)\nattack = Sprite(\"fox\", 32, 32, row=3, loop=False)  # plays once\nfox = Actor(idle)\nfox.sprite = attack  # same Sprite again: replays only if it has finished\nif fox.animation_finished:  # True once a loop=False Sprite ends\n    fox.sprite = idle\nfox.frame  # current frame number, starting at 0\nfox.pause_animation()  # freezes on the current frame\nfox.resume_animation()  # resumes animation on current frame",
+    "section": "Sprite from a list of images",
+    "text": "Sprite from a list of images\nList image names from the images folder, in order. Only fps and loop can be given.\n# a Sprite made from a list of images in the images folder\nalien_walk = Sprite([\"alien_beige_walk1\", \"alien_beige_walk2\"], fps=6)\nalien = Actor(alien_walk)  # a Sprite instead of an image name",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-cheatsheet.html#tile-map-constants",
-    "href": "course/u5m1/u5m1-cheatsheet.html#tile-map-constants",
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#sprite-sheets",
+    "href": "course/u5m1/u5m1-cheatsheet.html#sprite-sheets",
     "title": "Advanced Pygame Zero Cheat Sheet",
-    "section": "Tile map constants",
-    "text": "Tile map constants\nHelpful constants for 2D games using a tilemap.\n# our tile map constants\nTILE_SIZE = 18  # length of a tile, in pixels\nMAP_WIDTH = 30  # width of the tilemap, in tiles\nMAP_HEIGHT = 20  # height of the tilemap, in tiles\nSCALE = 2  # global scaling factor\n# can use to compute screen dimensions\nWIDTH = TILE_SIZE * MAP_WIDTH * SCALE\nHEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE",
+    "section": "Sprite sheets",
+    "text": "Sprite sheets\n\nA sprite sheet is one image that holds every frame of a character’s animations, laid out in a grid. Each row is one animation (idle, walk, jump, …), and every frame is the same size. Rows and frames are counted from 0, starting at the top left.\nKeep sprite sheets in the sprites folder. Each sheet there has a .md file listing its frame size and what is on each row.\nSprite Studio turns art from anywhere (sheets, GIFs, Aseprite files, folders of frames) into a sprite sheet that works here, and writes the Sprite(...) code for you.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#sprite-from-a-sprite-sheet",
+    "href": "course/u5m1/u5m1-cheatsheet.html#sprite-from-a-sprite-sheet",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Sprite from a sprite sheet",
+    "text": "Sprite from a sprite sheet\n# Sprites made from rows of a sprite sheet in the sprites folder\nidle = Sprite(\"rabbit\", frame_width=16, frame_height=16, row=0, frames=2, fps=3)\nwalk_left = Sprite(\"rabbit\", frame_width=16, frame_height=16, row=6, frames=2, fps=8)\nwalk_right = Sprite(\"rabbit\", frame_width=16, frame_height=16,row=7, frames=2, fps=8)\n\n\nimage_name: sprite sheet filename in the sprites folder\nframe_width, frame_height: size of each frame, in pixels\nrow (optional): row to start from, counting from 0. Default 0.\nframes (optional): number of frames. Default: the whole row.\nfps (optional): frames per second. Default 10.\nloop (optional): False plays once. Default True.\ntransparent_color (optional): color to make see-through.\nspacing, margin (optional): gaps between frames and around the sheet, in pixels.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#playing-and-switching-sprites-actor.sprite",
+    "href": "course/u5m1/u5m1-cheatsheet.html#playing-and-switching-sprites-actor.sprite",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Playing and switching Sprites: actor.sprite",
+    "text": "Playing and switching Sprites: actor.sprite\nGive the Actor a Sprite when you make it. Set actor.sprite to switch animations. Setting the Sprite that is already playing does nothing, so it is safe to do every frame.\nrabbit = Actor(idle)  # starts by playing idle\nrabbit.scale = 3  # pixel art is small, so make it bigger\nif keyboard.left:\n    rabbit.x -= 2\n    rabbit.sprite = walk_left  # switch to another Sprite\nelif keyboard.right:\n    rabbit.x += 2\n    rabbit.sprite = walk_right\nelse:\n    rabbit.sprite = idle  # safe every frame: restarts only if it changed\nUse actor.sprite for Sprites and actor.image for image names. Whichever you set last is what the Actor shows.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#playing-once-loopfalse-animation_finished",
+    "href": "course/u5m1/u5m1-cheatsheet.html#playing-once-loopfalse-animation_finished",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Playing once: loop=False, animation_finished",
+    "text": "Playing once: loop=False, animation_finished\nA Sprite made with loop=False stops on its last frame. animation_finished is True once it has, so you can go back to another animation. fox.sprite == hurt checks which animation is playing.\nidle = Sprite(\"fox\", frame_width=24, frame_height=16,\n              row=0, frames=5, fps=6)\nhurt = Sprite(\"fox\", frame_width=24, frame_height=16,\n              row=4, frames=5, fps=8, loop=False)  # plays once\nfox = Actor(idle)\nif fox.sprite == hurt and fox.animation_finished:  # hurt has ended\n    fox.sprite = idle  # go back to idle",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#pausing-restarting-and-frames",
+    "href": "course/u5m1/u5m1-cheatsheet.html#pausing-restarting-and-frames",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Pausing, restarting, and frames",
+    "text": "Pausing, restarting, and frames\ndef on_key_down(key):\n    if key == keys.SPACE:\n        fox.sprite = hurt  # replays if it has already finished\n    if key == keys.P:\n        if fox.animation_paused:  # True while paused\n            fox.resume_animation()  # carry on from the same frame\n        else:\n            fox.pause_animation()  # freeze on the current frame\n    if key == keys.R:\n        fox.reset_animation()  # play again from the first frame\nscreen.draw.text(f\"frame {fox.frame}\", (10, 10))  # frame number, from 0\nSetting fox.frame jumps to that frame. While the whole game is paused with game.pause(), every Actor holds its frame.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#fullscreen",
+    "href": "course/u5m1/u5m1-cheatsheet.html#fullscreen",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Fullscreen",
+    "text": "Fullscreen\n\n\nSet FULLSCREEN = True at the top of your game to start in fullscreen.\nPress F11 to toggle any game between fullscreen and a window.",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"
@@ -81,18 +136,51 @@
     "href": "course/u5m1/u5m1-cheatsheet.html#tilesheets-tilesets-and-tilemaps",
     "title": "Advanced Pygame Zero Cheat Sheet",
     "section": "Tilesheets, tilesets, and tilemaps",
-    "text": "Tilesheets, tilesets, and tilemaps\n\n\nTilesheet: a .png image file that contains many small images (tiles) arranged in a grid. Each tile is a piece of the world (grass, wall, water, etc.). This is the art asset created by the artist.\nTileset: a .tsx file created in Tiled that defines how to use a tilesheet. It tells Tiled things like tile size, spacing, and any extra data. It references a tilesheet. (Tileset and tilesheet are often used interchangeably.)\nTilemap: a .tmx file created in Tiled that defines the actual level layout. It uses one or more tilesets and organizes tiles into layers (ground, walls, hazards, etc.). This is the level design.\n\nNote: the tilesheet, tileset, and tilemap must all be stored in the maps folder of your project.",
+    "text": "Tilesheets, tilesets, and tilemaps\n\n\nTilesheet: a .png image file that contains many small images (tiles) arranged in a grid. Each tile is a piece of the world (grass, wall, water, etc.). This is the art asset created by the artist.\nTileset: a .tsx file created in Tiled that defines how to use a tilesheet. It tells Tiled things like tile size, spacing, and any extra data. It references a tilesheet. (Tileset and tilesheet are often used interchangeably.)\nTilemap: a .tmx file created in Tiled that defines the actual level layout. It uses one or more tilesets and organizes tiles into layers (ground, walls, hazards, etc.). This is the level design.\n\nNote: the tilesheet, tileset, and tilemap must all be stored in the maps folder of your project.\nMake maps in Tiled. Docs: Tile Maps",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-cheatsheet.html#importing-a-tilemap",
-    "href": "course/u5m1/u5m1-cheatsheet.html#importing-a-tilemap",
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#tile-map-constants",
+    "href": "course/u5m1/u5m1-cheatsheet.html#tile-map-constants",
     "title": "Advanced Pygame Zero Cheat Sheet",
-    "section": "Importing a tilemap",
-    "text": "Importing a tilemap\n\nUse load_tile_map_actors() to import your map made in Tiled into your game based on tile map layers.\n\ntmx_name: path to the TMX file defining the tilemap, created in Tiled.\nscale: scaling factor applied to the map for display in Pygame.\n\nTo get individual lists of Actors from each Tiled layer, use the layer name. Using different layers allows you to treat each list of Actors differently.\nmap_layers = load_tile_map_actors(\"L1.tmx\", scale=SCALE)\nground = map_layers[\"ground\"]  # ground / background scenery to draw\nwalls = map_layers[\"walls\"]  # obstacles for player to collide with\nhazards = map_layers[\"hazards\"]  # \"bad\" objects for player collision\nhearts = map_layers[\"hearts\"]  # \"good\" objects or collectables",
+    "section": "Tile map constants",
+    "text": "Tile map constants\nMake your own constants and use them to compute the window size.\n# our tile map constants\nTILE_SIZE = 16  # length of a tile, in pixels\nMAP_WIDTH = 30  # width of the tilemap, in tiles\nMAP_HEIGHT = 20  # height of the tilemap, in tiles\nSCALE = 2  # global scaling factor\n# can use to compute screen dimensions\nWIDTH = TILE_SIZE * MAP_WIDTH * SCALE\nHEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#loading-a-tilemap-load_tile_map",
+    "href": "course/u5m1/u5m1-cheatsheet.html#loading-a-tilemap-load_tile_map",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Loading a tilemap: load_tile_map()",
+    "text": "Loading a tilemap: load_tile_map()\n\nUse load_tile_map() to import your map made in Tiled into your game based on tile map layers.\n\ntmx_name: path to the TMX file defining the tilemap, created in Tiled.\nscale: scaling factor applied to the map for display in Pygame.\n\nGet each layer by its name in Tiled, like level[\"walls\"]. A layer works like a list of tiles, and every tile is an Actor, so collidelist() and for loops work on it.\nUsing different layers allows you to treat each kind of tile differently.\nlevel = load_tile_map(\"tl1.tmx\", scale=SCALE)\nground = level[\"ground\"]  # ground / background scenery to draw\nwalls = level[\"walls\"]  # obstacles for player to collide with\nhazards = level[\"hazards\"]  # \"bad\" objects for player collision\ncollectables = level[\"collectables\"]  # \"good\" objects to collect",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#the-map-layers-and-tiles",
+    "href": "course/u5m1/u5m1-cheatsheet.html#the-map-layers-and-tiles",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "The map, layers, and tiles",
+    "text": "The map, layers, and tiles\n\nA tile map is made of three kinds of thing, each inside the one before:\n\nThe map (level) holds every layer.\nA layer (walls = level[\"walls\"]) is a list of tiles.\nA tile (wall = walls[0]) is one Actor on the map.\n\nEach method belongs to one of them. The variable before the dot tells you which: level.draw() is the map, walls.get_tile(...) is a layer, wall.set_tile_image(...) is a tile.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#drawing-a-tilemap-level.draw",
+    "href": "course/u5m1/u5m1-cheatsheet.html#drawing-a-tilemap-level.draw",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Drawing a tilemap: level.draw()",
+    "text": "Drawing a tilemap: level.draw()\nDraws every layer in Tiled’s layer order, from the bottom of Tiled’s Layers list to the top: background first, foreground last. To change what’s in front, drag the layers into a new order in Tiled. Draw the player after the map so it is on top.\nlevel.draw()  # draws every visible layer, in Tiled's layer order\nrabbit.draw()  # draw the player after the map, so it is on top\nLayers hidden in Tiled aren’t drawn, but still collide. Hide or show a layer in code with hazards.visible = False or True.",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"
@@ -103,7 +191,128 @@
     "href": "course/u5m1/u5m1-cheatsheet.html#wall-collisions",
     "title": "Advanced Pygame Zero Cheat Sheet",
     "section": "Wall collisions",
-    "text": "Wall collisions\nExample of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction.\n# left keyboard button pressed\nif keyboard.LEFT:\n    rabbit.x -= 2  # move to left\n    rabbit.sprite = walk_left  # change to left sprite\n    # check for collision\n    collision_index = rabbit.collidelist(walls)\n    # did collision occur after moving to left?\n    if collision_index != -1:\n        # if so, put character's left edge on right edge of wall\n        rabbit.left = walls[collision_index].right",
+    "text": "Wall collisions\nExample of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction, putting the edge you moved against back on the wall.\n# left keyboard button pressed\nif keyboard.LEFT:\n    rabbit.x -= 2  # move to left\n    rabbit.sprite = walk_left  # change to left sprite\n    # check for collision\n    collision_index = rabbit.collidelist(walls)\n    # did collision occur after moving to left?\n    if collision_index != -1:\n        # if so, put character's left edge on right edge of wall\n        rabbit.left = walls[collision_index].right",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#collecting-items",
+    "href": "course/u5m1/u5m1-cheatsheet.html#collecting-items",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Collecting items",
+    "text": "Collecting items\ncollidelist() gives the index of the tile you touched in the layer. pop() that index to take it off the map.\n# touching a collectable? take it off the map\nitem_index = rabbit.collidelist(collectables)\nif item_index != -1:\n    collectables.pop(item_index)\n# collected them all?\nif len(collectables) == 0:\n    game.win()",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#hazards",
+    "href": "course/u5m1/u5m1-cheatsheet.html#hazards",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Hazards",
+    "text": "Hazards\n# touching any hazard ends the game\nif rabbit.collidelist(hazards) != -1:\n    game.lose()",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#creating-tiles-level.create_tile",
+    "href": "course/u5m1/u5m1-cheatsheet.html#creating-tiles-level.create_tile",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Creating tiles: level.create_tile()",
+    "text": "Creating tiles: level.create_tile()\n\nColumns and rows count from 0, starting at the top left. They mean two different grids:\n\nThe map is a grid of squares. col, row says which square, like (5, 2). Each layer holds at most one tile per square.\nThe tileset is a grid of images. tile_col, tile_row says which image, like (3, 8).\n\nThe map creates new tiles. level.create_tile(tile_col, tile_row) gives a new tile showing that image from the tileset. To find an image’s tile_col and tile_row, count across and down the tilesheet from 0.\n# a new tile showing the image at col 3, row 8 of the tileset\nnew_wall = level.create_tile(3, 8)\nIf your map uses only one tileset, create_tile() uses it automatically. If it uses more than one, name the tileset to use, as it is named in Tiled: level.create_tile(3, 8, tileset=\"town\").",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#adding-and-removing-tiles-walls.set_tile-walls.remove_tile",
+    "href": "course/u5m1/u5m1-cheatsheet.html#adding-and-removing-tiles-walls.set_tile-walls.remove_tile",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Adding and removing tiles: walls.set_tile(), walls.remove_tile()",
+    "text": "Adding and removing tiles: walls.set_tile(), walls.remove_tile()\nA layer adds and removes tiles by square. A new tile isn’t on the map until you add it. set_tile() replaces any tile already in that square, and remove_tile() does nothing if the square is already empty.\nwalls.set_tile(5, 2, new_wall)  # put it at col 5, row 2 of the map\nwalls.remove_tile(5, 2)  # take away the tile at col 5, row 2, if any\nTo remove a tile you touched, pop() the index from collidelist().",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#is-there-a-tile-there-walls.get_tile-and-if-wall",
+    "href": "course/u5m1/u5m1-cheatsheet.html#is-there-a-tile-there-walls.get_tile-and-if-wall",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Is there a tile there? walls.get_tile() and if wall:",
+    "text": "Is there a tile there? walls.get_tile() and if wall:\nget_tile(col, row) gives back the tile in a square, or None if the square is empty. None means “nothing”, and it has no methods, so using it crashes:\nwall = walls.get_tile(0, 0)  # an empty square, so wall is None\nwall.set_tile_image(4, 8)  # crash! None has no set_tile_image()\nif wall: is True for a tile and False for None, so the code inside only runs when there is a tile:\nwall = walls.get_tile(2, 5)  # a tile, or None if the square is empty\nif wall:  # only if there is a tile there\n    print(wall.map_col, wall.map_row)  # every tile knows its square",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#changing-a-tiles-image-wall.set_tile_image",
+    "href": "course/u5m1/u5m1-cheatsheet.html#changing-a-tiles-image-wall.set_tile_image",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Changing a tile’s image: wall.set_tile_image()",
+    "text": "Changing a tile’s image: wall.set_tile_image()\nA tile can change which tileset image it shows. Find it with get_tile(), check it’s there, then change it:\nwall = walls.get_tile(2, 5)  # find the tile at col 2, row 5\nif wall:\n    wall.set_tile_image(4, 8)  # show image col 4, row 8 instead",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#pixels-and-squares-level.pos_to_map-level.map_to_pos",
+    "href": "course/u5m1/u5m1-cheatsheet.html#pixels-and-squares-level.pos_to_map-level.map_to_pos",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Pixels and squares: level.pos_to_map(), level.map_to_pos()",
+    "text": "Pixels and squares: level.pos_to_map(), level.map_to_pos()\nThe map converts between pixels and squares. level.pos_to_map(x, y) gives the col, row of the square at a position in pixels, such as a mouse click or the player. level.map_to_pos(col, row) gives the position of the center of a square.\ncol, row = level.pos_to_map(rabbit.x, rabbit.y)  # rabbit's square\nrabbit.pos = level.map_to_pos(5, 9)  # middle of col 5, row 9\nClicking to build or knock down walls:\ndef on_mouse_down(pos):\n    x, y = pos\n    col, row = level.pos_to_map(x, y)  # the square that was clicked\n    if walls.get_tile(col, row):  # is there a wall?\n        walls.remove_tile(col, row)  # knock it down\n    else:\n        walls.set_tile(col, row, level.create_tile(3, 8))  # build one",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#scrolling-level.x-level.y",
+    "href": "course/u5m1/u5m1-cheatsheet.html#scrolling-level.x-level.y",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "Scrolling: level.x, level.y",
+    "text": "Scrolling: level.x, level.y\nFor a map bigger than the screen, keep the player in the middle and move the map instead. Every tile moves with level.x and level.y, and collisions, pos_to_map() and map_to_pos() keep working.\ndef update():\n    old_x, old_y = level.x, level.y\n    if keyboard.left:\n        level.x += 3  # move the map right, so the rabbit seems to walk left\n    if keyboard.right:\n        level.x -= 3\n    if keyboard.up:\n        level.y += 3\n    if keyboard.down:\n        level.y -= 3\n    if rabbit.collidelist(walls) != -1:\n        level.x, level.y = old_x, old_y  # hit a wall: put the map back",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#what-the-map-can-do-level",
+    "href": "course/u5m1/u5m1-cheatsheet.html#what-the-map-can-do-level",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "What the map can do: level",
+    "text": "What the map can do: level\nThe map holds every layer.\nwalls = level[\"walls\"]  # get a layer by its name in Tiled\nlevel.draw()  # draw every visible layer\nnew_wall = level.create_tile(3, 8)  # create a tile from the tileset\ncol, row = level.pos_to_map(x, y)  # pixels -&gt; square\nx, y = level.map_to_pos(col, row)  # square -&gt; pixels (its center)\nlevel.x -= 3  # scroll the whole map",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#what-a-layer-can-do-walls",
+    "href": "course/u5m1/u5m1-cheatsheet.html#what-a-layer-can-do-walls",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "What a layer can do: walls",
+    "text": "What a layer can do: walls\nA layer is a list of tiles.\nfirst = walls[0]  # it's a list of tiles: [i], len(), for loops\nindex = rabbit.collidelist(walls)  # collisions work like any list\nwalls.pop(index)  # remove a tile by its index\nwall = walls.get_tile(col, row)  # the tile in a square, or None\nwalls.set_tile(col, row, new_wall)  # put a tile in a square\nwalls.remove_tile(col, row)  # empty a square\nwalls.visible = False  # stop drawing it (it still collides)",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-cheatsheet.html#what-a-tile-can-do-wall",
+    "href": "course/u5m1/u5m1-cheatsheet.html#what-a-tile-can-do-wall",
+    "title": "Advanced Pygame Zero Cheat Sheet",
+    "section": "What a tile can do: wall",
+    "text": "What a tile can do: wall\nA tile is one Actor on the map.\nwall.pos  # it's an Actor: pos, x, y, colliderect(), ...\nwall.map_col, wall.map_row  # its square on the map\nwall.tile_col, wall.tile_row  # its image in the tileset\nwall.set_tile_image(4, 8)  # show another image from the tileset",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Cheat sheet"
@@ -378,18 +587,73 @@
     "href": "course/u5m1/u5m1-slides.html#actor-extensions-1",
     "title": "Advanced Pygame Zero",
     "section": "Actor Extensions",
-    "text": "Actor Extensions\nplayer.angle  # gets current angle in degrees\nplayer.angle += 1  # increments angle by 1\nplayer.scale  # gets current Actor scaling factor\nplayer.scale = 2.0  # sets the Actor scaling factor\nplayer.flip_v = True  # flips the Actor vertically\nplayer.flip_v = False  # turns off vertical flip, default\nplayer.flip_h = True  # flips the Actor horizontally\nplayer.flip_h = False  # turns off horizontal flip, default",
+    "text": "Actor Extensions\nplayer.angle  # gets current angle in degrees\nplayer.angle += 1  # increments angle by 1\nplayer.scale  # gets current Actor scaling factor\nplayer.scale = 2.0  # sets the Actor scaling factor\nplayer.flip_v = True  # flips the Actor vertically\nplayer.flip_v = False  # turns off vertical flip, default\nplayer.flip_h = True  # flips the Actor horizontally\nplayer.flip_h = False  # turns off horizontal flip, default\nplayer.opacity = 0.6  # sets opacity, from 0.0 to 1.0\nplayer.visible = False  # hides it; still moves and collides",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Slides"
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-slides.html#sprite",
-    "href": "course/u5m1/u5m1-slides.html#sprite",
+    "objectID": "course/u5m1/u5m1-slides.html#collision-rectangle-optional",
+    "href": "course/u5m1/u5m1-slides.html#collision-rectangle-optional",
     "title": "Advanced Pygame Zero",
-    "section": "Sprite",
-    "text": "Sprite\nidle = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n              row=0, frames=2, fps=3)\n\n\nUse Sprite to make an animation from a spritesheet in the sprites folder for an Actor.\n\nimage_name: sprite sheet filename\nframe_width: width of each frame in pixels\nframe_height: height of frame in pixels\nrow (optional): row to start from, counting from 0. Defaults to 0.\nframes (optional): number of frames. Defaults to the whole row.\nfps (optional): frames per second. Defaults to 10.\ntransparent_color (optional): color to make see-through. Defaults to none.\nloop (optional): False plays once. Defaults to True.",
+    "section": "Collision Rectangle (Optional)",
+    "text": "Collision Rectangle (Optional)\nBy default an Actor collides using its whole image. Give it a smaller collision rectangle, centered on the Actor, for fairer collisions.\nplayer.collision_rect = (10, 20)  # (width, height)\n# (width, height, offset_x, offset_y)\nplayer.collision_rect = (50, 20, 5, -5)\nTo see where it is, draw it in draw() after drawing the Actor:\nplayer.draw_collision_rect()  # outlines it in red, for debugging",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#what-is-a-sprite",
+    "href": "course/u5m1/u5m1-slides.html#what-is-a-sprite",
+    "title": "Advanced Pygame Zero",
+    "section": "What Is a Sprite?",
+    "text": "What Is a Sprite?\nPygame Zero docs: Sprite Animations\n\nA Sprite is one animation: its frames, how fast to play them, and whether to loop.\nGive an Actor a Sprite instead of an image name, and it plays the animation by itself.\nTwo ways to make one:\n\na list of images from the images folder\na sprite sheet from the sprites folder",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#sprite-from-a-list-of-images",
+    "href": "course/u5m1/u5m1-slides.html#sprite-from-a-list-of-images",
+    "title": "Advanced Pygame Zero",
+    "section": "Sprite from a List of Images",
+    "text": "Sprite from a List of Images\nThe quickest way: list the image names in order.\n# a Sprite made from a list of images in the images folder\nalien_walk = Sprite([\"alien_beige_walk1\", \"alien_beige_walk2\"], fps=6)\nalien = Actor(alien_walk)  # a Sprite instead of an image name\n\nOnly fps and loop can be given with a list of images.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#sprite-sheets",
+    "href": "course/u5m1/u5m1-slides.html#sprite-sheets",
+    "title": "Advanced Pygame Zero",
+    "section": "Sprite Sheets",
+    "text": "Sprite Sheets\n\nA sprite sheet is one image that holds every frame of a character’s animations, laid out in a grid. Each row is one animation (idle, walk, jump, …), and every frame is the same size. Rows and frames are counted from 0, starting at the top left.\nKeep sprite sheets in the sprites folder. Each sheet there has a .md file listing its frame size and what is on each row.\nSprite Studio turns art from anywhere (sheets, GIFs, Aseprite files, folders of frames) into a sprite sheet that works here, and writes the Sprite(...) code for you.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#sprite-from-a-sprite-sheet",
+    "href": "course/u5m1/u5m1-slides.html#sprite-from-a-sprite-sheet",
+    "title": "Advanced Pygame Zero",
+    "section": "Sprite from a Sprite Sheet",
+    "text": "Sprite from a Sprite Sheet\n# Sprites made from rows of a sprite sheet in the sprites folder\nidle = Sprite(\"rabbit\", frame_width=16, frame_height=16, row=0, frames=2, fps=3)\nwalk_left = Sprite(\"rabbit\", frame_width=16, frame_height=16, row=6, frames=2, fps=8)\nwalk_right = Sprite(\"rabbit\", frame_width=16, frame_height=16,row=7, frames=2, fps=8)",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#sprite-sheet-parameters",
+    "href": "course/u5m1/u5m1-slides.html#sprite-sheet-parameters",
+    "title": "Advanced Pygame Zero",
+    "section": "Sprite Sheet Parameters",
+    "text": "Sprite Sheet Parameters\n\n\nimage_name: sprite sheet filename in the sprites folder\nframe_width, frame_height: size of each frame, in pixels\nrow (optional): row to start from, counting from 0. Default 0.\nframes (optional): number of frames. Default: the whole row.\nfps (optional): frames per second. Default 10.\nloop (optional): False plays once. Default True.\ntransparent_color (optional): color to make see-through.\nspacing, margin (optional): gaps between frames and around the sheet, in pixels.",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Slides"
@@ -400,18 +664,40 @@
     "href": "course/u5m1/u5m1-slides.html#playing-a-sprite",
     "title": "Advanced Pygame Zero",
     "section": "Playing a Sprite",
-    "text": "Playing a Sprite\nActors can play Sprites. Give it a Sprite instead of an image name.\nwalk_left = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n                   row=6, frames=2, fps=10)\nwalk_right = Sprite(\"rabbit\", frame_width=16, frame_height=16,\n                    row=7, frames=2, fps=10)\n# make an Actor that plays a Sprite\nrabbit = Actor(idle)\n...\nrabbit.sprite = walk_right",
+    "text": "Playing a Sprite\nGive the Actor a Sprite. Set actor.sprite to switch animations.\nrabbit = Actor(idle)  # starts by playing idle\nrabbit.scale = 3  # pixel art is small, so make it bigger\nif keyboard.left:\n    rabbit.x -= 2\n    rabbit.sprite = walk_left  # switch to another Sprite\nelif keyboard.right:\n    rabbit.x += 2\n    rabbit.sprite = walk_right\nelse:\n    rabbit.sprite = idle  # safe every frame: restarts only if it changed",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Slides"
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-slides.html#controlling-animations",
-    "href": "course/u5m1/u5m1-slides.html#controlling-animations",
+    "objectID": "course/u5m1/u5m1-slides.html#playing-once",
+    "href": "course/u5m1/u5m1-slides.html#playing-once",
     "title": "Advanced Pygame Zero",
-    "section": "Controlling Animations",
-    "text": "Controlling Animations\nidle = Sprite(\"fox\", 32, 32, row=0)\nattack = Sprite(\"fox\", 32, 32, row=3, loop=False)  # plays once\nfox = Actor(idle)\nfox.sprite = attack  # same Sprite again: replays only if it has finished\nif fox.animation_finished:  # True once a loop=False Sprite ends\n    fox.sprite = idle\nfox.frame  # current frame number, starting at 0\nfox.pause_animation()  # freezes on the current frame\nfox.resume_animation()  # resumes animation on current frame",
+    "section": "Playing Once",
+    "text": "Playing Once\nloop=False stops on the last frame. animation_finished is True once it has.\nidle = Sprite(\"fox\", frame_width=24, frame_height=16,\n              row=0, frames=5, fps=6)\nhurt = Sprite(\"fox\", frame_width=24, frame_height=16,\n              row=4, frames=5, fps=8, loop=False)  # plays once\nfox = Actor(idle)\nif fox.sprite == hurt and fox.animation_finished:  # hurt has ended\n    fox.sprite = idle  # go back to idle\n\nfox.sprite == hurt checks which animation is playing.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#pausing-and-restarting",
+    "href": "course/u5m1/u5m1-slides.html#pausing-and-restarting",
+    "title": "Advanced Pygame Zero",
+    "section": "Pausing and Restarting",
+    "text": "Pausing and Restarting\ndef on_key_down(key):\n    if key == keys.SPACE:\n        fox.sprite = hurt  # replays if it has already finished\n    if key == keys.P:\n        if fox.animation_paused:  # True while paused\n            fox.resume_animation()  # carry on from the same frame\n        else:\n            fox.pause_animation()  # freeze on the current frame\n    if key == keys.R:\n        fox.reset_animation()  # play again from the first frame\nscreen.draw.text(f\"frame {fox.frame}\", (10, 10))  # frame number, from 0",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#fullscreen",
+    "href": "course/u5m1/u5m1-slides.html#fullscreen",
+    "title": "Advanced Pygame Zero",
+    "section": "Fullscreen",
+    "text": "Fullscreen\nPygame Zero docs: Fullscreen\n\n\nSet FULLSCREEN = True at the top of your game to start in fullscreen.\nPress F11 to toggle any game between fullscreen and a window.",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Slides"
@@ -429,22 +715,44 @@
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-slides.html#import-tilemap",
-    "href": "course/u5m1/u5m1-slides.html#import-tilemap",
+    "objectID": "course/u5m1/u5m1-slides.html#tile-map-constants",
+    "href": "course/u5m1/u5m1-slides.html#tile-map-constants",
     "title": "Advanced Pygame Zero",
-    "section": "Import Tilemap",
-    "text": "Import Tilemap\n\nUse load_tile_map_actors() to import your map made in Tiled into your game based on tile map layers.\n\ntmx_name: path to the TMX file defining the tilemap, created in Tiled.\nscale: scaling factor applied to the map for display in Pygame.\n\nmap_layers = load_tile_map_actors(\"L1.tmx\", scale=SCALE)\nground = map_layers[\"ground\"]  # ground / background scenery to draw\nwalls = map_layers[\"walls\"]  # obstacles for player to collide with\nhazards = map_layers[\"hazards\"]  # \"bad\" objects for player collision\nhearts = map_layers[\"hearts\"]  # \"good\" objects or collectables",
+    "section": "Tile Map Constants",
+    "text": "Tile Map Constants\nMake your own constants and use them to compute the window size!\n# our tile map constants\nTILE_SIZE = 16  # length of a tile, in pixels\nMAP_WIDTH = 30  # width of the tilemap, in tiles\nMAP_HEIGHT = 20  # height of the tilemap, in tiles\nSCALE = 2  # global scaling factor\n# can use to compute screen dimensions\nWIDTH = TILE_SIZE * MAP_WIDTH * SCALE\nHEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Slides"
     ]
   },
   {
-    "objectID": "course/u5m1/u5m1-slides.html#pygame-constants",
-    "href": "course/u5m1/u5m1-slides.html#pygame-constants",
+    "objectID": "course/u5m1/u5m1-slides.html#loading-a-tilemap",
+    "href": "course/u5m1/u5m1-slides.html#loading-a-tilemap",
     "title": "Advanced Pygame Zero",
-    "section": "Pygame Constants",
-    "text": "Pygame Constants\nYou can create your own constants to compute screen size!\n# our tile map constants\nTILE_SIZE = 18  # length of a tile, in pixels\nMAP_WIDTH = 30  # width of the tilemap, in tiles\nMAP_HEIGHT = 20  # height of the tilemap, in tiles\nSCALE = 2  # global scaling factor\n# can use to compute screen dimensions\nWIDTH = TILE_SIZE * MAP_WIDTH * SCALE\nHEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE",
+    "section": "Loading a Tilemap",
+    "text": "Loading a Tilemap\n\nUse load_tile_map() to import your map made in Tiled into your game based on tile map layers.\n\ntmx_name: path to the TMX file defining the tilemap, created in Tiled.\nscale: scaling factor applied to the map for display in Pygame.\n\nGet each layer by its name in Tiled, like level[\"walls\"]. A layer works like a list of tiles, and every tile is an Actor, so collidelist() and for loops work on it.\nlevel = load_tile_map(\"tl1.tmx\", scale=SCALE)\nground = level[\"ground\"]  # ground / background scenery to draw\nwalls = level[\"walls\"]  # obstacles for player to collide with\nhazards = level[\"hazards\"]  # \"bad\" objects for player collision\ncollectables = level[\"collectables\"]  # \"good\" objects to collect",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#map-layers-and-tiles",
+    "href": "course/u5m1/u5m1-slides.html#map-layers-and-tiles",
+    "title": "Advanced Pygame Zero",
+    "section": "Map, Layers, and Tiles",
+    "text": "Map, Layers, and Tiles\n\nA tile map is made of three kinds of thing, each inside the one before:\n\nThe map (level) holds every layer.\nA layer (walls = level[\"walls\"]) is a list of tiles.\nA tile (wall = walls[0]) is one Actor on the map.\n\nEach method belongs to one of them. The variable before the dot tells you which: level.draw() is the map, walls.get_tile(...) is a layer, wall.set_tile_image(...) is a tile.",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#drawing-the-map",
+    "href": "course/u5m1/u5m1-slides.html#drawing-the-map",
+    "title": "Advanced Pygame Zero",
+    "section": "Drawing the Map",
+    "text": "Drawing the Map\nlevel.draw() draws every layer in Tiled’s layer order, from the bottom of Tiled’s Layers list to the top: background first, foreground last.\nlevel.draw()  # draws every visible layer, in Tiled's layer order\nrabbit.draw()  # draw the player after the map, so it is on top\n\nTo change what’s in front, drag the layers into a new order in Tiled.\nLayers hidden in Tiled aren’t drawn, but still collide.\nHide or show a layer in code with hazards.visible = False or True.",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Slides"
@@ -466,7 +774,128 @@
     "href": "course/u5m1/u5m1-slides.html#handling-wall-collisions",
     "title": "Advanced Pygame Zero",
     "section": "Handling Wall Collisions",
-    "text": "Handling Wall Collisions\n# left keyboard button pressed\nif keyboard.LEFT:\n    rabbit.x -= 2  # move to left\n    rabbit.sprite = walk_left  # change to left sprite\n    # check for collision\n    collision_index = rabbit.collidelist(walls)\n    # did collision occur after moving to left?\n    if collision_index != -1:\n        # if so, put character's left edge on right edge of wall\n        rabbit.left = walls[collision_index].right",
+    "text": "Handling Wall Collisions\nRepeat for each direction, putting the edge you moved against back on the wall.\n# left keyboard button pressed\nif keyboard.LEFT:\n    rabbit.x -= 2  # move to left\n    rabbit.sprite = walk_left  # change to left sprite\n    # check for collision\n    collision_index = rabbit.collidelist(walls)\n    # did collision occur after moving to left?\n    if collision_index != -1:\n        # if so, put character's left edge on right edge of wall\n        rabbit.left = walls[collision_index].right",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#collecting-items-and-hazards",
+    "href": "course/u5m1/u5m1-slides.html#collecting-items-and-hazards",
+    "title": "Advanced Pygame Zero",
+    "section": "Collecting Items and Hazards",
+    "text": "Collecting Items and Hazards\ncollidelist() gives the index of the tile you touched. pop() that index to take it off the map.\n# touching a collectable? take it off the map\nitem_index = rabbit.collidelist(collectables)\nif item_index != -1:\n    collectables.pop(item_index)\n# collected them all?\nif len(collectables) == 0:\n    game.win()\n# touching any hazard ends the game\nif rabbit.collidelist(hazards) != -1:\n    game.lose()",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#creating-tiles",
+    "href": "course/u5m1/u5m1-slides.html#creating-tiles",
+    "title": "Advanced Pygame Zero",
+    "section": "Creating Tiles",
+    "text": "Creating Tiles\n\nColumns and rows count from 0, starting at the top left. They mean two different grids:\n\nThe map is a grid of squares. col, row says which square, like (5, 2). Each layer holds at most one tile per square.\nThe tileset is a grid of images. tile_col, tile_row says which image, like (3, 8).\n\nThe map creates new tiles from an image in its tileset:\n# a new tile showing the image at col 3, row 8 of the tileset\nnew_wall = level.create_tile(3, 8)\n\nMap uses more than one tileset? Name it: level.create_tile(3, 8, tileset=\"town\")",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#adding-and-removing-tiles",
+    "href": "course/u5m1/u5m1-slides.html#adding-and-removing-tiles",
+    "title": "Advanced Pygame Zero",
+    "section": "Adding and Removing Tiles",
+    "text": "Adding and Removing Tiles\nA layer adds and removes tiles by square. A new tile isn’t on the map until you add it.\nwalls.set_tile(5, 2, new_wall)  # put it at col 5, row 2 of the map\nwalls.remove_tile(5, 2)  # take away the tile at col 5, row 2, if any\n\nset_tile() replaces any tile already in that square.\nremove_tile() does nothing if the square is already empty.\nTo remove a tile you touched, pop() the index from collidelist().",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#is-there-a-tile-there-if-wall",
+    "href": "course/u5m1/u5m1-slides.html#is-there-a-tile-there-if-wall",
+    "title": "Advanced Pygame Zero",
+    "section": "Is There a Tile There? if wall:",
+    "text": "Is There a Tile There? if wall:\nget_tile() gives back the tile in a square, or None if the square is empty. None means “nothing”, and it has no methods, so using it crashes:\nwall = walls.get_tile(0, 0)  # an empty square, so wall is None\nwall.set_tile_image(4, 8)  # crash! None has no set_tile_image()\nif wall: is True for a tile and False for None, so it only runs when there is a tile:\nwall = walls.get_tile(2, 5)  # a tile, or None if the square is empty\nif wall:  # only if there is a tile there\n    print(wall.map_col, wall.map_row)  # every tile knows its square",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#changing-a-tiles-image",
+    "href": "course/u5m1/u5m1-slides.html#changing-a-tiles-image",
+    "title": "Advanced Pygame Zero",
+    "section": "Changing a Tile’s Image",
+    "text": "Changing a Tile’s Image\nA tile can change which tileset image it shows. Find it with get_tile(), check it’s there, then change it:\nwall = walls.get_tile(2, 5)  # find the tile at col 2, row 5\nif wall:\n    wall.set_tile_image(4, 8)  # show image col 4, row 8 instead",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#pixels-and-squares",
+    "href": "course/u5m1/u5m1-slides.html#pixels-and-squares",
+    "title": "Advanced Pygame Zero",
+    "section": "Pixels and Squares",
+    "text": "Pixels and Squares\nThe map converts between pixel positions and squares: level.pos_to_map(x, y) turns a position in pixels into a col, row. level.map_to_pos(col, row) turns a square into the position of its center.\ncol, row = level.pos_to_map(rabbit.x, rabbit.y)  # rabbit's square\nrabbit.pos = level.map_to_pos(5, 9)  # middle of col 5, row 9",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#click-to-build-or-knock-down",
+    "href": "course/u5m1/u5m1-slides.html#click-to-build-or-knock-down",
+    "title": "Advanced Pygame Zero",
+    "section": "Click to Build or Knock Down",
+    "text": "Click to Build or Knock Down\ndef on_mouse_down(pos):\n    x, y = pos\n    col, row = level.pos_to_map(x, y)  # the square that was clicked\n    if walls.get_tile(col, row):  # is there a wall?\n        walls.remove_tile(col, row)  # knock it down\n    else:\n        walls.set_tile(col, row, level.create_tile(3, 8))  # build one",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#scrolling",
+    "href": "course/u5m1/u5m1-slides.html#scrolling",
+    "title": "Advanced Pygame Zero",
+    "section": "Scrolling",
+    "text": "Scrolling\nFor a map bigger than the screen, keep the player still and move the map. Change level.x and level.y, and every tile moves.\ndef update():\n    old_x, old_y = level.x, level.y\n    if keyboard.left:\n        level.x += 3  # move the map right, so the rabbit seems to walk left\n    if keyboard.right:\n        level.x -= 3\n    if keyboard.up:\n        level.y += 3\n    if keyboard.down:\n        level.y -= 3\n    if rabbit.collidelist(walls) != -1:\n        level.x, level.y = old_x, old_y  # hit a wall: put the map back",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#the-map-level",
+    "href": "course/u5m1/u5m1-slides.html#the-map-level",
+    "title": "Advanced Pygame Zero",
+    "section": "The Map: level",
+    "text": "The Map: level\nHolds every layer.\nwalls = level[\"walls\"]  # get a layer by its name in Tiled\nlevel.draw()  # draw every visible layer\nnew_wall = level.create_tile(3, 8)  # create a tile from the tileset\ncol, row = level.pos_to_map(x, y)  # pixels -&gt; square\nx, y = level.map_to_pos(col, row)  # square -&gt; pixels (its center)\nlevel.x -= 3  # scroll the whole map",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#a-layer-walls",
+    "href": "course/u5m1/u5m1-slides.html#a-layer-walls",
+    "title": "Advanced Pygame Zero",
+    "section": "A Layer: walls",
+    "text": "A Layer: walls\nA list of tiles.\nfirst = walls[0]  # it's a list of tiles: [i], len(), for loops\nindex = rabbit.collidelist(walls)  # collisions work like any list\nwalls.pop(index)  # remove a tile by its index\nwall = walls.get_tile(col, row)  # the tile in a square, or None\nwalls.set_tile(col, row, new_wall)  # put a tile in a square\nwalls.remove_tile(col, row)  # empty a square\nwalls.visible = False  # stop drawing it (it still collides)",
+    "crumbs": [
+      "U5M1 · Advanced Pygame Zero",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u5m1/u5m1-slides.html#a-tile-wall",
+    "href": "course/u5m1/u5m1-slides.html#a-tile-wall",
+    "title": "Advanced Pygame Zero",
+    "section": "A Tile: wall",
+    "text": "A Tile: wall\nOne Actor on the map.\nwall.pos  # it's an Actor: pos, x, y, colliderect(), ...\nwall.map_col, wall.map_row  # its square on the map\nwall.tile_col, wall.tile_row  # its image in the tileset\nwall.set_tile_image(4, 8)  # show another image from the tileset",
     "crumbs": [
       "U5M1 · Advanced Pygame Zero",
       "Slides"
@@ -949,7 +1378,7 @@
     "href": "course/u3m3/u3m3-slides.html#hitbox",
     "title": "Collisions & Game State",
     "section": "Hitbox",
-    "text": "Hitbox\nPer Wikipedia, “A hitbox is an invisible shape commonly used in video games for real-time collision detection. It is often a rectangle or cuboid that is attached to and follows a visible object, though circular or spheroidal shapes are also common.”\nIn Pygame, we have a rectangular hitbox around an Actor’s image.",
+    "text": "Hitbox\nPer Wikipedia, “A hitbox is an invisible shape commonly used in video games for real-time collision detection. It is often a rectangle or cuboid that is attached to and follows a visible object, though circular or spheroidal shapes are also common.”\nIn Pygame, we have a rectangular hitbox around an Actor’s image, including any transparent space.",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Slides"
@@ -960,7 +1389,7 @@
     "href": "course/u3m3/u3m3-slides.html#detecting-collisions",
     "title": "Collisions & Game State",
     "section": "Detecting Collisions",
-    "text": "Detecting Collisions\n\ncolliderect(): method called on one Actor to detect if there’s a collision with another Actor.\nReturns True if there’s a collision, False otherwise.\nAlso works between Actors and Rectangles.\n\nunicorn = Actor(\"unicorn\")\nmonster = Actor(\"monster\")\n\nif unicorn.colliderect(monster):\n    # game over",
+    "text": "Detecting Collisions\n\ncolliderect(): method called on one Actor to detect if there’s a collision with another Actor.\nReturns True if there’s a collision, False otherwise.\nAlso works between Actors and Rectangles.\n\nunicorn = Actor(\"unicorn\")\nmonster = Actor(\"monster\")\n\nif unicorn.colliderect(monster):\n    game.lose()",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Slides"
@@ -972,6 +1401,17 @@
     "title": "Collisions & Game State",
     "section": "Detecting Collisions with Multiple Actors",
     "text": "Detecting Collisions with Multiple Actors\nplayer = Actor(\"p1\")  # create player Actor\nbat = Actor(\"bat\")  # create bat enemy Actor\ncoin = Actor(\"coin\")  # create coin Actor\n...\nif player.colliderect(bat):  # collision with enemy\n    player.health -= 1\nif player.colliderect(coin):  # collision with coin\n    player.money += 1",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#collisions-are-checked-every-frame",
+    "href": "course/u3m3/u3m3-slides.html#collisions-are-checked-every-frame",
+    "title": "Collisions & Game State",
+    "section": "Collisions Are Checked Every Frame",
+    "text": "Collisions Are Checked Every Frame\n\nupdate() runs about 60 times per second.\nIf two Actors stay overlapped, colliderect() is True every frame.\nCollect a coin and leave it there? player.money += 1 runs 60 times a second!\nFix: move the coin (or the enemy) away right after the collision.\n\nif player.colliderect(coin):\n    player.money += 1\n    coin.x = random.randint(20, WIDTH - 20)  # move it so it's only collected once",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Slides"
@@ -993,7 +1433,7 @@
     "href": "course/u3m3/u3m3-slides.html#game",
     "title": "Collisions & Game State",
     "section": "game",
-    "text": "game\ngame  # object that stores information about the game's state\ngame.state  # str: \"playing\", \"won\", \"lost\", \"over\" or \"paused\"\ngame.score  # int: starts at 0. Update it in your code.\ngame.level  # int: starts at 1. Update it in your code.\ngame.timer  # float: seconds since game started. Auto-updates.\ngame.frame_count  # int: frames since game started. Auto-updates.",
+    "text": "game\ngame  # object that stores information about the game's state\ngame.state  # str: \"playing\", \"won\", \"lost\", \"over\" or \"paused\"\ngame.score  # int: starts at 0. Update it in your code.\ngame.level  # int: starts at 1. Update it in your code.\ngame.timer  # float: seconds since game started. Auto-updates.\ngame.frame_count  # int: frames since game started. Auto-updates.\ngame.timer only counts while the game is \"playing\".",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Slides"
@@ -1011,22 +1451,55 @@
     ]
   },
   {
-    "objectID": "course/u3m3/u3m3-slides.html#changing-state-ending-a-game",
-    "href": "course/u3m3/u3m3-slides.html#changing-state-ending-a-game",
+    "objectID": "course/u3m3/u3m3-slides.html#ending-a-game",
+    "href": "course/u3m3/u3m3-slides.html#ending-a-game",
     "title": "Collisions & Game State",
-    "section": "Changing State / Ending a Game",
-    "text": "Changing State / Ending a Game\n# each one also cancels everything scheduled on the clock\ngame.win()  # sets game.state to \"won\"\ngame.lose()  # sets game.state to \"lost\"\ngame.over()  # sets game.state to \"over\"\ngame.pause()  # sets game.state to \"paused\"\ngame.resume()  # sets game.state back to \"playing\"\nWhile paused, game.timer and Sprite animations stop, but update() and the clock keep running.",
+    "section": "Ending a Game",
+    "text": "Ending a Game\n# each one also cancels everything scheduled on the clock\ngame.win()  # sets game.state to \"won\"\ngame.lose()  # sets game.state to \"lost\"\ngame.over()  # sets game.state to \"over\"\n\nChanges game.state to \"won\", \"lost\" or \"over\" and clears the clock.\nThese only work while game.state is \"playing\". Once the game has ended, extra calls are ignored.",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Slides"
     ]
   },
   {
-    "objectID": "course/u3m3/u3m3-slides.html#restarting-a-game",
-    "href": "course/u3m3/u3m3-slides.html#restarting-a-game",
+    "objectID": "course/u3m3/u3m3-slides.html#pausing-a-game",
+    "href": "course/u3m3/u3m3-slides.html#pausing-a-game",
     "title": "Collisions & Game State",
-    "section": "Restarting a Game",
-    "text": "Restarting a Game\nInstead of ending, we can restart a game by adding a number!\ngame.win(2.5)  # like game.win(), then restart after 2.5 seconds\ngame.lose(3)  # like game.lose(), then restart after 3 seconds\ngame.over(5)  # like game.over(), then restart after 5 seconds\n\nEverything listed before still happens right away: changes game.state to \"won\", \"lost\" or \"over\" and clears the clock.\nThen, after that many seconds, it restarts the game: resets game (score 0, level 1, timer 0, state \"playing\") and runs the start() function again.\n\nNote: these do not execute unless game.state is \"playing\" when they are called. They are skipped otherwise, to prevent multiple restarts from being scheduled when called repeatedly in update().",
+    "section": "Pausing a Game",
+    "text": "Pausing a Game\ngame.pause()  # sets game.state to \"paused\"\ngame.resume()  # sets game.state back to \"playing\"\nWhile paused, game.timer and Sprite animations stop, but update() and the clock keep running.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#ending-and-restarting",
+    "href": "course/u3m3/u3m3-slides.html#ending-and-restarting",
+    "title": "Collisions & Game State",
+    "section": "Ending and Restarting",
+    "text": "Ending and Restarting\nAdd a number to restart the game after that many seconds:\ngame.win(2.5)  # like game.win(), then restart after 2.5 seconds\ngame.lose(3)  # like game.lose(), then restart after 3 seconds\ngame.over(5)  # like game.over(), then restart after 5 seconds\n\nEverything from before still happens right away: changes game.state and clears the clock.\nAfter that many seconds, the game restarts:\n\ngame is reset: score 0, level 1, timer 0, state \"playing\".\nYour start() function runs again.\n\n\nNote: because these are skipped unless game.state is \"playing\", it’s safe to call them in update() every frame. Only the first call schedules a restart.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#restarting-right-now",
+    "href": "course/u3m3/u3m3-slides.html#restarting-right-now",
+    "title": "Collisions & Game State",
+    "section": "Restarting Right Now",
+    "text": "Restarting Right Now\ngame.restart()  # starts a new game right away, from any state\n\nUse it when the player presses a key to play again.\nDoes the same reset as above: resets game, then runs start() again.\n\nThe rule: win(), lose() or over() to end the game. restart() to start a new one.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Slides"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-slides.html#what-goes-in-start",
+    "href": "course/u3m3/u3m3-slides.html#what-goes-in-start",
+    "title": "Collisions & Game State",
+    "section": "What Goes in start()?",
+    "text": "What Goes in start()?\n\nstart() runs when the game begins and again on every restart.\nRestarting only resets the values inside game. Everything else is up to start().\nPut everything a fresh game needs in start(): Actor positions and your own variables.\n\ndef start():\n    player.pos = (200, 200)\n    enemy.pos = (400, 400)\n    player.lives = 3  # set here, not at the top of the file!",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Slides"
@@ -1235,7 +1708,7 @@
     "href": "course/u3m3/u3m3-cheatsheet.html#collisions",
     "title": "Collisions & Game State Cheat Sheet",
     "section": "Collisions",
-    "text": "Collisions\ncolliderect() is a Boolean expression: True if Actor actor1 has collided with Actor actor2, False otherwise.\nif actor1.colliderect(actor2):  # True if actor1 collided with actor2\n    game.over()",
+    "text": "Collisions\ncolliderect() is a Boolean expression: True if Actor actor1 has collided with Actor actor2, False otherwise.\nif actor1.colliderect(actor2):  # True if actor1 collided with actor2\n    game.over()\nHitboxes are rectangles around the whole image, including any transparent space.",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Cheat sheet"
@@ -1257,7 +1730,7 @@
     "href": "course/u3m3/u3m3-cheatsheet.html#score-level-and-timer",
     "title": "Collisions & Game State Cheat Sheet",
     "section": "Score, level and timer",
-    "text": "Score, level and timer\ngame.score = 0  # sets the player's score\ngame.score += 10  # adds points to the score\ngame.level = 1  # stores the current level number\ngame.level += 1  # moves to the next level\nif game.timer &gt; 5:  # checks if a certain amount of time has passed\nf\"{game.timer:.2f}\"  # timer as a string, rounded to 2 decimal places\nf\"{int(game.timer)}\"  # timer as a string, decimals dropped (whole number)",
+    "text": "Score, level and timer\ngame.score = 0  # sets the player's score\ngame.score += 10  # adds points to the score\ngame.level = 1  # stores the current level number\ngame.level += 1  # moves to the next level\nif game.timer &gt; 5:  # checks if a certain amount of time has passed\nf\"{game.timer:.2f}\"  # timer as a string, rounded to 2 decimal places\nf\"{int(game.timer)}\"  # timer as a string, decimals dropped (whole number)\ngame.timer only counts while the game is \"playing\".",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Cheat sheet"
@@ -1268,29 +1741,51 @@
     "href": "course/u3m3/u3m3-cheatsheet.html#game-states",
     "title": "Collisions & Game State Cheat Sheet",
     "section": "Game states",
-    "text": "Game states\ngame.state is a string variable that tracks the state of the game. Up to you to implement!\n\n\n\n\n\n\n\nState\nMeaning\n\n\n\n\n\"playing\"\nDefault value. The game is running.\n\n\n\"won\"\nThe game is won. Set with game.win().\n\n\n\"lost\"\nThe game is lost. Set with game.lose().\n\n\n\"over\"\nThe game is over. Set with game.over(), used when there is no difference between win/lose.\n\n\n\"paused\"\nNot used presently in our games, but could be useful in the future!\n\n\n\nYou can add your own states! Just set game.state equal to any string. You define the value, check it elsewhere in your code, and implement what happens in that state. Other useful states could be \"menu\" or \"credits\".",
+    "text": "Game states\ngame.state is a string variable that tracks the state of the game. Up to you to implement!\n\n\n\n\n\n\n\nState\nMeaning\n\n\n\n\n\"playing\"\nDefault value. The game is running.\n\n\n\"won\"\nThe game is won. Set with game.win().\n\n\n\"lost\"\nThe game is lost. Set with game.lose().\n\n\n\"over\"\nThe game is over. Set with game.over(), used when there is no difference between win/lose.\n\n\n\"paused\"\nThe game is paused. Set with game.pause().\n\n\n\nYou can add your own states! Just set game.state equal to any string. You define the value, check it elsewhere in your code, and implement what happens in that state. Other useful states could be \"menu\" or \"credits\".",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Cheat sheet"
     ]
   },
   {
-    "objectID": "course/u3m3/u3m3-cheatsheet.html#checking-and-changing-state",
-    "href": "course/u3m3/u3m3-cheatsheet.html#checking-and-changing-state",
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#checking-the-state",
+    "href": "course/u3m3/u3m3-cheatsheet.html#checking-the-state",
     "title": "Collisions & Game State Cheat Sheet",
-    "section": "Checking and changing state",
-    "text": "Checking and changing state\nif game.state == \"playing\":  # run code only when the game is active\nif game.state != \"won\":  # run code only when the game was not won\n# each one also cancels everything scheduled on the clock\ngame.win()  # sets game.state to \"won\"\ngame.lose()  # sets game.state to \"lost\"\ngame.over()  # sets game.state to \"over\"\nAdding a number restarts the game after that many seconds, by resetting game and running start() again:\ngame.win(2.5)  # like game.win(), then restart after 2.5 seconds\ngame.lose(3)  # like game.lose(), then restart after 3 seconds\ngame.over(5)  # like game.over(), then restart after 5 seconds",
+    "section": "Checking the state",
+    "text": "Checking the state\nif game.state == \"playing\":  # run code only when the game is active\nif game.state != \"won\":  # run code only when the game was not won",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Cheat sheet"
     ]
   },
   {
-    "objectID": "course/u3m3/u3m3-cheatsheet.html#reset-pause-and-resume",
-    "href": "course/u3m3/u3m3-cheatsheet.html#reset-pause-and-resume",
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#ending-the-game",
+    "href": "course/u3m3/u3m3-cheatsheet.html#ending-the-game",
     "title": "Collisions & Game State Cheat Sheet",
-    "section": "Reset, pause and resume",
-    "text": "Reset, pause and resume\nWhile paused, game.timer and Sprite animations stop, but update() and the clock keep running.\ngame.reset()  # resets state, score, level, timer and frame_count\ngame.pause()  # sets game.state to \"paused\"\ngame.resume()  # sets game.state back to \"playing\"",
+    "section": "Ending the game",
+    "text": "Ending the game\n# each one also cancels everything scheduled on the clock\ngame.win()  # sets game.state to \"won\"\ngame.lose()  # sets game.state to \"lost\"\ngame.over()  # sets game.state to \"over\"\nAdding a number restarts the game after that many seconds:\ngame.win(2.5)  # like game.win(), then restart after 2.5 seconds\ngame.lose(3)  # like game.lose(), then restart after 3 seconds\ngame.over(5)  # like game.over(), then restart after 5 seconds\nThese only work while game.state is \"playing\". Once the game has ended, extra calls are ignored, so it’s safe to call them from update() every frame.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#restarting-right-now",
+    "href": "course/u3m3/u3m3-cheatsheet.html#restarting-right-now",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Restarting right now",
+    "text": "Restarting right now\ngame.restart()  # starts a new game right away, from any state\nUse this when the player presses a key to play again. It resets game.state, game.score, game.level and game.timer, then runs start() again.",
+    "crumbs": [
+      "U3M3 · Collisions & Game State",
+      "Cheat sheet"
+    ]
+  },
+  {
+    "objectID": "course/u3m3/u3m3-cheatsheet.html#pause-and-resume",
+    "href": "course/u3m3/u3m3-cheatsheet.html#pause-and-resume",
+    "title": "Collisions & Game State Cheat Sheet",
+    "section": "Pause and resume",
+    "text": "Pause and resume\nWhile paused, game.timer and Sprite animations stop, but update() and the clock keep running.\ngame.pause()  # sets game.state to \"paused\"\ngame.resume()  # sets game.state back to \"playing\"",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Cheat sheet"
@@ -1301,7 +1796,7 @@
     "href": "course/u3m3/u3m3-cheatsheet.html#example-game-state-in-a-game",
     "title": "Collisions & Game State Cheat Sheet",
     "section": "Example: game state in a game",
-    "text": "Example: game state in a game\nstart() is called automatically at the beginning. It resets the game and initializes values. draw() uses game.state to decide what to draw. update() returns right away unless the game is \"playing\", then calls game.lose() or game.win() when the player hits the enemy or the key.\ndef start():  # runs at the beginning and again on every restart\n    player.pos = (200, 200)\n    enemy.pos = (400, 400)\n    key.pos = (450, 200)  # reach the key to win\n\n\ndef draw():\n    screen.clear()\n    key.draw()\n    if game.state != \"lost\":  # draw player if \"playing\" or \"won\"\n        player.draw()\n    if game.state != \"won\":  # draw enemy if \"playing\" or \"lost\"\n        enemy.draw()\n    if game.state == \"won\":\n        screen.draw.text(\"You won!\", midtop=(250, 20))\n    if game.state == \"lost\":\n        screen.draw.text(\"Game over\", midtop=(250, 20))\n\n\ndef update():\n    if game.state != \"playing\":  # not playing: skip the rest\n        return\n    player.x += 1\n    if player.colliderect(enemy):\n        game.lose(5)  # \"lost\", then restart after 5 seconds\n    if player.colliderect(key):\n        game.win(3)  # \"won\", then restart after 3 seconds",
+    "text": "Example: game state in a game\nstart() runs automatically when the game begins and again every time it restarts. draw() uses game.state to decide what to draw. update() returns right away unless the game is \"playing\", then calls game.lose() or game.win() when the player hits the enemy or the key.\ndef start():  # runs at the beginning and again on every restart\n    player.pos = (200, 200)\n    enemy.pos = (400, 400)\n    key.pos = (450, 200)  # reach the key to win\n\n\ndef draw():\n    screen.clear()\n    key.draw()\n    if game.state != \"lost\":  # draw player if \"playing\" or \"won\"\n        player.draw()\n    if game.state != \"won\":  # draw enemy if \"playing\" or \"lost\"\n        enemy.draw()\n    if game.state == \"won\":\n        screen.draw.text(\"You won!\", midtop=(250, 20))\n    if game.state == \"lost\":\n        screen.draw.text(\"Game over\", midtop=(250, 20))\n\n\ndef update():\n    if game.state != \"playing\":  # not playing: skip the rest\n        return\n    player.x += 1\n    if player.colliderect(enemy):\n        game.lose(5)  # \"lost\", then restart after 5 seconds\n    if player.colliderect(key):\n        game.win(3)  # \"won\", then restart after 3 seconds",
     "crumbs": [
       "U3M3 · Collisions & Game State",
       "Cheat sheet"

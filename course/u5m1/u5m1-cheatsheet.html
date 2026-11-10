@@ -475,11 +475,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#actor-extensions" id="toc-actor-extensions" class="nav-link" data-scroll-target="#actor-extensions">Actor extensions</a></li>
   <li><a href="#collision-rectangle" id="toc-collision-rectangle" class="nav-link" data-scroll-target="#collision-rectangle">Collision rectangle</a></li>
   <li><a href="#sprites" id="toc-sprites" class="nav-link" data-scroll-target="#sprites">Sprites</a></li>
-  <li><a href="#controlling-animations" id="toc-controlling-animations" class="nav-link" data-scroll-target="#controlling-animations">Controlling animations</a></li>
-  <li><a href="#tile-map-constants" id="toc-tile-map-constants" class="nav-link" data-scroll-target="#tile-map-constants">Tile map constants</a></li>
+  <li><a href="#sprite-from-a-list-of-images" id="toc-sprite-from-a-list-of-images" class="nav-link" data-scroll-target="#sprite-from-a-list-of-images">Sprite from a list of images</a></li>
+  <li><a href="#sprite-sheets" id="toc-sprite-sheets" class="nav-link" data-scroll-target="#sprite-sheets">Sprite sheets</a></li>
+  <li><a href="#sprite-from-a-sprite-sheet" id="toc-sprite-from-a-sprite-sheet" class="nav-link" data-scroll-target="#sprite-from-a-sprite-sheet">Sprite from a sprite sheet</a></li>
+  <li><a href="#playing-and-switching-sprites-actor.sprite" id="toc-playing-and-switching-sprites-actor.sprite" class="nav-link" data-scroll-target="#playing-and-switching-sprites-actor.sprite">Playing and switching Sprites: <code>actor.sprite</code></a></li>
+  <li><a href="#playing-once-loopfalse-animation_finished" id="toc-playing-once-loopfalse-animation_finished" class="nav-link" data-scroll-target="#playing-once-loopfalse-animation_finished">Playing once: <code>loop=False</code>, <code>animation_finished</code></a></li>
+  <li><a href="#pausing-restarting-and-frames" id="toc-pausing-restarting-and-frames" class="nav-link" data-scroll-target="#pausing-restarting-and-frames">Pausing, restarting, and frames</a></li>
+  <li><a href="#fullscreen" id="toc-fullscreen" class="nav-link" data-scroll-target="#fullscreen">Fullscreen</a></li>
   <li><a href="#tilesheets-tilesets-and-tilemaps" id="toc-tilesheets-tilesets-and-tilemaps" class="nav-link" data-scroll-target="#tilesheets-tilesets-and-tilemaps">Tilesheets, tilesets, and tilemaps</a></li>
-  <li><a href="#importing-a-tilemap" id="toc-importing-a-tilemap" class="nav-link" data-scroll-target="#importing-a-tilemap">Importing a tilemap</a></li>
+  <li><a href="#tile-map-constants" id="toc-tile-map-constants" class="nav-link" data-scroll-target="#tile-map-constants">Tile map constants</a></li>
+  <li><a href="#loading-a-tilemap-load_tile_map" id="toc-loading-a-tilemap-load_tile_map" class="nav-link" data-scroll-target="#loading-a-tilemap-load_tile_map">Loading a tilemap: <code>load_tile_map()</code></a></li>
+  <li><a href="#the-map-layers-and-tiles" id="toc-the-map-layers-and-tiles" class="nav-link" data-scroll-target="#the-map-layers-and-tiles">The map, layers, and tiles</a></li>
+  <li><a href="#drawing-a-tilemap-level.draw" id="toc-drawing-a-tilemap-level.draw" class="nav-link" data-scroll-target="#drawing-a-tilemap-level.draw">Drawing a tilemap: <code>level.draw()</code></a></li>
   <li><a href="#wall-collisions" id="toc-wall-collisions" class="nav-link" data-scroll-target="#wall-collisions">Wall collisions</a></li>
+  <li><a href="#collecting-items" id="toc-collecting-items" class="nav-link" data-scroll-target="#collecting-items">Collecting items</a></li>
+  <li><a href="#hazards" id="toc-hazards" class="nav-link" data-scroll-target="#hazards">Hazards</a></li>
+  <li><a href="#creating-tiles-level.create_tile" id="toc-creating-tiles-level.create_tile" class="nav-link" data-scroll-target="#creating-tiles-level.create_tile">Creating tiles: <code>level.create_tile()</code></a></li>
+  <li><a href="#adding-and-removing-tiles-walls.set_tile-walls.remove_tile" id="toc-adding-and-removing-tiles-walls.set_tile-walls.remove_tile" class="nav-link" data-scroll-target="#adding-and-removing-tiles-walls.set_tile-walls.remove_tile">Adding and removing tiles: <code>walls.set_tile()</code>, <code>walls.remove_tile()</code></a></li>
+  <li><a href="#is-there-a-tile-there-walls.get_tile-and-if-wall" id="toc-is-there-a-tile-there-walls.get_tile-and-if-wall" class="nav-link" data-scroll-target="#is-there-a-tile-there-walls.get_tile-and-if-wall">Is there a tile there? <code>walls.get_tile()</code> and <code>if wall:</code></a></li>
+  <li><a href="#changing-a-tiles-image-wall.set_tile_image" id="toc-changing-a-tiles-image-wall.set_tile_image" class="nav-link" data-scroll-target="#changing-a-tiles-image-wall.set_tile_image">Changing a tile’s image: <code>wall.set_tile_image()</code></a></li>
+  <li><a href="#pixels-and-squares-level.pos_to_map-level.map_to_pos" id="toc-pixels-and-squares-level.pos_to_map-level.map_to_pos" class="nav-link" data-scroll-target="#pixels-and-squares-level.pos_to_map-level.map_to_pos">Pixels and squares: <code>level.pos_to_map()</code>, <code>level.map_to_pos()</code></a></li>
+  <li><a href="#scrolling-level.x-level.y" id="toc-scrolling-level.x-level.y" class="nav-link" data-scroll-target="#scrolling-level.x-level.y">Scrolling: <code>level.x</code>, <code>level.y</code></a></li>
+  <li><a href="#what-the-map-can-do-level" id="toc-what-the-map-can-do-level" class="nav-link" data-scroll-target="#what-the-map-can-do-level">What the map can do: <code>level</code></a></li>
+  <li><a href="#what-a-layer-can-do-walls" id="toc-what-a-layer-can-do-walls" class="nav-link" data-scroll-target="#what-a-layer-can-do-walls">What a layer can do: <code>walls</code></a></li>
+  <li><a href="#what-a-tile-can-do-wall" id="toc-what-a-tile-can-do-wall" class="nav-link" data-scroll-target="#what-a-tile-can-do-wall">What a tile can do: <code>wall</code></a></li>
   </ul>
 </nav>
     </div>
@@ -558,59 +577,95 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="collision-rectangle">Collision rectangle</h2>
 <p>A custom collision rectangle is centered on the Actor. The first line makes it 10 wide and 20 tall; the second makes it 50 wide and 20 tall, with its center moved by (5, -5).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>player.collision_rect <span class="op">=</span> (<span class="dv">10</span>, <span class="dv">20</span>)  <span class="co"># (width, height)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>player.collision_rect <span class="op">=</span> (<span class="dv">50</span>, <span class="dv">20</span>, <span class="dv">5</span>, <span class="op">-</span><span class="dv">5</span>)  <span class="co"># (width, height, offset_x, offset_y)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (width, height, offset_x, offset_y)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>player.collision_rect <span class="op">=</span> (<span class="dv">50</span>, <span class="dv">20</span>, <span class="dv">5</span>, <span class="op">-</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In <code>draw()</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>player.draw_collision_rect()  <span class="co"># shows the collision rect, useful for debugging</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>player.draw_collision_rect()  <span class="co"># outlines it in red, for debugging</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="sprites" class="level2">
 <h2 class="anchored" data-anchor-id="sprites">Sprites</h2>
-<!-- Module concept: the Sprite() parameters. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
-<p>Use <code>Sprite</code> to make an animation from a spritesheet in the <code>sprites</code> folder for an Actor.</p>
+<p>A <code>Sprite</code> is one animation: its frames, how fast to play them, and whether to loop. Give an Actor a Sprite instead of an image name, and it plays the animation by itself. <a href="https://pgzero-plus.readthedocs.io/en/latest/builtins.html#sprite-animations">Docs: Sprite Animations</a></p>
+</section>
+<section id="sprite-from-a-list-of-images" class="level2">
+<h2 class="anchored" data-anchor-id="sprite-from-a-list-of-images">Sprite from a list of images</h2>
+<p>List image names from the <code>images</code> folder, in order. Only <code>fps</code> and <code>loop</code> can be given.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a Sprite made from a list of images in the images folder</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>alien_walk <span class="op">=</span> Sprite([<span class="st">"alien_beige_walk1"</span>, <span class="st">"alien_beige_walk2"</span>], fps<span class="op">=</span><span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>alien <span class="op">=</span> Actor(alien_walk)  <span class="co"># a Sprite instead of an image name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sprite-sheets" class="level2">
+<h2 class="anchored" data-anchor-id="sprite-sheets">Sprite sheets</h2>
+<!-- Module concept: what a sprite sheet is, and Sprite Studio. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+<p>A <strong>sprite sheet</strong> is one image that holds every frame of a character’s animations, laid out in a grid. Each <strong>row</strong> is one animation (idle, walk, jump, …), and every frame is the same size. Rows and frames are counted from 0, starting at the top left.</p>
+<p>Keep sprite sheets in the <code>sprites</code> folder. Each sheet there has a <code>.md</code> file listing its frame size and what is on each row.</p>
+<p><a href="https://mjdargen.github.io/sprite-studio/">Sprite Studio</a> turns art from anywhere (sheets, GIFs, Aseprite files, folders of frames) into a sprite sheet that works here, and writes the <code>Sprite(...)</code> code for you.</p>
+</section>
+<section id="sprite-from-a-sprite-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="sprite-from-a-sprite-sheet">Sprite from a sprite sheet</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sprites made from rows of a sprite sheet in the sprites folder</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>idle <span class="op">=</span> Sprite(<span class="st">"rabbit"</span>, frame_width<span class="op">=</span><span class="dv">16</span>, frame_height<span class="op">=</span><span class="dv">16</span>, row<span class="op">=</span><span class="dv">0</span>, frames<span class="op">=</span><span class="dv">2</span>, fps<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>walk_left <span class="op">=</span> Sprite(<span class="st">"rabbit"</span>, frame_width<span class="op">=</span><span class="dv">16</span>, frame_height<span class="op">=</span><span class="dv">16</span>, row<span class="op">=</span><span class="dv">6</span>, frames<span class="op">=</span><span class="dv">2</span>, fps<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>walk_right <span class="op">=</span> Sprite(<span class="st">"rabbit"</span>, frame_width<span class="op">=</span><span class="dv">16</span>, frame_height<span class="op">=</span><span class="dv">16</span>,row<span class="op">=</span><span class="dv">7</span>, frames<span class="op">=</span><span class="dv">2</span>, fps<span class="op">=</span><span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<!-- Module concept: the Sprite() parameters for a sprite sheet. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
 <ul>
-<li><code>image_name</code>: sprite sheet filename</li>
-<li><code>frame_width</code>: width of each frame in pixels</li>
-<li><code>frame_height</code>: height of frame in pixels</li>
-<li><code>row</code> (optional): row to start from, counting from 0. Defaults to <code>0</code>.</li>
-<li><code>frames</code> (optional): number of frames. Defaults to the whole row.</li>
-<li><code>fps</code> (optional): frames per second. Defaults to <code>10</code>.</li>
-<li><code>transparent_color</code> (optional): color to make see-through. Defaults to none.</li>
-<li><code>loop</code> (optional): <code>False</code> plays once. Defaults to <code>True</code>.</li>
+<li><code>image_name</code>: sprite sheet filename in the <code>sprites</code> folder</li>
+<li><code>frame_width</code>, <code>frame_height</code>: size of each frame, in pixels</li>
+<li><code>row</code> (optional): row to start from, counting from 0. Default <code>0</code>.</li>
+<li><code>frames</code> (optional): number of frames. Default: the whole row.</li>
+<li><code>fps</code> (optional): frames per second. Default <code>10</code>.</li>
+<li><code>loop</code> (optional): <code>False</code> plays once. Default <code>True</code>.</li>
+<li><code>transparent_color</code> (optional): color to make see-through.</li>
+<li><code>spacing</code>, <code>margin</code> (optional): gaps between frames and around the sheet, in pixels.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define Sprites</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>idle <span class="op">=</span> Sprite(<span class="st">"rabbit"</span>, frame_width<span class="op">=</span><span class="dv">16</span>, frame_height<span class="op">=</span><span class="dv">16</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              row<span class="op">=</span><span class="dv">0</span>, frames<span class="op">=</span><span class="dv">2</span>, fps<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>walk_left <span class="op">=</span> Sprite(<span class="st">"rabbit"</span>, frame_width<span class="op">=</span><span class="dv">16</span>, frame_height<span class="op">=</span><span class="dv">16</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                   row<span class="op">=</span><span class="dv">6</span>, frames<span class="op">=</span><span class="dv">2</span>, fps<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>walk_right <span class="op">=</span> Sprite(<span class="st">"rabbit"</span>, frame_width<span class="op">=</span><span class="dv">16</span>, frame_height<span class="op">=</span><span class="dv">16</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                    row<span class="op">=</span><span class="dv">7</span>, frames<span class="op">=</span><span class="dv">2</span>, fps<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># make an Actor that plays a Sprite</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>rabbit <span class="op">=</span> Actor(idle)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="controlling-animations" class="level2">
-<h2 class="anchored" data-anchor-id="controlling-animations">Controlling animations</h2>
-<p><code>fox.sprite</code> gets the Sprite the Actor is playing. Setting it switches the animation. Setting the same Sprite again restarts it only if it has finished, so it is safe to set every frame.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>idle <span class="op">=</span> Sprite(<span class="st">"fox"</span>, <span class="dv">32</span>, <span class="dv">32</span>, row<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>attack <span class="op">=</span> Sprite(<span class="st">"fox"</span>, <span class="dv">32</span>, <span class="dv">32</span>, row<span class="op">=</span><span class="dv">3</span>, loop<span class="op">=</span><span class="va">False</span>)  <span class="co"># plays once</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fox <span class="op">=</span> Actor(idle)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fox.sprite <span class="op">=</span> attack  <span class="co"># same Sprite again: replays only if it has finished</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> fox.animation_finished:  <span class="co"># True once a loop=False Sprite ends</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    fox.sprite <span class="op">=</span> idle</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>fox.frame  <span class="co"># current frame number, starting at 0</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>fox.pause_animation()  <span class="co"># freezes on the current frame</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>fox.resume_animation()  <span class="co"># resumes animation on current frame</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="playing-and-switching-sprites-actor.sprite" class="level2">
+<h2 class="anchored" data-anchor-id="playing-and-switching-sprites-actor.sprite">Playing and switching Sprites: <code>actor.sprite</code></h2>
+<p>Give the Actor a Sprite when you make it. Set <code>actor.sprite</code> to switch animations. Setting the Sprite that is already playing does nothing, so it is safe to do every frame.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rabbit <span class="op">=</span> Actor(idle)  <span class="co"># starts by playing idle</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rabbit.scale <span class="op">=</span> <span class="dv">3</span>  <span class="co"># pixel art is small, so make it bigger</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> keyboard.left:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    rabbit.x <span class="op">-=</span> <span class="dv">2</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    rabbit.sprite <span class="op">=</span> walk_left  <span class="co"># switch to another Sprite</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> keyboard.right:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    rabbit.x <span class="op">+=</span> <span class="dv">2</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    rabbit.sprite <span class="op">=</span> walk_right</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    rabbit.sprite <span class="op">=</span> idle  <span class="co"># safe every frame: restarts only if it changed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Use <code>actor.sprite</code> for Sprites and <code>actor.image</code> for image names. Whichever you set last is what the Actor shows.</p>
 </section>
-<section id="tile-map-constants" class="level2">
-<h2 class="anchored" data-anchor-id="tile-map-constants">Tile map constants</h2>
-<p>Helpful constants for 2D games using a tilemap.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># our tile map constants</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>TILE_SIZE <span class="op">=</span> <span class="dv">18</span>  <span class="co"># length of a tile, in pixels</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>MAP_WIDTH <span class="op">=</span> <span class="dv">30</span>  <span class="co"># width of the tilemap, in tiles</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>MAP_HEIGHT <span class="op">=</span> <span class="dv">20</span>  <span class="co"># height of the tilemap, in tiles</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>SCALE <span class="op">=</span> <span class="dv">2</span>  <span class="co"># global scaling factor</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># can use to compute screen dimensions</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>WIDTH <span class="op">=</span> TILE_SIZE <span class="op">*</span> MAP_WIDTH <span class="op">*</span> SCALE</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>HEIGHT <span class="op">=</span> TILE_SIZE <span class="op">*</span> MAP_HEIGHT <span class="op">*</span> SCALE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="playing-once-loopfalse-animation_finished" class="level2">
+<h2 class="anchored" data-anchor-id="playing-once-loopfalse-animation_finished">Playing once: <code>loop=False</code>, <code>animation_finished</code></h2>
+<p>A Sprite made with <code>loop=False</code> stops on its last frame. <code>animation_finished</code> is <code>True</code> once it has, so you can go back to another animation. <code>fox.sprite == hurt</code> checks which animation is playing.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>idle <span class="op">=</span> Sprite(<span class="st">"fox"</span>, frame_width<span class="op">=</span><span class="dv">24</span>, frame_height<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>              row<span class="op">=</span><span class="dv">0</span>, frames<span class="op">=</span><span class="dv">5</span>, fps<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>hurt <span class="op">=</span> Sprite(<span class="st">"fox"</span>, frame_width<span class="op">=</span><span class="dv">24</span>, frame_height<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>              row<span class="op">=</span><span class="dv">4</span>, frames<span class="op">=</span><span class="dv">5</span>, fps<span class="op">=</span><span class="dv">8</span>, loop<span class="op">=</span><span class="va">False</span>)  <span class="co"># plays once</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>fox <span class="op">=</span> Actor(idle)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> fox.sprite <span class="op">==</span> hurt <span class="kw">and</span> fox.animation_finished:  <span class="co"># hurt has ended</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    fox.sprite <span class="op">=</span> idle  <span class="co"># go back to idle</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="pausing-restarting-and-frames" class="level2">
+<h2 class="anchored" data-anchor-id="pausing-restarting-and-frames">Pausing, restarting, and frames</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_key_down(key):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> key <span class="op">==</span> keys.SPACE:</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        fox.sprite <span class="op">=</span> hurt  <span class="co"># replays if it has already finished</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> key <span class="op">==</span> keys.P:</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> fox.animation_paused:  <span class="co"># True while paused</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>            fox.resume_animation()  <span class="co"># carry on from the same frame</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>            fox.pause_animation()  <span class="co"># freeze on the current frame</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> key <span class="op">==</span> keys.R:</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        fox.reset_animation()  <span class="co"># play again from the first frame</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>screen.draw.text(<span class="ss">f"frame </span><span class="sc">{</span>fox<span class="sc">.</span>frame<span class="sc">}</span><span class="ss">"</span>, (<span class="dv">10</span>, <span class="dv">10</span>))  <span class="co"># frame number, from 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Setting <code>fox.frame</code> jumps to that frame. While the whole game is paused with <code>game.pause()</code>, every Actor holds its frame.</p>
+</section>
+<section id="fullscreen" class="level2">
+<h2 class="anchored" data-anchor-id="fullscreen">Fullscreen</h2>
+<!-- Module concept: fullscreen. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+<ul>
+<li>Set <code>FULLSCREEN = True</code> at the top of your game to start in fullscreen.</li>
+<li>Press <strong>F11</strong> to toggle any game between fullscreen and a window.</li>
+</ul>
 </section>
 <section id="tilesheets-tilesets-and-tilemaps" class="level2">
 <h2 class="anchored" data-anchor-id="tilesheets-tilesets-and-tilemaps">Tilesheets, tilesets, and tilemaps</h2>
@@ -621,35 +676,180 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Tilemap</strong>: a <code>.tmx</code> file created in Tiled that defines the actual level layout. It uses one or more tilesets and organizes tiles into layers (ground, walls, hazards, etc.). This is the level design.</li>
 </ul>
 <p><strong>Note:</strong> the tilesheet, tileset, and tilemap must all be stored in the <code>maps</code> folder of your project.</p>
+<p>Make maps in <a href="https://www.mapeditor.org/">Tiled</a>. <a href="https://pgzero-plus.readthedocs.io/en/latest/builtins.html#tile-maps">Docs: Tile Maps</a></p>
 </section>
-<section id="importing-a-tilemap" class="level2">
-<h2 class="anchored" data-anchor-id="importing-a-tilemap">Importing a tilemap</h2>
-<!-- Module concept: load_tile_map_actors(). Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
-<p>Use <code>load_tile_map_actors()</code> to import your map made in Tiled into your game based on tile map layers.</p>
+<section id="tile-map-constants" class="level2">
+<h2 class="anchored" data-anchor-id="tile-map-constants">Tile map constants</h2>
+<p>Make your own constants and use them to compute the window size.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># our tile map constants</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>TILE_SIZE <span class="op">=</span> <span class="dv">16</span>  <span class="co"># length of a tile, in pixels</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>MAP_WIDTH <span class="op">=</span> <span class="dv">30</span>  <span class="co"># width of the tilemap, in tiles</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>MAP_HEIGHT <span class="op">=</span> <span class="dv">20</span>  <span class="co"># height of the tilemap, in tiles</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>SCALE <span class="op">=</span> <span class="dv">2</span>  <span class="co"># global scaling factor</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># can use to compute screen dimensions</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>WIDTH <span class="op">=</span> TILE_SIZE <span class="op">*</span> MAP_WIDTH <span class="op">*</span> SCALE</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>HEIGHT <span class="op">=</span> TILE_SIZE <span class="op">*</span> MAP_HEIGHT <span class="op">*</span> SCALE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="loading-a-tilemap-load_tile_map" class="level2">
+<h2 class="anchored" data-anchor-id="loading-a-tilemap-load_tile_map">Loading a tilemap: <code>load_tile_map()</code></h2>
+<!-- Module concept: load_tile_map(). Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+<p>Use <code>load_tile_map()</code> to import your map made in Tiled into your game based on tile map layers.</p>
 <ul>
 <li><code>tmx_name</code>: path to the TMX file defining the tilemap, created in Tiled.</li>
 <li><code>scale</code>: scaling factor applied to the map for display in Pygame.</li>
 </ul>
-<p>To get individual lists of Actors from each Tiled layer, use the layer name. Using different layers allows you to treat each list of Actors differently.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>map_layers <span class="op">=</span> load_tile_map_actors(<span class="st">"L1.tmx"</span>, scale<span class="op">=</span>SCALE)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ground <span class="op">=</span> map_layers[<span class="st">"ground"</span>]  <span class="co"># ground / background scenery to draw</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>walls <span class="op">=</span> map_layers[<span class="st">"walls"</span>]  <span class="co"># obstacles for player to collide with</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>hazards <span class="op">=</span> map_layers[<span class="st">"hazards"</span>]  <span class="co"># "bad" objects for player collision</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>hearts <span class="op">=</span> map_layers[<span class="st">"hearts"</span>]  <span class="co"># "good" objects or collectables</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Get each layer by its name in Tiled, like <code>level["walls"]</code>. A layer works like a list of tiles, and every tile is an Actor, so <code>collidelist()</code> and <code>for</code> loops work on it.</p>
+<p>Using different layers allows you to treat each kind of tile differently.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> load_tile_map(<span class="st">"tl1.tmx"</span>, scale<span class="op">=</span>SCALE)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ground <span class="op">=</span> level[<span class="st">"ground"</span>]  <span class="co"># ground / background scenery to draw</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>walls <span class="op">=</span> level[<span class="st">"walls"</span>]  <span class="co"># obstacles for player to collide with</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>hazards <span class="op">=</span> level[<span class="st">"hazards"</span>]  <span class="co"># "bad" objects for player collision</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>collectables <span class="op">=</span> level[<span class="st">"collectables"</span>]  <span class="co"># "good" objects to collect</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-map-layers-and-tiles" class="level2">
+<h2 class="anchored" data-anchor-id="the-map-layers-and-tiles">The map, layers, and tiles</h2>
+<!-- Module concept: the map, a layer, and a tile. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+<p>A tile map is made of three kinds of thing, each inside the one before:</p>
+<ul>
+<li><strong>The map</strong> (<code>level</code>) holds every layer.</li>
+<li><strong>A layer</strong> (<code>walls = level["walls"]</code>) is a list of tiles.</li>
+<li><strong>A tile</strong> (<code>wall = walls[0]</code>) is one Actor on the map.</li>
+</ul>
+<p>Each method belongs to one of them. The variable before the dot tells you which: <code>level.draw()</code> is the map, <code>walls.get_tile(...)</code> is a layer, <code>wall.set_tile_image(...)</code> is a tile.</p>
+</section>
+<section id="drawing-a-tilemap-level.draw" class="level2">
+<h2 class="anchored" data-anchor-id="drawing-a-tilemap-level.draw">Drawing a tilemap: <code>level.draw()</code></h2>
+<p>Draws every layer in Tiled’s layer order, from the bottom of Tiled’s <strong>Layers</strong> list to the top: background first, foreground last. To change what’s in front, drag the layers into a new order in Tiled. Draw the player after the map so it is on top.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>level.draw()  <span class="co"># draws every visible layer, in Tiled's layer order</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>rabbit.draw()  <span class="co"># draw the player after the map, so it is on top</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Layers hidden in Tiled aren’t drawn, but still collide. Hide or show a layer in code with <code>hazards.visible = False</code> or <code>True</code>.</p>
 </section>
 <section id="wall-collisions" class="level2">
 <h2 class="anchored" data-anchor-id="wall-collisions">Wall collisions</h2>
-<p>Example of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># left keyboard button pressed</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> keyboard.LEFT:</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    rabbit.x <span class="op">-=</span> <span class="dv">2</span>  <span class="co"># move to left</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    rabbit.sprite <span class="op">=</span> walk_left  <span class="co"># change to left sprite</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># check for collision</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    collision_index <span class="op">=</span> rabbit.collidelist(walls)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># did collision occur after moving to left?</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> collision_index <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if so, put character's left edge on right edge of wall</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        rabbit.left <span class="op">=</span> walls[collision_index].right</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Example of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction, putting the edge you moved against back on the wall.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># left keyboard button pressed</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> keyboard.LEFT:</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    rabbit.x <span class="op">-=</span> <span class="dv">2</span>  <span class="co"># move to left</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    rabbit.sprite <span class="op">=</span> walk_left  <span class="co"># change to left sprite</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># check for collision</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    collision_index <span class="op">=</span> rabbit.collidelist(walls)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># did collision occur after moving to left?</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> collision_index <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if so, put character's left edge on right edge of wall</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        rabbit.left <span class="op">=</span> walls[collision_index].right</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="collecting-items" class="level2">
+<h2 class="anchored" data-anchor-id="collecting-items">Collecting items</h2>
+<p><code>collidelist()</code> gives the index of the tile you touched in the layer. <code>pop()</code> that index to take it off the map.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># touching a collectable? take it off the map</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>item_index <span class="op">=</span> rabbit.collidelist(collectables)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> item_index <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    collectables.pop(item_index)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># collected them all?</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(collectables) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    game.win()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="hazards" class="level2">
+<h2 class="anchored" data-anchor-id="hazards">Hazards</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># touching any hazard ends the game</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> rabbit.collidelist(hazards) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    game.lose()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="creating-tiles-level.create_tile" class="level2">
+<h2 class="anchored" data-anchor-id="creating-tiles-level.create_tile">Creating tiles: <code>level.create_tile()</code></h2>
+<!-- Module concept: what col/row mean on the map and in the tileset. Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
+<p>Columns and rows count from 0, starting at the top left. They mean two different grids:</p>
+<ul>
+<li><strong>The map</strong> is a grid of squares. <code>col, row</code> says which square, like <code>(5, 2)</code>. Each layer holds at most one tile per square.</li>
+<li><strong>The tileset</strong> is a grid of images. <code>tile_col, tile_row</code> says which image, like <code>(3, 8)</code>.</li>
+</ul>
+<p>The <strong>map</strong> creates new tiles. <code>level.create_tile(tile_col, tile_row)</code> gives a new tile showing that image from the tileset. To find an image’s <code>tile_col</code> and <code>tile_row</code>, count across and down the tilesheet from 0.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a new tile showing the image at col 3, row 8 of the tileset</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>new_wall <span class="op">=</span> level.create_tile(<span class="dv">3</span>, <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If your map uses only one tileset, <code>create_tile()</code> uses it automatically. If it uses more than one, name the tileset to use, as it is named in Tiled: <code>level.create_tile(3, 8, tileset="town")</code>.</p>
+</section>
+<section id="adding-and-removing-tiles-walls.set_tile-walls.remove_tile" class="level2">
+<h2 class="anchored" data-anchor-id="adding-and-removing-tiles-walls.set_tile-walls.remove_tile">Adding and removing tiles: <code>walls.set_tile()</code>, <code>walls.remove_tile()</code></h2>
+<p>A <strong>layer</strong> adds and removes tiles by square. A new tile isn’t on the map until you add it. <code>set_tile()</code> replaces any tile already in that square, and <code>remove_tile()</code> does nothing if the square is already empty.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>walls.set_tile(<span class="dv">5</span>, <span class="dv">2</span>, new_wall)  <span class="co"># put it at col 5, row 2 of the map</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>walls.remove_tile(<span class="dv">5</span>, <span class="dv">2</span>)  <span class="co"># take away the tile at col 5, row 2, if any</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To remove a tile you touched, <code>pop()</code> the index from <code>collidelist()</code>.</p>
+</section>
+<section id="is-there-a-tile-there-walls.get_tile-and-if-wall" class="level2">
+<h2 class="anchored" data-anchor-id="is-there-a-tile-there-walls.get_tile-and-if-wall">Is there a tile there? <code>walls.get_tile()</code> and <code>if wall:</code></h2>
+<p><code>get_tile(col, row)</code> gives back the tile in a square, or <strong><code>None</code></strong> if the square is empty. <code>None</code> means “nothing”, and it has no methods, so using it crashes:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>wall <span class="op">=</span> walls.get_tile(<span class="dv">0</span>, <span class="dv">0</span>)  <span class="co"># an empty square, so wall is None</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>wall.set_tile_image(<span class="dv">4</span>, <span class="dv">8</span>)  <span class="co"># crash! None has no set_tile_image()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>if wall:</code> is <code>True</code> for a tile and <code>False</code> for <code>None</code>, so the code inside only runs when there is a tile:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>wall <span class="op">=</span> walls.get_tile(<span class="dv">2</span>, <span class="dv">5</span>)  <span class="co"># a tile, or None if the square is empty</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> wall:  <span class="co"># only if there is a tile there</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(wall.map_col, wall.map_row)  <span class="co"># every tile knows its square</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="changing-a-tiles-image-wall.set_tile_image" class="level2">
+<h2 class="anchored" data-anchor-id="changing-a-tiles-image-wall.set_tile_image">Changing a tile’s image: <code>wall.set_tile_image()</code></h2>
+<p>A <strong>tile</strong> can change which tileset image it shows. Find it with <code>get_tile()</code>, check it’s there, then change it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>wall <span class="op">=</span> walls.get_tile(<span class="dv">2</span>, <span class="dv">5</span>)  <span class="co"># find the tile at col 2, row 5</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> wall:</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    wall.set_tile_image(<span class="dv">4</span>, <span class="dv">8</span>)  <span class="co"># show image col 4, row 8 instead</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="pixels-and-squares-level.pos_to_map-level.map_to_pos" class="level2">
+<h2 class="anchored" data-anchor-id="pixels-and-squares-level.pos_to_map-level.map_to_pos">Pixels and squares: <code>level.pos_to_map()</code>, <code>level.map_to_pos()</code></h2>
+<p>The <strong>map</strong> converts between pixels and squares. <code>level.pos_to_map(x, y)</code> gives the <code>col, row</code> of the square at a position in pixels, such as a mouse click or the player. <code>level.map_to_pos(col, row)</code> gives the position of the center of a square.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>col, row <span class="op">=</span> level.pos_to_map(rabbit.x, rabbit.y)  <span class="co"># rabbit's square</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>rabbit.pos <span class="op">=</span> level.map_to_pos(<span class="dv">5</span>, <span class="dv">9</span>)  <span class="co"># middle of col 5, row 9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Clicking to build or knock down walls:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_mouse_down(pos):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> pos</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    col, row <span class="op">=</span> level.pos_to_map(x, y)  <span class="co"># the square that was clicked</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> walls.get_tile(col, row):  <span class="co"># is there a wall?</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        walls.remove_tile(col, row)  <span class="co"># knock it down</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        walls.set_tile(col, row, level.create_tile(<span class="dv">3</span>, <span class="dv">8</span>))  <span class="co"># build one</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="scrolling-level.x-level.y" class="level2">
+<h2 class="anchored" data-anchor-id="scrolling-level.x-level.y">Scrolling: <code>level.x</code>, <code>level.y</code></h2>
+<p>For a map bigger than the screen, keep the player in the middle and move the map instead. Every tile moves with <code>level.x</code> and <code>level.y</code>, and collisions, <code>pos_to_map()</code> and <code>map_to_pos()</code> keep working.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update():</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    old_x, old_y <span class="op">=</span> level.x, level.y</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> keyboard.left:</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        level.x <span class="op">+=</span> <span class="dv">3</span>  <span class="co"># move the map right, so the rabbit seems to walk left</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> keyboard.right:</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        level.x <span class="op">-=</span> <span class="dv">3</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> keyboard.up:</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        level.y <span class="op">+=</span> <span class="dv">3</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> keyboard.down:</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        level.y <span class="op">-=</span> <span class="dv">3</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> rabbit.collidelist(walls) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        level.x, level.y <span class="op">=</span> old_x, old_y  <span class="co"># hit a wall: put the map back</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="what-the-map-can-do-level" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-map-can-do-level">What the map can do: <code>level</code></h2>
+<p>The map holds every layer.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>walls <span class="op">=</span> level[<span class="st">"walls"</span>]  <span class="co"># get a layer by its name in Tiled</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>level.draw()  <span class="co"># draw every visible layer</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>new_wall <span class="op">=</span> level.create_tile(<span class="dv">3</span>, <span class="dv">8</span>)  <span class="co"># create a tile from the tileset</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>col, row <span class="op">=</span> level.pos_to_map(x, y)  <span class="co"># pixels -&gt; square</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> level.map_to_pos(col, row)  <span class="co"># square -&gt; pixels (its center)</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>level.x <span class="op">-=</span> <span class="dv">3</span>  <span class="co"># scroll the whole map</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="what-a-layer-can-do-walls" class="level2">
+<h2 class="anchored" data-anchor-id="what-a-layer-can-do-walls">What a layer can do: <code>walls</code></h2>
+<p>A layer is a list of tiles.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> walls[<span class="dv">0</span>]  <span class="co"># it's a list of tiles: [i], len(), for loops</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>index <span class="op">=</span> rabbit.collidelist(walls)  <span class="co"># collisions work like any list</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>walls.pop(index)  <span class="co"># remove a tile by its index</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>wall <span class="op">=</span> walls.get_tile(col, row)  <span class="co"># the tile in a square, or None</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>walls.set_tile(col, row, new_wall)  <span class="co"># put a tile in a square</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>walls.remove_tile(col, row)  <span class="co"># empty a square</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>walls.visible <span class="op">=</span> <span class="va">False</span>  <span class="co"># stop drawing it (it still collides)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="what-a-tile-can-do-wall" class="level2">
+<h2 class="anchored" data-anchor-id="what-a-tile-can-do-wall">What a tile can do: <code>wall</code></h2>
+<p>A tile is one Actor on the map.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>wall.pos  <span class="co"># it's an Actor: pos, x, y, colliderect(), ...</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>wall.map_col, wall.map_row  <span class="co"># its square on the map</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>wall.tile_col, wall.tile_row  <span class="co"># its image in the tileset</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>wall.set_tile_image(<span class="dv">4</span>, <span class="dv">8</span>)  <span class="co"># show another image from the tileset</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>

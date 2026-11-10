@@ -477,8 +477,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-game-object" id="toc-the-game-object" class="nav-link" data-scroll-target="#the-game-object">The <code>game</code> object</a></li>
   <li><a href="#score-level-and-timer" id="toc-score-level-and-timer" class="nav-link" data-scroll-target="#score-level-and-timer">Score, level and timer</a></li>
   <li><a href="#game-states" id="toc-game-states" class="nav-link" data-scroll-target="#game-states">Game states</a></li>
-  <li><a href="#checking-and-changing-state" id="toc-checking-and-changing-state" class="nav-link" data-scroll-target="#checking-and-changing-state">Checking and changing state</a></li>
-  <li><a href="#reset-pause-and-resume" id="toc-reset-pause-and-resume" class="nav-link" data-scroll-target="#reset-pause-and-resume">Reset, pause and resume</a></li>
+  <li><a href="#checking-the-state" id="toc-checking-the-state" class="nav-link" data-scroll-target="#checking-the-state">Checking the state</a></li>
+  <li><a href="#ending-the-game" id="toc-ending-the-game" class="nav-link" data-scroll-target="#ending-the-game">Ending the game</a></li>
+  <li><a href="#restarting-right-now" id="toc-restarting-right-now" class="nav-link" data-scroll-target="#restarting-right-now">Restarting right now</a></li>
+  <li><a href="#pause-and-resume" id="toc-pause-and-resume" class="nav-link" data-scroll-target="#pause-and-resume">Pause and resume</a></li>
   <li><a href="#example-game-state-in-a-game" id="toc-example-game-state-in-a-game" class="nav-link" data-scroll-target="#example-game-state-in-a-game">Example: game state in a game</a></li>
   <li><a href="#heads-up-display-hud" id="toc-heads-up-display-hud" class="nav-link" data-scroll-target="#heads-up-display-hud">Heads-up display (HUD)</a></li>
   </ul>
@@ -509,6 +511,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Every code block has a copy button (top right). <a href="u3m3-cheatsheet.pdf">Download the printable PDF</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The three rules
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>End</strong> the game with <code>game.win()</code>, <code>game.lose()</code> or <code>game.over()</code>. Add a number to restart after that many seconds.</li>
+<li><strong>Start over right now</strong> with <code>game.restart()</code>.</li>
+<li><strong>Set up everything for a fresh game in <code>start()</code></strong>: Actor positions <em>and</em> your own variables (like <code>lives</code>). <code>start()</code> runs again every time the game restarts.</li>
+</ol>
+</div>
+</div>
 <section id="assets" class="level2">
 <h2 class="anchored" data-anchor-id="assets">Assets</h2>
 <!-- Shared concept: where assets go and how to name them. -->
@@ -545,6 +564,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>colliderect()</code> is a Boolean expression: <code>True</code> if Actor <code>actor1</code> has collided with Actor <code>actor2</code>, <code>False</code> otherwise.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> actor1.colliderect(actor2):  <span class="co"># True if actor1 collided with actor2</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    game.over()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Hitboxes are rectangles around the whole image, including any transparent space.</p>
 </section>
 <section id="the-game-object" class="level2">
 <h2 class="anchored" data-anchor-id="the-game-object">The <code>game</code> object</h2>
@@ -565,6 +585,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> game.timer <span class="op">&gt;</span> <span class="dv">5</span>:  <span class="co"># checks if a certain amount of time has passed</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ss">f"</span><span class="sc">{</span>game<span class="sc">.</span>timer<span class="sc">:.2f}</span><span class="ss">"</span>  <span class="co"># timer as a string, rounded to 2 decimal places</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ss">f"</span><span class="sc">{</span><span class="bu">int</span>(game.timer)<span class="sc">}</span><span class="ss">"</span>  <span class="co"># timer as a string, decimals dropped (whole number)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>game.timer</code> only counts while the game is <code>"playing"</code>.</p>
 </section>
 <section id="game-states" class="level2">
 <h2 class="anchored" data-anchor-id="game-states">Game states</h2>
@@ -599,35 +620,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>"paused"</code></td>
-<td>Not used presently in our games, but could be useful in the future!</td>
+<td>The game is paused. Set with <code>game.pause()</code>.</td>
 </tr>
 </tbody>
 </table>
 <p>You can add your own states! Just set <code>game.state</code> equal to any string. You define the value, check it elsewhere in your code, and implement what happens in that state. Other useful states could be <code>"menu"</code> or <code>"credits"</code>.</p>
 </section>
-<section id="checking-and-changing-state" class="level2">
-<h2 class="anchored" data-anchor-id="checking-and-changing-state">Checking and changing state</h2>
+<section id="checking-the-state" class="level2">
+<h2 class="anchored" data-anchor-id="checking-the-state">Checking the state</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"playing"</span>:  <span class="co"># run code only when the game is active</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> game.state <span class="op">!=</span> <span class="st">"won"</span>:  <span class="co"># run code only when the game was not won</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ending-the-game" class="level2">
+<h2 class="anchored" data-anchor-id="ending-the-game">Ending the game</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># each one also cancels everything scheduled on the clock</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>game.win()  <span class="co"># sets game.state to "won"</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>game.lose()  <span class="co"># sets game.state to "lost"</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>game.over()  <span class="co"># sets game.state to "over"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Adding a number restarts the game after that many seconds, by resetting <code>game</code> and running <code>start()</code> again:</p>
+<p>Adding a number restarts the game after that many seconds:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>game.win(<span class="fl">2.5</span>)  <span class="co"># like game.win(), then restart after 2.5 seconds</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>game.lose(<span class="dv">3</span>)  <span class="co"># like game.lose(), then restart after 3 seconds</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>game.over(<span class="dv">5</span>)  <span class="co"># like game.over(), then restart after 5 seconds</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These only work while <code>game.state</code> is <code>"playing"</code>. Once the game has ended, extra calls are ignored, so it’s safe to call them from <code>update()</code> every frame.</p>
 </section>
-<section id="reset-pause-and-resume" class="level2">
-<h2 class="anchored" data-anchor-id="reset-pause-and-resume">Reset, pause and resume</h2>
+<section id="restarting-right-now" class="level2">
+<h2 class="anchored" data-anchor-id="restarting-right-now">Restarting right now</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>game.restart()  <span class="co"># starts a new game right away, from any state</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Use this when the player presses a key to play again. It resets <code>game.state</code>, <code>game.score</code>, <code>game.level</code> and <code>game.timer</code>, then runs <code>start()</code> again.</p>
+</section>
+<section id="pause-and-resume" class="level2">
+<h2 class="anchored" data-anchor-id="pause-and-resume">Pause and resume</h2>
 <p>While paused, <code>game.timer</code> and Sprite animations stop, but <code>update()</code> and the clock keep running.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>game.reset()  <span class="co"># resets state, score, level, timer and frame_count</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>game.pause()  <span class="co"># sets game.state to "paused"</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>game.resume()  <span class="co"># sets game.state back to "playing"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="example-game-state-in-a-game" class="level2">
 <h2 class="anchored" data-anchor-id="example-game-state-in-a-game">Example: game state in a game</h2>
-<p><code>start()</code> is called automatically at the beginning. It resets the game and initializes values. <code>draw()</code> uses <code>game.state</code> to decide what to draw. <code>update()</code> returns right away unless the game is <code>"playing"</code>, then calls <code>game.lose()</code> or <code>game.win()</code> when the player hits the enemy or the key.</p>
+<p><code>start()</code> runs automatically when the game begins and again every time it restarts. <code>draw()</code> uses <code>game.state</code> to decide what to draw. <code>update()</code> returns right away unless the game is <code>"playing"</code>, then calls <code>game.lose()</code> or <code>game.win()</code> when the player hits the enemy or the key.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> start():  <span class="co"># runs at the beginning and again on every restart</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    player.pos <span class="op">=</span> (<span class="dv">200</span>, <span class="dv">200</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    enemy.pos <span class="op">=</span> (<span class="dv">400</span>, <span class="dv">400</span>)</span>

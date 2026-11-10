@@ -213,7 +213,7 @@
 <section id="hitbox" class="slide level2">
 <h2>Hitbox</h2>
 <p>Per Wikipedia, “A hitbox is an invisible shape commonly used in video games for real-time collision detection. It is often a rectangle or cuboid that is attached to and follows a visible object, though circular or spheroidal shapes are also common.”</p>
-<p>In Pygame, we have a rectangular hitbox around an Actor’s image.</p>
+<p>In Pygame, we have a rectangular hitbox around an Actor’s image, including any transparent space.</p>
 
 <img data-src="media/hitbox.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"></section>
 <section id="detecting-collisions" class="slide level2">
@@ -227,7 +227,7 @@
 <span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>monster <span class="op">=</span> Actor(<span class="st">"monster"</span>)</span>
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> unicorn.colliderect(monster):</span>
-<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>    <span class="co"># game over</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>    game.lose()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="detecting-collisions-with-multiple-actors" class="slide level2">
 <h2>Detecting Collisions with Multiple Actors</h2>
@@ -239,6 +239,18 @@
 <span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a>    player.health <span class="op">-=</span> <span class="dv">1</span></span>
 <span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> player.colliderect(coin):  <span class="co"># collision with coin</span></span>
 <span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>    player.money <span class="op">+=</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="collisions-are-checked-every-frame" class="slide level2">
+<h2>Collisions Are Checked Every Frame</h2>
+<ul>
+<li><code>update()</code> runs about 60 times per second.</li>
+<li>If two Actors stay overlapped, <code>colliderect()</code> is <code>True</code> <strong>every frame</strong>.</li>
+<li>Collect a coin and leave it there? <code>player.money += 1</code> runs 60 times a second!</li>
+<li>Fix: move the coin (or the enemy) away right after the collision.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> player.colliderect(coin):</span>
+<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a>    player.money <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a>    coin.x <span class="op">=</span> random.randint(<span class="dv">20</span>, WIDTH <span class="op">-</span> <span class="dv">20</span>)  <span class="co"># move it so it's only collected once</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section></section>
 <section>
 <section id="game-state" class="title-slide slide level1 center">
@@ -254,24 +266,25 @@
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Instead of lots of globals:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a>timer <span class="op">=</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-2"><a aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-3"><a aria-hidden="true" tabindex="-1"></a>timer <span class="op">=</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
 <p>Use:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>game.score <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-2"><a aria-hidden="true" tabindex="-1"></a>game.level <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb4-3"><a aria-hidden="true" tabindex="-1"></a>game.timer <span class="op">=</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>game.score <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>game.level <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>game.timer <span class="op">=</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="game" class="slide level2">
 <h2><code>game</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>game  <span class="co"># object that stores information about the game's state</span></span>
-<span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>game.state  <span class="co"># str: "playing", "won", "lost", "over" or "paused"</span></span>
-<span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>game.score  <span class="co"># int: starts at 0. Update it in your code.</span></span>
-<span id="cb5-4"><a aria-hidden="true" tabindex="-1"></a>game.level  <span class="co"># int: starts at 1. Update it in your code.</span></span>
-<span id="cb5-5"><a aria-hidden="true" tabindex="-1"></a>game.timer  <span class="co"># float: seconds since game started. Auto-updates.</span></span>
-<span id="cb5-6"><a aria-hidden="true" tabindex="-1"></a>game.frame_count  <span class="co"># int: frames since game started. Auto-updates.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a>game  <span class="co"># object that stores information about the game's state</span></span>
+<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a>game.state  <span class="co"># str: "playing", "won", "lost", "over" or "paused"</span></span>
+<span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a>game.score  <span class="co"># int: starts at 0. Update it in your code.</span></span>
+<span id="cb6-4"><a aria-hidden="true" tabindex="-1"></a>game.level  <span class="co"># int: starts at 1. Update it in your code.</span></span>
+<span id="cb6-5"><a aria-hidden="true" tabindex="-1"></a>game.timer  <span class="co"># float: seconds since game started. Auto-updates.</span></span>
+<span id="cb6-6"><a aria-hidden="true" tabindex="-1"></a>game.frame_count  <span class="co"># int: frames since game started. Auto-updates.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>game.timer</code> only counts while the game is <code>"playing"</code>.</p>
 </section>
 <section id="what-is-game-state" class="slide level2">
 <h2>What is Game State</h2>
@@ -283,31 +296,63 @@
 <li><code>"paused"</code> → temporarily stopped</li>
 </ul>
 <p>Check using:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"playing"</span>:</span>
-<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a>    player.x <span class="op">+=</span> <span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"playing"</span>:</span>
+<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>    player.x <span class="op">+=</span> <span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Update using: <code>game.win()</code>, <code>game.lose()</code>, <code>game.over()</code>, etc.</p>
 </section>
-<section id="changing-state-ending-a-game" class="slide level2">
-<h2>Changing State / Ending a Game</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># each one also cancels everything scheduled on the clock</span></span>
-<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>game.win()  <span class="co"># sets game.state to "won"</span></span>
-<span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a>game.lose()  <span class="co"># sets game.state to "lost"</span></span>
-<span id="cb7-4"><a aria-hidden="true" tabindex="-1"></a>game.over()  <span class="co"># sets game.state to "over"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a>game.pause()  <span class="co"># sets game.state to "paused"</span></span>
-<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a>game.resume()  <span class="co"># sets game.state back to "playing"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="ending-a-game" class="slide level2">
+<h2>Ending a Game</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># each one also cancels everything scheduled on the clock</span></span>
+<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a>game.win()  <span class="co"># sets game.state to "won"</span></span>
+<span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a>game.lose()  <span class="co"># sets game.state to "lost"</span></span>
+<span id="cb8-4"><a aria-hidden="true" tabindex="-1"></a>game.over()  <span class="co"># sets game.state to "over"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Changes <code>game.state</code> to <code>"won"</code>, <code>"lost"</code> or <code>"over"</code> and clears the clock.</li>
+<li>These only work while <code>game.state</code> is <code>"playing"</code>. Once the game has ended, extra calls are ignored.</li>
+</ul>
+</section>
+<section id="pausing-a-game" class="slide level2">
+<h2>Pausing a Game</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a>game.pause()  <span class="co"># sets game.state to "paused"</span></span>
+<span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a>game.resume()  <span class="co"># sets game.state back to "playing"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>While paused, <code>game.timer</code> and Sprite animations stop, but <code>update()</code> and the clock keep running.</p>
 </section>
-<section id="restarting-a-game" class="slide level2">
-<h2>Restarting a Game</h2>
-<p>Instead of ending, we can restart a game by adding a number!</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a>game.win(<span class="fl">2.5</span>)  <span class="co"># like game.win(), then restart after 2.5 seconds</span></span>
-<span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a>game.lose(<span class="dv">3</span>)  <span class="co"># like game.lose(), then restart after 3 seconds</span></span>
-<span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a>game.over(<span class="dv">5</span>)  <span class="co"># like game.over(), then restart after 5 seconds</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="ending-and-restarting" class="slide level2">
+<h2>Ending and Restarting</h2>
+<p>Add a number to restart the game after that many seconds:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a>game.win(<span class="fl">2.5</span>)  <span class="co"># like game.win(), then restart after 2.5 seconds</span></span>
+<span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a>game.lose(<span class="dv">3</span>)  <span class="co"># like game.lose(), then restart after 3 seconds</span></span>
+<span id="cb10-3"><a aria-hidden="true" tabindex="-1"></a>game.over(<span class="dv">5</span>)  <span class="co"># like game.over(), then restart after 5 seconds</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li>Everything listed before still happens right away: changes <code>game.state</code> to <code>"won"</code>, <code>"lost"</code> or <code>"over"</code> and clears the clock.</li>
-<li>Then, after that many seconds, it restarts the game: resets <code>game</code> (score 0, level 1, timer 0, state <code>"playing"</code>) and runs the <code>start()</code> function again.</li>
+<li>Everything from before still happens right away: changes <code>game.state</code> and clears the clock.</li>
+<li>After that many seconds, the game restarts:
+<ul>
+<li><code>game</code> is reset: score 0, level 1, timer 0, state <code>"playing"</code>.</li>
+<li>Your <code>start()</code> function runs again.</li>
+</ul></li>
 </ul>
-<p><strong>Note:</strong> these do not execute unless <code>game.state</code> is <code>"playing"</code> when they are called. They are skipped otherwise, to prevent multiple restarts from being scheduled when called repeatedly in <code>update()</code>.</p>
+<p><strong>Note:</strong> because these are skipped unless <code>game.state</code> is <code>"playing"</code>, it’s safe to call them in <code>update()</code> every frame. Only the first call schedules a restart.</p>
+</section>
+<section id="restarting-right-now" class="slide level2">
+<h2>Restarting Right Now</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a>game.restart()  <span class="co"># starts a new game right away, from any state</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Use it when the player presses a key to play again.</li>
+<li>Does the same reset as above: resets <code>game</code>, then runs <code>start()</code> again.</li>
+</ul>
+<p><strong>The rule:</strong> <code>win()</code>, <code>lose()</code> or <code>over()</code> to <strong>end</strong> the game. <code>restart()</code> to <strong>start a new one</strong>.</p>
+</section>
+<section id="what-goes-in-start" class="slide level2">
+<h2>What Goes in <code>start()</code>?</h2>
+<ul>
+<li><code>start()</code> runs when the game begins <strong>and again on every restart</strong>.</li>
+<li>Restarting only resets the values inside <code>game</code>. Everything else is up to <code>start()</code>.</li>
+<li>Put everything a fresh game needs in <code>start()</code>: Actor positions <strong>and</strong> your own variables.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> start():</span>
+<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a>    player.pos <span class="op">=</span> (<span class="dv">200</span>, <span class="dv">200</span>)</span>
+<span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a>    enemy.pos <span class="op">=</span> (<span class="dv">400</span>, <span class="dv">400</span>)</span>
+<span id="cb12-4"><a aria-hidden="true" tabindex="-1"></a>    player.lives <span class="op">=</span> <span class="dv">3</span>  <span class="co"># set here, not at the top of the file!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="heads-up-display-hud" class="slide level2">
 <h2>Heads-Up Display (HUD)</h2>
@@ -317,48 +362,48 @@
 <li>HUD elements are drawn on top of the game, at the end of <code>draw()</code>.</li>
 </ul>
 <div style="font-size: 0.9em">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw():</span>
-<span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a>    screen.clear()</span>
-<span id="cb10-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... draw the actors and scene here, then the HUD on top</span></span>
-<span id="cb10-4"><a aria-hidden="true" tabindex="-1"></a>    screen.draw.text(<span class="ss">f"Score: </span><span class="sc">{</span>game<span class="sc">.</span>score<span class="sc">}</span><span class="ss">"</span>, midleft<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">20</span>))</span>
-<span id="cb10-5"><a aria-hidden="true" tabindex="-1"></a>    screen.draw.text(<span class="ss">f"Time: </span><span class="sc">{</span><span class="bu">int</span>(game.timer)<span class="sc">}</span><span class="ss">"</span>, center<span class="op">=</span>(WIDTH <span class="op">//</span> <span class="dv">2</span>, <span class="dv">20</span>))</span>
-<span id="cb10-6"><a aria-hidden="true" tabindex="-1"></a>    screen.draw.text(<span class="ss">f"Level: </span><span class="sc">{</span>game<span class="sc">.</span>level<span class="sc">}</span><span class="ss">"</span>, midright<span class="op">=</span>(WIDTH <span class="op">-</span> <span class="dv">20</span>, <span class="dv">20</span>))</span>
-<span id="cb10-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"lost"</span>:</span>
-<span id="cb10-8"><a aria-hidden="true" tabindex="-1"></a>        screen.draw.text(<span class="st">"Game over!"</span>, center<span class="op">=</span>(WIDTH <span class="op">//</span> <span class="dv">2</span>, HEIGHT <span class="op">//</span> <span class="dv">2</span>))</span>
-<span id="cb10-9"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"won"</span>:</span>
-<span id="cb10-10"><a aria-hidden="true" tabindex="-1"></a>        screen.draw.text(<span class="st">"You won!"</span>, center<span class="op">=</span>(WIDTH <span class="op">//</span> <span class="dv">2</span>, HEIGHT <span class="op">//</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw():</span>
+<span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a>    screen.clear()</span>
+<span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... draw the actors and scene here, then the HUD on top</span></span>
+<span id="cb13-4"><a aria-hidden="true" tabindex="-1"></a>    screen.draw.text(<span class="ss">f"Score: </span><span class="sc">{</span>game<span class="sc">.</span>score<span class="sc">}</span><span class="ss">"</span>, midleft<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">20</span>))</span>
+<span id="cb13-5"><a aria-hidden="true" tabindex="-1"></a>    screen.draw.text(<span class="ss">f"Time: </span><span class="sc">{</span><span class="bu">int</span>(game.timer)<span class="sc">}</span><span class="ss">"</span>, center<span class="op">=</span>(WIDTH <span class="op">//</span> <span class="dv">2</span>, <span class="dv">20</span>))</span>
+<span id="cb13-6"><a aria-hidden="true" tabindex="-1"></a>    screen.draw.text(<span class="ss">f"Level: </span><span class="sc">{</span>game<span class="sc">.</span>level<span class="sc">}</span><span class="ss">"</span>, midright<span class="op">=</span>(WIDTH <span class="op">-</span> <span class="dv">20</span>, <span class="dv">20</span>))</span>
+<span id="cb13-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"lost"</span>:</span>
+<span id="cb13-8"><a aria-hidden="true" tabindex="-1"></a>        screen.draw.text(<span class="st">"Game over!"</span>, center<span class="op">=</span>(WIDTH <span class="op">//</span> <span class="dv">2</span>, HEIGHT <span class="op">//</span> <span class="dv">2</span>))</span>
+<span id="cb13-9"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"won"</span>:</span>
+<span id="cb13-10"><a aria-hidden="true" tabindex="-1"></a>        screen.draw.text(<span class="st">"You won!"</span>, center<span class="op">=</span>(WIDTH <span class="op">//</span> <span class="dv">2</span>, HEIGHT <span class="op">//</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="example" class="slide level2">
 <h2>Example</h2>
 <p>Check state in <code>draw()</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> start():  <span class="co"># runs at the beginning and again on every restart</span></span>
-<span id="cb11-2"><a aria-hidden="true" tabindex="-1"></a>    player.pos <span class="op">=</span> (<span class="dv">200</span>, <span class="dv">200</span>)</span>
-<span id="cb11-3"><a aria-hidden="true" tabindex="-1"></a>    enemy.pos <span class="op">=</span> (<span class="dv">400</span>, <span class="dv">400</span>)</span>
-<span id="cb11-4"><a aria-hidden="true" tabindex="-1"></a>    key.pos <span class="op">=</span> (<span class="dv">450</span>, <span class="dv">200</span>)  <span class="co"># reach the key to win</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw():</span>
-<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a>    screen.clear()</span>
-<span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a>    key.draw()</span>
-<span id="cb12-4"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">!=</span> <span class="st">"lost"</span>:  <span class="co"># draw player if "playing" or "won"</span></span>
-<span id="cb12-5"><a aria-hidden="true" tabindex="-1"></a>        player.draw()</span>
-<span id="cb12-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">!=</span> <span class="st">"won"</span>:  <span class="co"># draw enemy if "playing" or "lost"</span></span>
-<span id="cb12-7"><a aria-hidden="true" tabindex="-1"></a>        enemy.draw()</span>
-<span id="cb12-8"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"won"</span>:</span>
-<span id="cb12-9"><a aria-hidden="true" tabindex="-1"></a>        screen.draw.text(<span class="st">"You won!"</span>, midtop<span class="op">=</span>(<span class="dv">250</span>, <span class="dv">20</span>))</span>
-<span id="cb12-10"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"lost"</span>:</span>
-<span id="cb12-11"><a aria-hidden="true" tabindex="-1"></a>        screen.draw.text(<span class="st">"Game over"</span>, midtop<span class="op">=</span>(<span class="dv">250</span>, <span class="dv">20</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> start():  <span class="co"># runs at the beginning and again on every restart</span></span>
+<span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a>    player.pos <span class="op">=</span> (<span class="dv">200</span>, <span class="dv">200</span>)</span>
+<span id="cb14-3"><a aria-hidden="true" tabindex="-1"></a>    enemy.pos <span class="op">=</span> (<span class="dv">400</span>, <span class="dv">400</span>)</span>
+<span id="cb14-4"><a aria-hidden="true" tabindex="-1"></a>    key.pos <span class="op">=</span> (<span class="dv">450</span>, <span class="dv">200</span>)  <span class="co"># reach the key to win</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw():</span>
+<span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a>    screen.clear()</span>
+<span id="cb15-3"><a aria-hidden="true" tabindex="-1"></a>    key.draw()</span>
+<span id="cb15-4"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">!=</span> <span class="st">"lost"</span>:  <span class="co"># draw player if "playing" or "won"</span></span>
+<span id="cb15-5"><a aria-hidden="true" tabindex="-1"></a>        player.draw()</span>
+<span id="cb15-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">!=</span> <span class="st">"won"</span>:  <span class="co"># draw enemy if "playing" or "lost"</span></span>
+<span id="cb15-7"><a aria-hidden="true" tabindex="-1"></a>        enemy.draw()</span>
+<span id="cb15-8"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"won"</span>:</span>
+<span id="cb15-9"><a aria-hidden="true" tabindex="-1"></a>        screen.draw.text(<span class="st">"You won!"</span>, midtop<span class="op">=</span>(<span class="dv">250</span>, <span class="dv">20</span>))</span>
+<span id="cb15-10"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">==</span> <span class="st">"lost"</span>:</span>
+<span id="cb15-11"><a aria-hidden="true" tabindex="-1"></a>        screen.draw.text(<span class="st">"Game over"</span>, midtop<span class="op">=</span>(<span class="dv">250</span>, <span class="dv">20</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="example-continued" class="slide level2">
 <h2>Example (continued)</h2>
 <p>The first 2 lines prevent the rest of <code>update()</code> from running by returning if <code>game.state</code> is not <code>"playing"</code>. Change state and trigger a restart with <code>game.lose()</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update():</span>
-<span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">!=</span> <span class="st">"playing"</span>:  <span class="co"># not playing: skip the rest</span></span>
-<span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
-<span id="cb13-4"><a aria-hidden="true" tabindex="-1"></a>    player.x <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb13-5"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> player.colliderect(enemy):</span>
-<span id="cb13-6"><a aria-hidden="true" tabindex="-1"></a>        game.lose(<span class="dv">5</span>)  <span class="co"># "lost", then restart after 5 seconds</span></span>
-<span id="cb13-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> player.colliderect(key):</span>
-<span id="cb13-8"><a aria-hidden="true" tabindex="-1"></a>        game.win(<span class="dv">3</span>)  <span class="co"># "won", then restart after 3 seconds</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update():</span>
+<span id="cb16-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> game.state <span class="op">!=</span> <span class="st">"playing"</span>:  <span class="co"># not playing: skip the rest</span></span>
+<span id="cb16-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb16-4"><a aria-hidden="true" tabindex="-1"></a>    player.x <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb16-5"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> player.colliderect(enemy):</span>
+<span id="cb16-6"><a aria-hidden="true" tabindex="-1"></a>        game.lose(<span class="dv">5</span>)  <span class="co"># "lost", then restart after 5 seconds</span></span>
+<span id="cb16-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> player.colliderect(key):</span>
+<span id="cb16-8"><a aria-hidden="true" tabindex="-1"></a>        game.win(<span class="dv">3</span>)  <span class="co"># "won", then restart after 3 seconds</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section></section>
