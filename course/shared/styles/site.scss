@@ -1,0 +1,15 @@
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+
+// darkly gives code a near-white background, and Quarto only darkens it for
+// code in paragraphs, lists and tables. So code in a heading (e.g.
+// "Scrolling: `level.x`") keeps the near-white box with the heading's white
+// text on it. Let it take the heading's own color, with no background box.
+h1, h2, h3, h4, h5, h6 {
+  code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+  }
+}

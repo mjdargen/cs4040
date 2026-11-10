@@ -470,8 +470,8 @@ you expect isn't listed, check `git check-ignore -v <file>`.
 ## Themes
 
 Set once in `_quarto.yml` for everything: slides use reveal.js `dracula` plus
-`course/shared/styles/slides.scss`; the website uses `flatly` (light) and
-`darkly` (dark), a matched pair that follows the student's light/dark setting;
+`course/shared/styles/slides.scss`; the website uses `darkly` only, plus
+`course/shared/styles/site.scss` (one fix: readable code in headings);
 the PDF cheat sheets stay light for printing
 (`course/shared/styles/cheatsheet.typ`). To try another theme, change the name
 and re-render (slides: `dark`, `night`, `moon`, `league`, `blood`…; website:

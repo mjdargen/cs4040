@@ -71,10 +71,7 @@ format:
     code-line-numbers: false
     preview-links: auto
   html:
-    theme:
-      light: flatly   # flatly and darkly are a matched pair (same Lato font and layout)
-      dark: darkly
-    respect-user-color-scheme: true # follow the student's light/dark setting
+    theme: [darkly, course/shared/styles/site.scss]  # dark only; site.scss fixes code in headings
     code-copy: true
     toc: true
     format-links: false

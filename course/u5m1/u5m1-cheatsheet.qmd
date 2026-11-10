@@ -5,6 +5,7 @@ format:
   html:
     toc: true
     toc-depth: 2
+    toc-expand: 1   # show the sections; the one you're reading opens up
   typst: default
 ---
 
@@ -12,11 +13,13 @@ format:
 Every code block has a copy button (top right). [Download the printable PDF](u5m1-cheatsheet.pdf).
 :::
 
-## Assets
+# Assets
 
 {{< include /course/shared/concepts/_asset-rules.qmd >}}
 
 This module adds two more folders: keep your spritesheets in `sprites`, and your tilemaps, tilesets, and tilesheets in `maps`.
+
+# Actors
 
 ## Actor extensions
 
@@ -40,7 +43,9 @@ In `draw()`:
 ```{.python include="code/actor_extensions.py" snippet="debug_rect" dedent=4}
 ```
 
-## Sprites
+# Sprites
+
+## What is a Sprite?
 
 A `Sprite` is one animation: its frames, how fast to play them, and whether to loop. Give an Actor a Sprite instead of an image name, and it plays the animation by itself. [Docs: Sprite Animations]({{< var pgzero.docs >}}/builtins.html#sprite-animations)
 
@@ -77,6 +82,8 @@ Give the Actor a Sprite when you make it. Set `actor.sprite` to switch animation
 
 Use `actor.sprite` for Sprites and `actor.image` for image names. Whichever you set last is what the Actor shows.
 
+# Advanced Sprites
+
 ## Playing once: `loop=False`, `animation_finished`
 
 A Sprite made with `loop=False` stops on its last frame. `animation_finished` is `True` once it has, so you can go back to another animation. `fox.sprite == hurt` checks which animation is playing.
@@ -97,9 +104,11 @@ A Sprite made with `loop=False` stops on its last frame. `animation_finished` is
 
 Setting `fox.frame` jumps to that frame. While the whole game is paused with `game.pause()`, every Actor holds its frame.
 
-## Fullscreen
+# Fullscreen
 
 {{< include concepts/_fullscreen.qmd >}}
+
+# Tile Maps
 
 ## Tilesheets, tilesets, and tilemaps
 
@@ -136,6 +145,8 @@ Draws every layer in Tiled's layer order, from the bottom of Tiled's **Layers** 
 
 Layers hidden in Tiled aren't drawn, but still collide. Hide or show a layer in code with `hazards.visible = False` or `True`.
 
+# Tile Map Collisions
+
 ## Wall collisions
 
 Example of how to handle collisions with walls. Repeat the same steps for movement in each cardinal direction, putting the edge you moved against back on the wall.
@@ -154,6 +165,8 @@ Example of how to handle collisions with walls. Repeat the same steps for moveme
 
 ```{.python include="code/rabbit_game.py" snippet="hazard" dedent=4}
 ```
+
+# Changing the Map with Code
 
 ## Creating tiles: `level.create_tile()`
 
@@ -218,6 +231,8 @@ For a map bigger than the screen, keep the player in the middle and move the map
 
 ```{.python include="code/scrolling_map.py" snippet="scroll"}
 ```
+
+# What Goes Where
 
 ## What the map can do: `level`
 
