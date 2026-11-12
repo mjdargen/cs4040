@@ -9,6 +9,7 @@
 /exp_*.py
 /p[0-9]*.py
 /project[0-9]*.py
+/kc*.py
 /topdown*.py
 /platformer*.py
 depr_*.*
