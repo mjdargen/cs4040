@@ -12,11 +12,13 @@ git doesn't need to be installed.
 """
 
 import argparse
+import importlib
 import io
 import os
 import re
 import shutil
 import site
+import ssl
 import subprocess
 import sys
 import sysconfig
@@ -127,14 +129,95 @@ def check_not_the_repository():
 # Downloading
 
 
+# The certificate check that worked, once Python's own check has failed
+_ssl_context = None
+
+
 def download(url):
     """Return the contents of url as bytes."""
+    global _ssl_context
     print("Downloading {}...".format(url))
     try:
-        with urllib.request.urlopen(url, timeout=60) as response:
-            return response.read()
+        return fetch(url, _ssl_context)
     except OSError as error:
-        sys.exit("Error: couldn't download {}: {}".format(url, error))
+        if _ssl_context is not None or not is_certificate_error(error):
+            sys.exit(download_error(url, error))
+        first_error = error
+
+    # Python checks certificates with its own list, not the computer's. Some
+    # networks send certificates that browsers accept but Python doesn't (e.g.
+    # with a link in the chain missing), so try the computer's check instead.
+    print("Python couldn't verify the connection, so trying your computer's own certificate check...")
+    for context in fallback_ssl_contexts():
+        try:
+            data = fetch(url, context)
+        except OSError as error:
+            if not is_certificate_error(error):
+                sys.exit(download_error(url, error))
+            continue
+        _ssl_context = context
+        return data
+    sys.exit(download_error(url, first_error))
+
+
+def fetch(url, context=None):
+    with urllib.request.urlopen(url, timeout=60, context=context) as response:
+        return response.read()
+
+
+def fallback_ssl_contexts():
+    """Other ways to check certificates. Each still checks them; none skips it."""
+    if sys.version_info >= (3, 10):
+        truststore = import_or_install("truststore")
+        if truststore:
+            # Asks Windows or macOS, like a web browser does
+            yield truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    # Up-to-date list of certificates, for Pythons that have none (e.g. from
+    # python.org on macOS, before running Install Certificates.command)
+    certifi = import_or_install("certifi")
+    if certifi:
+        yield ssl.create_default_context(cafile=certifi.where())
+
+
+def import_or_install(package):
+    """Import package, installing it with pip first if needed. None if that fails."""
+    try:
+        return importlib.import_module(package)
+    except ImportError:
+        pass
+    print("Installing {}...".format(package))
+    if not pip("install", "--quiet", package, check=False):
+        return None
+    importlib.invalidate_caches()
+    # Python only looks in the folder pip installs to if it existed at startup
+    if str(site_packages()) not in sys.path:
+        site.addsitedir(str(site_packages()))
+    try:
+        return importlib.import_module(package)
+    except ImportError:
+        return None
+
+
+def is_certificate_error(error):
+    reason = getattr(error, "reason", error)  # urllib wraps the SSL error
+    if isinstance(reason, getattr(ssl, "SSLCertVerificationError", ())):
+        return True
+    return isinstance(reason, ssl.SSLError) and "CERTIFICATE_VERIFY_FAILED" in str(reason)  # Python 3.6
+
+
+def download_error(url, error):
+    message = "Error: couldn't download {}: {}".format(url, error)
+    if is_certificate_error(error):
+        message += (
+            "\nPython couldn't confirm it was really talking to GitHub. The network may be "
+            "interfering with secure connections: try another network, e.g. a phone hotspot."
+        )
+        if sys.platform == "darwin":
+            message += (
+                " If you installed Python from python.org, also run Install Certificates.command "
+                "in the Python folder in Applications."
+            )
+    return message
 
 
 def download_zip(url, into):
