@@ -22,24 +22,39 @@ Every tileset is a matching `.png` and `.tsx` pair named
 - **theme** names the asset pack. Each pack is one tileset: all of its sheets are packed into a single image, with duplicate sheets removed.
 - **author** is the artist to credit. It tells you which entry in [Asset credits](#asset-credits) to cite.
 
-To use a tileset in Tiled, choose **Map > Add External Tileset...** and pick its `.tsx` file. Set the map's tile size to match the tileset's (the **Tile size** column below), and don't mix tile sizes within one map.
+To use a tileset in Tiled, choose **Map > Add External Tileset...** and pick its `.tsx` file. Set the map's tile size to match the tileset's (the **Tile width** and **Tile height** columns below), and don't mix tile sizes within one map.
 
 ## Platformer tilesets
 
-Kenney: `platformer_1bit_kenney` (16×16), `platformer_abstract_kenney` (64×64), `platformer_farm_kenney` (18×18), `platformer_food_kenney` (18×18), `platformer_industrial_kenney` (18×18), `platformer_new_kenney` (64×64), `platformer_pico8_kenney` (8×8), `platformer_pixel_kenney` (18×18)
+| Tileset | Tile width | Tile height | Grid (cols × rows) | Image size | Notes |
+|---|---|---|---|---|---|
+| `platformer_1bit_kenney` | 16 px | 16 px | 20 × 20 | 320 × 320 | |
+| `platformer_abstract_kenney` | 64 px | 64 px | 22 × 12 | 1408 × 768 | |
+| `platformer_farm_kenney` | 18 px | 18 px | 16 × 7 | 288 × 126 | |
+| `platformer_food_kenney` | 18 px | 18 px | 16 × 7 | 288 × 126 | |
+| `platformer_fourseasons_rottingpixels` | 16 px | 16 px | 16 × 16 | 256 × 256 | |
+| `platformer_grassland_shackhal` | 16 px | 16 px | 16 × 17 | 256 × 272 | |
+| `platformer_industrial_kenney` | 18 px | 18 px | 16 × 7 | 288 × 126 | |
+| `platformer_new_kenney` | 64 px | 64 px | 18 × 18 | 1169 × 1169 | 1 px spacing between tiles |
+| `platformer_pico8_kenney` | 8 px | 8 px | 15 × 10 | 120 × 80 | |
+| `platformer_pixel_kenney` | 18 px | 18 px | 20 × 9 | 360 × 162 | |
 
-| Tileset | Tile size | Grid (columns × rows) | Contents | Source pack |
-|---|---|---|---|---|
-| `platformer_fourseasons_rottingpixels` | 16x16 | 16 × 16 | Ground blocks in four seasonal palettes, ? and ! blocks, trees, mushrooms, ladders, signs, water and lava | [Four Seasons Platformer Tileset](https://rottingpixels.itch.io/four-seasons-platformer-tileset-16x16free) |
-| `platformer_grassland_shackhal` | 16x16 | 16 × 17 | Whole GrassLand set: 47-tile grass terrain, background cave walls, floating islands, bridges, water, a large tree, bushes, rocks, flowers, cave doorways | [Multi Platformer Tileset](https://shackhal.itch.io/multi-platformer-tileset) |
+- **`platformer_fourseasons_rottingpixels`** ([Four Seasons Platformer Tileset](https://rottingpixels.itch.io/four-seasons-platformer-tileset-16x16free)): ground blocks in four seasonal palettes, ? and ! blocks, trees, mushrooms, ladders, signs, water and lava.
+- **`platformer_grassland_shackhal`** ([Multi Platformer Tileset](https://shackhal.itch.io/multi-platformer-tileset)): the whole GrassLand set: 47-tile grass terrain, background cave walls, floating islands, bridges, water, a large tree, bushes, rocks, flowers, cave doorways.
 
 ## Top-down tilesets
 
-Kenney: `topdown_dungeon_kenney` (16×16), `topdown_factory_kenney` (16×16), `topdown_farm_kenney` (16×16), `topdown_pico8_kenney` (8×8), `topdown_ski_kenney` (16×16), `topdown_town_kenney` (16×16)
+| Tileset | Tile width | Tile height | Grid (cols × rows) | Image size | Notes |
+|---|---|---|---|---|---|
+| `topdown_dungeon_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
+| `topdown_factory_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
+| `topdown_farm_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
+| `topdown_ninja_pixelboy` | 16 px | 16 px | 80 × 107 | 1280 × 1712 | |
+| `topdown_pico8_kenney` | 8 px | 8 px | 24 × 15 | 192 × 120 | |
+| `topdown_ski_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
+| `topdown_town_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
 
-| Tileset | Tile size | Grid (columns × rows) | Contents | Source pack |
-|---|---|---|---|---|
-| `topdown_ninja_pixelboy` | 16x16 | 80 × 107 | Whole Ninja Adventure tileset collection (22 sheets): ground and paths, water and shores, cliffs, holes, desert, abandoned village, houses and shops, towers, trees and rocks, camp, furniture, beds, indoor walls and floors, dungeon puzzle objects, pipes, and colored logic markers | [Ninja Adventure](https://pixel-boy.itch.io/ninja-adventure-asset-pack) |
+- **`topdown_ninja_pixelboy`** ([Ninja Adventure](https://pixel-boy.itch.io/ninja-adventure-asset-pack)): the whole Ninja Adventure tileset collection (22 sheets): ground and paths, water and shores, cliffs, holes, desert, abandoned village, houses and shops, towers, trees and rocks, camp, furniture, beds, indoor walls and floors, dungeon puzzle objects, pipes, and colored logic markers.
 
 ## Asset credits
 
