@@ -5,9 +5,9 @@ format: html
 
 | Module | Slides | Cheat sheet |
 |---|---|---|
-| U3M1 · Pygame Zero Basics | [slides](course/u3m1/u3m1-slides.qmd) | [web](course/u3m1/u3m1-cheatsheet.qmd) · [PDF](course/u3m1/u3m1-cheatsheet.pdf) |
-| U3M2 · Event-Driven Programming | [slides](course/u3m2/u3m2-slides.qmd) | [web](course/u3m2/u3m2-cheatsheet.qmd) · [PDF](course/u3m2/u3m2-cheatsheet.pdf) |
-| U3M3 · Collisions & Game State | [slides](course/u3m3/u3m3-slides.qmd) | [web](course/u3m3/u3m3-cheatsheet.qmd) · [PDF](course/u3m3/u3m3-cheatsheet.pdf) |
-| U4M1 · Lists & Loops | [slides](course/u4m1/u4m1-slides.qmd) | [web](course/u4m1/u4m1-cheatsheet.qmd) · [PDF](course/u4m1/u4m1-cheatsheet.pdf) |
-| U4M2 · Sounds & Music | [slides](course/u4m2/u4m2-slides.qmd) | [web](course/u4m2/u4m2-cheatsheet.qmd) · [PDF](course/u4m2/u4m2-cheatsheet.pdf) |
-| U5M1 · Advanced Pygame Zero | [slides](course/u5m1/u5m1-slides.qmd) | [web](course/u5m1/u5m1-cheatsheet.qmd) · [PDF](course/u5m1/u5m1-cheatsheet.pdf) |
+| Unit 3 Module 1 · Pygame Zero Basics | [slides](course/u3m1/u3m1-slides.qmd) | [cheat sheet](course/u3m1/u3m1-cheatsheet.qmd) |
+| Unit 3 Module 2 · Event-Driven Programming | [slides](course/u3m2/u3m2-slides.qmd) | [cheat sheet](course/u3m2/u3m2-cheatsheet.qmd) |
+| Unit 3 Module 3 · Collisions & Game State | [slides](course/u3m3/u3m3-slides.qmd) | [cheat sheet](course/u3m3/u3m3-cheatsheet.qmd) |
+| Unit 4 Module 1 · Lists & Loops | [slides](course/u4m1/u4m1-slides.qmd) | [cheat sheet](course/u4m1/u4m1-cheatsheet.qmd) |
+| Unit 4 Module 2 · Sounds & Music | [slides](course/u4m2/u4m2-slides.qmd) | [cheat sheet](course/u4m2/u4m2-cheatsheet.qmd) |
+| Unit 5 Module 1 · Advanced Pygame Zero | [slides](course/u5m1/u5m1-slides.qmd) | [cheat sheet](course/u5m1/u5m1-cheatsheet.qmd) |
