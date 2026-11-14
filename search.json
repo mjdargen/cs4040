@@ -1126,7 +1126,7 @@
     "href": "index.html",
     "title": "CS4040: Game Design & Simulation",
     "section": "",
-    "text": "Module\nSlides\nCheat sheet\n\n\n\n\nU3M1 · Pygame Zero Basics\nslides\nweb · PDF\n\n\nU3M2 · Event-Driven Programming\nslides\nweb · PDF\n\n\nU3M3 · Collisions & Game State\nslides\nweb · PDF\n\n\nU4M1 · Lists & Loops\nslides\nweb · PDF\n\n\nU4M2 · Sounds & Music\nslides\nweb · PDF\n\n\nU5M1 · Advanced Pygame Zero\nslides\nweb · PDF",
+    "text": "Module\nSlides\nCheat sheet\n\n\n\n\nUnit 3 Module 1 · Pygame Zero Basics\nslides\ncheat sheet\n\n\nUnit 3 Module 2 · Event-Driven Programming\nslides\ncheat sheet\n\n\nUnit 3 Module 3 · Collisions & Game State\nslides\ncheat sheet\n\n\nUnit 4 Module 1 · Lists & Loops\nslides\ncheat sheet\n\n\nUnit 4 Module 2 · Sounds & Music\nslides\ncheat sheet\n\n\nUnit 5 Module 1 · Advanced Pygame Zero\nslides\ncheat sheet",
     "crumbs": [
       "{{< var course.code >}}: {{< var course.name >}}"
     ]
