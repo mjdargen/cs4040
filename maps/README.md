@@ -46,6 +46,7 @@ To use a tileset in Tiled, choose **Map > Add External Tileset...** and pick its
 
 | Tileset | Tile width | Tile height | Grid (cols × rows) | Image size | Notes |
 |---|---|---|---|---|---|
+| `topdown_city_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | Kenney Tiny City |
 | `topdown_dungeon_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
 | `topdown_factory_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
 | `topdown_farm_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
