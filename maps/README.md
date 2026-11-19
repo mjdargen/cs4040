@@ -1,4 +1,4 @@
-# Maps and tilesets — sources and credits
+# Maps and tilesets
 
 This directory contains maps and tilesets for [Tiled Map Editor](https://www.mapeditor.org/), used by the Pygame Zero Plus tilemap examples:
 
@@ -10,6 +10,8 @@ Keep the `.tmx`, `.tsx`, and referenced `.png` files together so paths inside Ti
 
 After adding or changing maps or tilesets, run `python utils/map_and_sprite_checker.py` from the repository folder to check that everything loads in Pygame Zero Plus.
 
+All of the art in the tables below is released under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), so it may be shared and reused, including in commercial projects. The exception is the `_kevinsmomshouse` tilesets: their designer gives no license, but lets anyone use them in their own projects, with credit appreciated but not necessary. Attribution is not required, but please credit the designer when you use their art, for example: *"Tileset: Ninja Adventure Asset Pack by Pixel-Boy and AAA (CC0)"*.
+
 ## Naming
 
 Every tileset is a matching `.png` and `.tsx` pair named
@@ -20,66 +22,40 @@ Every tileset is a matching `.png` and `.tsx` pair named
 
 - **style** is `platformer` (side view, with gravity) or `topdown` (seen from above, like an RPG).
 - **theme** names the asset pack. Each pack is one tileset: all of its sheets are packed into a single image, with duplicate sheets removed.
-- **author** is the artist to credit. It tells you which entry in [Asset credits](#asset-credits) to cite.
+- **author** is the designer to credit (the **Designer** column below).
 
-To use a tileset in Tiled, choose **Map > Add External Tileset...** and pick its `.tsx` file. Set the map's tile size to match the tileset's (the **Tile width** and **Tile height** columns below), and don't mix tile sizes within one map.
-
-## Platformer tilesets
-
-| Tileset | Tile width | Tile height | Grid (cols × rows) | Image size | Notes |
-|---|---|---|---|---|---|
-| `platformer_1bit_kenney` | 16 px | 16 px | 20 × 20 | 320 × 320 | |
-| `platformer_abstract_kenney` | 64 px | 64 px | 22 × 12 | 1408 × 768 | |
-| `platformer_farm_kenney` | 18 px | 18 px | 16 × 7 | 288 × 126 | |
-| `platformer_food_kenney` | 18 px | 18 px | 16 × 7 | 288 × 126 | |
-| `platformer_fourseasons_rottingpixels` | 16 px | 16 px | 16 × 16 | 256 × 256 | |
-| `platformer_grassland_shackhal` | 16 px | 16 px | 16 × 17 | 256 × 272 | |
-| `platformer_industrial_kenney` | 18 px | 18 px | 16 × 7 | 288 × 126 | |
-| `platformer_new_kenney` | 64 px | 64 px | 18 × 18 | 1169 × 1169 | 1 px spacing between tiles |
-| `platformer_pico8_kenney` | 8 px | 8 px | 15 × 10 | 120 × 80 | |
-| `platformer_pixel_kenney` | 18 px | 18 px | 20 × 9 | 360 × 162 | |
-
-- **`platformer_fourseasons_rottingpixels`** ([Four Seasons Platformer Tileset](https://rottingpixels.itch.io/four-seasons-platformer-tileset-16x16free)): ground blocks in four seasonal palettes, ? and ! blocks, trees, mushrooms, ladders, signs, water and lava.
-- **`platformer_grassland_shackhal`** ([Multi Platformer Tileset](https://shackhal.itch.io/multi-platformer-tileset)): the whole GrassLand set: 47-tile grass terrain, background cave walls, floating islands, bridges, water, a large tree, bushes, rocks, flowers, cave doorways.
+To use a tileset in Tiled, choose **Map > Add External Tileset...** and pick its `.tsx` file. Set the map's tile size to match the tileset's (the **Tile size** column below), and don't mix tile sizes within one map.
 
 ## Top-down tilesets
 
-| Tileset | Tile width | Tile height | Grid (cols × rows) | Image size | Notes |
-|---|---|---|---|---|---|
-| `topdown_city_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | Kenney Tiny City |
-| `topdown_dungeon_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
-| `topdown_factory_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
-| `topdown_farm_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
-| `topdown_ninja_pixelboy` | 16 px | 16 px | 80 × 107 | 1280 × 1712 | |
-| `topdown_pico8_kenney` | 8 px | 8 px | 24 × 15 | 192 × 120 | |
-| `topdown_ski_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
-| `topdown_town_kenney` | 16 px | 16 px | 12 × 11 | 192 × 176 | |
+| Asset | Description | Tile size | Grid (cols × rows) | Image size | Designer | Source |
+|---|---|---|---|---|---|---|
+| `topdown_city_kenney` | Modern city: roads, sidewalks, brick and concrete buildings, trees, signs, people, and cars | 16 × 16 | 12 × 11 | 192 × 176 | Kenney | [Tiny City](https://kenney.nl/assets/tiny-city) |
+| `topdown_dungeon_kenney` | Dungeon: stone walls and floors, doors, chests, heroes, monsters, weapons, and potions | 16 × 16 | 12 × 11 | 192 × 176 | Kenney | [Tiny Dungeon](https://kenney.nl/assets/tiny-dungeon) |
+| `topdown_factory_kenney` | Factory: conveyor belts, pipes, machines, crates, and floor tiles | 16 × 16 | 12 × 11 | 192 × 176 | Kenney | [Tiny Factory](https://kenney.nl/assets/tiny-factory) |
+| `topdown_farm_kenney` | Farm: tilled soil, crops, trees, fences, barns, tools, and animals | 16 × 16 | 12 × 11 | 192 × 176 | Kenney | [Tiny Farm](https://kenney.nl/assets/tiny-farm) |
+| `topdown_ninja_pixelboy` | The whole Ninja Adventure tileset collection (22 sheets): ground, water, cliffs, desert, villages, houses, trees, interiors, and dungeon puzzle objects | 16 × 16 | 80 × 107 | 1280 × 1712 | Pixel-Boy and AAA | [Ninja Adventure Asset Pack](https://pixel-boy.itch.io/ninja-adventure-asset-pack) |
+| `topdown_pico8_kenney` | PICO-8 palette city: roads, buildings, roofs, trees, and vehicles | 8 × 8 | 24 × 15 | 192 × 120 | Kenney | [Pico-8 City](https://kenney.nl/assets/pico-8-city) |
+| `topdown_ski_kenney` | Ski slope: snow, trees, flags, ski lift, skiers, and a font | 16 × 16 | 12 × 11 | 192 × 176 | Kenney | [Tiny Ski](https://kenney.nl/assets/tiny-ski) |
+| `topdown_town_kenney` | Medieval town: grass, paths, trees, houses, castle walls, fences, and items | 16 × 16 | 12 × 11 | 192 × 176 | Kenney | [Tiny Town](https://kenney.nl/assets/tiny-town) |
 
-- **`topdown_ninja_pixelboy`** ([Ninja Adventure](https://pixel-boy.itch.io/ninja-adventure-asset-pack)): the whole Ninja Adventure tileset collection (22 sheets): ground and paths, water and shores, cliffs, holes, desert, abandoned village, houses and shops, towers, trees and rocks, camp, furniture, beds, indoor walls and floors, dungeon puzzle objects, pipes, and colored logic markers.
+## Platformer tilesets
 
-## Asset credits
-
-All of the art in this folder may be shared and reused, including in commercial projects. Attribution is not required, but please credit the artist when you use their art, for example: *"Tileset: Ninja Adventure Asset Pack by Pixel-Boy and AAA (CC0)"*.
-
-- **[Kenney](https://kenney.nl/assets)** — tilesets ending in `_kenney`. Released under **[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)**.
-- **Pixel-Boy and AAA** — `topdown_ninja_pixelboy`, from the [Ninja Adventure Asset Pack](https://pixel-boy.itch.io/ninja-adventure-asset-pack). Released under **[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)**.
-- **Shackhal (Diego "Shackhal" del Solar)** — `platformer_grassland_shackhal`, from the free GrassLand version of the [Multi Platformer Tileset](https://shackhal.itch.io/multi-platformer-tileset). Released under **[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)**.
-- **RottingPixels** — `platformer_fourseasons_rottingpixels`, from the [Four Seasons Platformer Tileset](https://rottingpixels.itch.io/four-seasons-platformer-tileset-16x16free) as repackaged in the [Brackeys Platformer Bundle](https://brackeysgames.itch.io/brackeys-platformer-bundle), which Brackeys releases under **[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)**. The artist's own page allows use in free and commercial projects and modification; credit is appreciated.
-- **[Tiled Map Editor](https://www.mapeditor.org/)** — the editor and file format used for the `.tmx` and `.tsx` files. Tiled is a tool, not the art creator.
-
-### More free tilesets you can download yourself
-
-These packs are free to download, but their licenses don't allow them to be re-shared here, so they aren't included. To use one, download it from the artist's page and follow that page's license. Several allow only non-commercial use.
-
-| Pack | Artist | Style | Credit |
-|---|---|---|---|
-| [Cute Fantasy RPG (Free)](https://kenmi-art.itch.io/cute-fantasy-rpg) | Kenmi | Top-down | Requested |
-| [Tiny Farm RPG Asset Pack](https://maevedevs.itch.io/farm-rpg) | Maeve Devs | Top-down | Appreciated |
-| [Modern Interiors (Free)](https://limezu.itch.io/moderninteriors) | LimeZu | Top-down | Required |
-| [Pixel Art Top Down - Basic](https://cainos.itch.io/pixel-art-top-down-basic) | Cainos | Top-down | Appreciated |
-| [Sprout Lands Basic Pack](https://cupnooble.itch.io/sprout-lands-asset-pack) | Cup Nooble | Top-down | Required |
-| [The Fan-tasy Tileset (Free)](https://ventilatore.itch.io/the-fantasy-tileset) | Ventilatore | Top-down | Appreciated |
-| [Tiny Swords (Free)](https://pixelfrog-assets.itch.io/tiny-swords) | Pixel Frog | Top-down | Not required |
-| [Legacy Fantasy - High Forest](https://anokolisa.itch.io/sidescroller-pixelart-sprites-asset-pack-forest-16x16) | Anokolisa | Platformer | Not required |
-| [Mossy Cavern](https://maaot.itch.io/mossy-cavern) | Maaot | Platformer | Not required |
-| [Free Swamp Game Tileset](https://craftpix.net/freebies/free-swamp-game-tileset-pixel-art/) | CraftPix.net | Platformer | Not required |
+| Asset | Description | Tile size | Grid (cols × rows) | Image size | Designer | Source |
+|---|---|---|---|---|---|---|
+| `platformer_1bit_kenney` | Black-and-white 1-bit: platforms, ladders, spikes, machines, characters, and enemies | 16 × 16 | 20 × 20 | 320 × 320 | Kenney | [1-Bit Platformer Pack](https://kenney.nl/assets/1-bit-platformer-pack) |
+| `platformer_abstract_kenney` | Flat-colored ground in four color sets with slopes, plants, keys, locks, doors, levers, and signs. `platformer_abstract_kenney_slopes.tsx` uses the same image with slope heights set on the ramp tiles | 64 × 64 | 22 × 12 | 1408 × 768 | Kenney | [Abstract Platformer](https://kenney.nl/assets/abstract-platformer) |
+| `platformer_farm_kenney` | Farm expansion for Pixel Platformer: dirt, crops, greenhouses, fences, and tools | 18 × 18 | 16 × 7 | 288 × 126 | Kenney | [Pixel Platformer Farm Expansion](https://kenney.nl/assets/pixel-platformer-farm-expansion) |
+| `platformer_food_kenney` | Food expansion for Pixel Platformer: cake and cookie terrain, candy, drinks, and snacks | 18 × 18 | 16 × 7 | 288 × 126 | Kenney | [Pixel Platformer Food Expansion](https://kenney.nl/assets/pixel-platformer-food-expansion) |
+| `platformer_fourseasons_rottingpixels` | Ground blocks in four seasonal palettes, ? and ! blocks, trees, mushrooms, ladders, signs, water, and lava | 16 × 16 | 16 × 16 | 256 × 256 | RottingPixels | [Four Seasons Platformer Tileset](https://rottingpixels.itch.io/four-seasons-platformer-tileset-16x16free) (CC0 via the [Brackeys Platformer Bundle](https://brackeysgames.itch.io/brackeys-platformer-bundle)) |
+| `platformer_grassland_shackhal` | The whole GrassLand set: grass terrain, cave walls, floating islands, bridges, water, a large tree, bushes, rocks, and cave doorways | 16 × 16 | 16 × 17 | 256 × 272 | Shackhal | [Multi Platformer Tileset](https://shackhal.itch.io/multi-platformer-tileset) (free GrassLand version) |
+| `platformer_industrial_kenney` | Industrial expansion for Pixel Platformer: metal platforms, girders, pipes, chains, and hazard signs | 18 × 18 | 16 × 7 | 288 × 126 | Kenney | [Pixel Platformer Industrial Expansion](https://kenney.nl/assets/pixel-platformer-industrial-expansion) |
+| `platformer_jungle_kevinsmomshouse` | Jungle: mossy ground with slopes and dripping cave ceilings, hanging vines, grass, jungle trees and canopy, and water and waterfalls | 8 × 8 | 19 × 19 | 152 × 152 | Kevin's Mom's House | [Jungle pico-platformer tileset](https://kevins-moms-house.itch.io/jungle-pico-platformer-tileset) |
+| `platformer_mesa_kevinsmomshouse` | Desert mesa: orange and striped rock ground in several shades with slopes and cave ceilings, cavern walls, cacti, dead trees, and water and waterfalls | 8 × 8 | 29 × 48 | 232 × 384 | Kevin's Mom's House | [Mesa pico-platformer tileset](https://kevins-moms-house.itch.io/mesa-pico-platformer-tileset) |
+| `platformer_new_kenney` | Grass, dirt, sand, stone, snow, and purple terrain with slopes, plus blocks, coins, gems, keys, locks, flags, springs, and enemies. 1 px spacing between tiles | 64 × 64 | 18 × 18 | 1169 × 1169 | Kenney | [New Platformer Pack](https://kenney.nl/assets/new-platformer-pack) |
+| `platformer_pico8_kenney` | PICO-8 palette platformer: terrain, characters, items, and numbers | 8 × 8 | 15 × 10 | 120 × 80 | Kenney | [Pico-8 Platformer](https://kenney.nl/assets/pico-8-platformer) |
+| `platformer_pixel_kenney` | Grass, dirt, and snow terrain, blocks, ladders, water, pipes, trees, coins, hearts, and numbers | 18 × 18 | 20 × 9 | 360 × 162 | Kenney | [Pixel Platformer](https://kenney.nl/assets/pixel-platformer) |
+| `platformer_ruins_kevinsmomshouse` | Ruins: stone and mossy stone ground with slopes and cave ceilings, vines, temple walls with torches and pillars, doors and gates, traps, and two kinds of water | 8 × 8 | 34 × 36 | 272 × 288 | Kevin's Mom's House | [Ruin pico-platformer tileset](https://kevins-moms-house.itch.io/ruin-pico-platformer-tileset) |
+| `platformer_savanna_kevinsmomshouse` | Savanna: sandy ground with slopes and cave ceilings, cavern walls, grass, acacia trees, and water and waterfalls | 8 × 8 | 17 × 18 | 136 × 144 | Kevin's Mom's House | [Savanna pico-platformer tileset](https://kevins-moms-house.itch.io/savanna-pico-platformer-tileset) |
+| `platformer_swamp_kevinsmomshouse` | Swamp: mossy ground with slopes and cave ceilings, vines, a swamp tree, mushrooms, and water and waterfalls | 8 × 8 | 19 × 12 | 152 × 96 | Kevin's Mom's House | [Swamp pico-platformer tileset](https://kevins-moms-house.itch.io/swamp-pico-platformer-tileset) |
+| `platformer_tropicalocean_kevinsmomshouse` | Tropical island and seabed: sandy ground with slopes and cave ceilings, grass, palm trees, underwater sand with seaweed and coral, and water | 8 × 8 | 27 × 17 | 216 × 136 | Kevin's Mom's House | [Tropical ocean pico-platformer tileset](https://kevins-moms-house.itch.io/tropical-ocean-pico-platformer-tileset) |
