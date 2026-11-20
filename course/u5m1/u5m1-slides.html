@@ -364,18 +364,6 @@
 </ul>
 <p><strong>Note:</strong> the tilesheet, tileset, and tilemap must all be stored in the <code>maps</code> folder of your project.</p>
 </section>
-<section id="tile-map-constants" class="slide level2">
-<h2>Tile Map Constants</h2>
-<p>Make your own constants and use them to compute the window size!</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># our tile map constants</span></span>
-<span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a>TILE_SIZE <span class="op">=</span> <span class="dv">16</span>  <span class="co"># length of a tile, in pixels</span></span>
-<span id="cb14-3"><a aria-hidden="true" tabindex="-1"></a>MAP_WIDTH <span class="op">=</span> <span class="dv">30</span>  <span class="co"># width of the tilemap, in tiles</span></span>
-<span id="cb14-4"><a aria-hidden="true" tabindex="-1"></a>MAP_HEIGHT <span class="op">=</span> <span class="dv">20</span>  <span class="co"># height of the tilemap, in tiles</span></span>
-<span id="cb14-5"><a aria-hidden="true" tabindex="-1"></a>SCALE <span class="op">=</span> <span class="dv">2</span>  <span class="co"># global scaling factor</span></span>
-<span id="cb14-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># can use to compute screen dimensions</span></span>
-<span id="cb14-7"><a aria-hidden="true" tabindex="-1"></a>WIDTH <span class="op">=</span> TILE_SIZE <span class="op">*</span> MAP_WIDTH <span class="op">*</span> SCALE</span>
-<span id="cb14-8"><a aria-hidden="true" tabindex="-1"></a>HEIGHT <span class="op">=</span> TILE_SIZE <span class="op">*</span> MAP_HEIGHT <span class="op">*</span> SCALE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
 <section id="loading-a-tilemap" class="slide level2">
 <h2>Loading a Tilemap</h2>
 <!-- Module concept: load_tile_map(). Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
@@ -385,11 +373,23 @@
 <li><code>scale</code>: scaling factor applied to the map for display in Pygame.</li>
 </ul>
 <p>Get each layer by its name in Tiled, like <code>level["walls"]</code>. A layer works like a list of tiles, and every tile is an Actor, so <code>collidelist()</code> and <code>for</code> loops work on it.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> load_tile_map(<span class="st">"tl1.tmx"</span>, scale<span class="op">=</span>SCALE)</span>
-<span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a>ground <span class="op">=</span> level[<span class="st">"ground"</span>]  <span class="co"># ground / background scenery to draw</span></span>
-<span id="cb15-3"><a aria-hidden="true" tabindex="-1"></a>walls <span class="op">=</span> level[<span class="st">"walls"</span>]  <span class="co"># obstacles for player to collide with</span></span>
-<span id="cb15-4"><a aria-hidden="true" tabindex="-1"></a>hazards <span class="op">=</span> level[<span class="st">"hazards"</span>]  <span class="co"># "bad" objects for player collision</span></span>
-<span id="cb15-5"><a aria-hidden="true" tabindex="-1"></a>collectables <span class="op">=</span> level[<span class="st">"collectables"</span>]  <span class="co"># "good" objects to collect</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># tile map scale</span></span>
+<span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a>MAP_SCALE <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb14-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># load world from Tiled tile map</span></span>
+<span id="cb14-5"><a aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> load_tile_map(<span class="st">"tl1.tmx"</span>, scale<span class="op">=</span>MAP_SCALE)</span>
+<span id="cb14-6"><a aria-hidden="true" tabindex="-1"></a>ground <span class="op">=</span> level[<span class="st">"ground"</span>]  <span class="co"># ground / background scenery to draw</span></span>
+<span id="cb14-7"><a aria-hidden="true" tabindex="-1"></a>walls <span class="op">=</span> level[<span class="st">"walls"</span>]  <span class="co"># obstacles for player to collide with</span></span>
+<span id="cb14-8"><a aria-hidden="true" tabindex="-1"></a>hazards <span class="op">=</span> level[<span class="st">"hazards"</span>]  <span class="co"># "bad" objects for player collision</span></span>
+<span id="cb14-9"><a aria-hidden="true" tabindex="-1"></a>collectables <span class="op">=</span> level[<span class="st">"collectables"</span>]  <span class="co"># "good" objects to collect</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="window-size-from-the-map" class="slide level2">
+<h2>Window Size from the Map</h2>
+<p>Load the map first, then use its size to compute the window size!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Pygame Constants - compute with level dimensions</span></span>
+<span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a>WIDTH <span class="op">=</span> level.cols <span class="op">*</span> level.tile_width</span>
+<span id="cb15-3"><a aria-hidden="true" tabindex="-1"></a>HEIGHT <span class="op">=</span> level.rows <span class="op">*</span> level.tile_height</span>
+<span id="cb15-4"><a aria-hidden="true" tabindex="-1"></a>TITLE <span class="op">=</span> <span class="st">"Rabbit Tilemap"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="map-layers-and-tiles" class="slide level2">
 <h2>Map, Layers, and Tiles</h2>

@@ -307,8 +307,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#tile-maps" id="toc-tile-maps" class="nav-link" data-scroll-target="#tile-maps">Tile Maps</a>
   <ul class="collapse">
   <li><a href="#tilesheets-tilesets-and-tilemaps" id="toc-tilesheets-tilesets-and-tilemaps" class="nav-link" data-scroll-target="#tilesheets-tilesets-and-tilemaps">Tilesheets, tilesets, and tilemaps</a></li>
-  <li><a href="#tile-map-constants" id="toc-tile-map-constants" class="nav-link" data-scroll-target="#tile-map-constants">Tile map constants</a></li>
   <li><a href="#loading-a-tilemap-load_tile_map" id="toc-loading-a-tilemap-load_tile_map" class="nav-link" data-scroll-target="#loading-a-tilemap-load_tile_map">Loading a tilemap: <code>load_tile_map()</code></a></li>
+  <li><a href="#window-size-from-the-map" id="toc-window-size-from-the-map" class="nav-link" data-scroll-target="#window-size-from-the-map">Window size from the map</a></li>
   <li><a href="#the-map-layers-and-tiles" id="toc-the-map-layers-and-tiles" class="nav-link" data-scroll-target="#the-map-layers-and-tiles">The map, layers, and tiles</a></li>
   <li><a href="#drawing-a-tilemap-level.draw" id="toc-drawing-a-tilemap-level.draw" class="nav-link" data-scroll-target="#drawing-a-tilemap-level.draw">Drawing a tilemap: <code>level.draw()</code></a></li>
   </ul></li>
@@ -522,18 +522,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Note:</strong> the tilesheet, tileset, and tilemap must all be stored in the <code>maps</code> folder of your project.</p>
 <p>Make maps in <a href="https://www.mapeditor.org/">Tiled</a>. <a href="https://pgzero-plus.readthedocs.io/en/latest/builtins.html#tile-maps">Docs: Tile Maps</a></p>
 </section>
-<section id="tile-map-constants" class="level2">
-<h2 class="anchored" data-anchor-id="tile-map-constants">Tile map constants</h2>
-<p>Make your own constants and use them to compute the window size.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># our tile map constants</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>TILE_SIZE <span class="op">=</span> <span class="dv">16</span>  <span class="co"># length of a tile, in pixels</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>MAP_WIDTH <span class="op">=</span> <span class="dv">30</span>  <span class="co"># width of the tilemap, in tiles</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>MAP_HEIGHT <span class="op">=</span> <span class="dv">20</span>  <span class="co"># height of the tilemap, in tiles</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>SCALE <span class="op">=</span> <span class="dv">2</span>  <span class="co"># global scaling factor</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># can use to compute screen dimensions</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>WIDTH <span class="op">=</span> TILE_SIZE <span class="op">*</span> MAP_WIDTH <span class="op">*</span> SCALE</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>HEIGHT <span class="op">=</span> TILE_SIZE <span class="op">*</span> MAP_HEIGHT <span class="op">*</span> SCALE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
 <section id="loading-a-tilemap-load_tile_map" class="level2">
 <h2 class="anchored" data-anchor-id="loading-a-tilemap-load_tile_map">Loading a tilemap: <code>load_tile_map()</code></h2>
 <!-- Module concept: load_tile_map(). Used by u5m1-slides.qmd, u5m1-cheatsheet.qmd -->
@@ -544,11 +532,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Get each layer by its name in Tiled, like <code>level["walls"]</code>. A layer works like a list of tiles, and every tile is an Actor, so <code>collidelist()</code> and <code>for</code> loops work on it.</p>
 <p>Using different layers allows you to treat each kind of tile differently.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> load_tile_map(<span class="st">"tl1.tmx"</span>, scale<span class="op">=</span>SCALE)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ground <span class="op">=</span> level[<span class="st">"ground"</span>]  <span class="co"># ground / background scenery to draw</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>walls <span class="op">=</span> level[<span class="st">"walls"</span>]  <span class="co"># obstacles for player to collide with</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>hazards <span class="op">=</span> level[<span class="st">"hazards"</span>]  <span class="co"># "bad" objects for player collision</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>collectables <span class="op">=</span> level[<span class="st">"collectables"</span>]  <span class="co"># "good" objects to collect</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tile map scale</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>MAP_SCALE <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load world from Tiled tile map</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> load_tile_map(<span class="st">"tl1.tmx"</span>, scale<span class="op">=</span>MAP_SCALE)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>ground <span class="op">=</span> level[<span class="st">"ground"</span>]  <span class="co"># ground / background scenery to draw</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>walls <span class="op">=</span> level[<span class="st">"walls"</span>]  <span class="co"># obstacles for player to collide with</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>hazards <span class="op">=</span> level[<span class="st">"hazards"</span>]  <span class="co"># "bad" objects for player collision</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>collectables <span class="op">=</span> level[<span class="st">"collectables"</span>]  <span class="co"># "good" objects to collect</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="window-size-from-the-map" class="level2">
+<h2 class="anchored" data-anchor-id="window-size-from-the-map">Window size from the map</h2>
+<p>Load the map first, then use its size to compute the window size.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pygame Constants - compute with level dimensions</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>WIDTH <span class="op">=</span> level.cols <span class="op">*</span> level.tile_width</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>HEIGHT <span class="op">=</span> level.rows <span class="op">*</span> level.tile_height</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>TITLE <span class="op">=</span> <span class="st">"Rabbit Tilemap"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="the-map-layers-and-tiles" class="level2">
 <h2 class="anchored" data-anchor-id="the-map-layers-and-tiles">The map, layers, and tiles</h2>
