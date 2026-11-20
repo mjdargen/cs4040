@@ -7,21 +7,22 @@
 import pgzrun
 from pgzero.builtins import *
 
-TILE_SIZE = 16
-MAP_WIDTH = 30
-MAP_HEIGHT = 20
-SCALE = 2
-WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
-HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
-TITLE = "Tile Map Grid"
+# tile map scale
+MAP_SCALE = 2
 
-level = load_tile_map("tl1.tmx", scale=SCALE)
+# load world from Tiled tile map
+level = load_tile_map("tl1.tmx", scale=MAP_SCALE)
 walls = level["walls"]
 hazards = level["hazards"]
 items = level["collectables"]
 
+# Pygame Constants - compute with level dimensions
+WIDTH = level.cols * level.tile_width
+HEIGHT = level.rows * level.tile_height
+TITLE = "Tile Map Grid"
+
 idle = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=3)
-rabbit = Actor(idle, scale=SCALE)
+rabbit = Actor(idle, scale=MAP_SCALE)
 
 
 def crash_example():

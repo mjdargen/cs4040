@@ -1,23 +1,20 @@
 import pgzrun
 from pgzero.builtins import *
 
-# our tile map constants
-TILE_SIZE = 16
-MAP_WIDTH = 30
-MAP_HEIGHT = 20
-SCALE = 2
+# tile map scale
+MAP_SCALE = 2
 
-# Pygame Constants
-WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
-HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
-TITLE = "Top-Down Perspective (press R to turn the world)"
-
-# build world from Tiled tile map
-level = load_tile_map("topdown_open_world.tmx", scale=SCALE)
+# load world from Tiled tile map
+level = load_tile_map("topdown_open_world.tmx", scale=MAP_SCALE)
 ground = level["ground"]
 walls = level["walls"]
 hazards = level["hazards"]
 collectables = level["collectables"]
+
+# Pygame Constants - window shows 30 x 20 tiles of the larger map
+WIDTH = 30 * level.tile_width
+HEIGHT = 20 * level.tile_height
+TITLE = "Top-Down Perspective (press R to turn the world)"
 
 # define Sprites
 idle = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=3)
@@ -33,7 +30,7 @@ rabbit = Actor(idle)
 # runs once at beginning before draw()/update()
 def start():
     # define Actor-specific variables
-    rabbit.scale = SCALE
+    rabbit.scale = MAP_SCALE
     rabbit.alive = True
     rabbit.velocity = 5
     # place player in the middle square of the world

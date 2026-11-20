@@ -116,13 +116,6 @@ Setting `fox.frame` jumps to that frame. While the whole game is paused with `ga
 
 Make maps in [Tiled]({{< var tools.tiled >}}). [Docs: Tile Maps]({{< var pgzero.docs >}}/builtins.html#tile-maps)
 
-## Tile map constants
-
-Make your own constants and use them to compute the window size.
-
-```{.python include="code/rabbit_game.py" snippet="constants"}
-```
-
 ## Loading a tilemap: `load_tile_map()`
 
 {{< include concepts/_load-tile-map.qmd >}}
@@ -130,6 +123,13 @@ Make your own constants and use them to compute the window size.
 Using different layers allows you to treat each kind of tile differently.
 
 ```{.python include="code/rabbit_game.py" snippet="layers"}
+```
+
+## Window size from the map
+
+Load the map first, then use its size to compute the window size.
+
+```{.python include="code/rabbit_game.py" snippet="constants"}
 ```
 
 ## The map, layers, and tiles

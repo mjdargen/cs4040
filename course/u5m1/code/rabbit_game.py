@@ -6,34 +6,33 @@
 import pgzrun
 from pgzero.builtins import *
 
-# start snippet constants
-# our tile map constants
-TILE_SIZE = 16  # length of a tile, in pixels
-MAP_WIDTH = 30  # width of the tilemap, in tiles
-MAP_HEIGHT = 20  # height of the tilemap, in tiles
-SCALE = 2  # global scaling factor
-# can use to compute screen dimensions
-WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
-HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
-# end snippet constants
-TITLE = "Rabbit Tilemap"
-
-idle = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=3)
-walk_left = Sprite("rabbit", frame_width=16, frame_height=16, row=6, frames=2, fps=8)
-walk_right = Sprite("rabbit", frame_width=16, frame_height=16, row=7, frames=2, fps=8)
-rabbit = Actor(idle)
-
 # start snippet layers
-level = load_tile_map("tl1.tmx", scale=SCALE)
+# tile map scale
+MAP_SCALE = 2
+
+# load world from Tiled tile map
+level = load_tile_map("tl1.tmx", scale=MAP_SCALE)
 ground = level["ground"]  # ground / background scenery to draw
 walls = level["walls"]  # obstacles for player to collide with
 hazards = level["hazards"]  # "bad" objects for player collision
 collectables = level["collectables"]  # "good" objects to collect
 # end snippet layers
 
+# start snippet constants
+# Pygame Constants - compute with level dimensions
+WIDTH = level.cols * level.tile_width
+HEIGHT = level.rows * level.tile_height
+TITLE = "Rabbit Tilemap"
+# end snippet constants
+
+idle = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=3)
+walk_left = Sprite("rabbit", frame_width=16, frame_height=16, row=6, frames=2, fps=8)
+walk_right = Sprite("rabbit", frame_width=16, frame_height=16, row=7, frames=2, fps=8)
+rabbit = Actor(idle)
+
 
 def start():
-    rabbit.scale = SCALE
+    rabbit.scale = MAP_SCALE
     rabbit.pos = (200, HEIGHT // 2)
 
 

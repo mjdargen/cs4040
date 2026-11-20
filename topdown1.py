@@ -1,23 +1,20 @@
 import pgzrun
 from pgzero.builtins import *
 
-# our tile map constants
-TILE_SIZE = 16
-MAP_WIDTH = 30
-MAP_HEIGHT = 20
-SCALE = 2
+# tile map scale
+MAP_SCALE = 2
 
-# Pygame Constants
-WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
-HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
-TITLE = "Top-Down"
-
-# build world from Tiled tile map
-level = load_tile_map("topdown.tmx", scale=SCALE)
+# load world from Tiled tile map
+level = load_tile_map("topdown.tmx", scale=MAP_SCALE)
 ground = level["ground"]
 walls = level["walls"]
 hazards = level["hazards"]
 collectables = level["collectables"]
+
+# Pygame Constants - compute with level dimensions
+WIDTH = level.cols * level.tile_width
+HEIGHT = level.rows * level.tile_height
+TITLE = "Top-Down"
 
 # define Sprites
 idle = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=3)
@@ -32,8 +29,8 @@ rabbit = Actor(idle)
 
 # runs once at beginning before draw()/update()
 def start():
-    rabbit.scale = SCALE
-    rabbit.midbottom = (WIDTH / 2, HEIGHT - TILE_SIZE * SCALE)
+    rabbit.scale = MAP_SCALE
+    rabbit.midbottom = (WIDTH / 2, HEIGHT - level.tile_height)
     rabbit.alive = True
     rabbit.velocity = 4
 

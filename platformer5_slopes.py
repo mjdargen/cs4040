@@ -1,26 +1,11 @@
 import pgzrun
 from pgzero.builtins import *
 
-# our tile map constants
-TILE_SIZE = 64  # tile size in the tileset, in pixels
-MAP_WIDTH = 20
-MAP_HEIGHT = 10
-SCALE = 0.75  # 64 * 0.75 = 48 pixel tiles on the screen
+# tile map scale
+MAP_SCALE = 0.75  # 64 * 0.75 = 48 pixel tiles on the screen
 
-# Pygame Constants
-WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
-HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
-TITLE = "Platformer Slopes"
-
-# global variables
-gravity = 1
-# the tallest ledge the fox can walk up without jumping, in pixels
-# (where a slope meets a block, the fox's feet end up a little below the block)
-STEP_UP_HEIGHT = 16
-show_slope_lines = False
-
-# build world from Tiled tile map
-level = load_tile_map("platformer_slopes.tmx", scale=SCALE)
+# load world from Tiled tile map
+level = load_tile_map("platformer_slopes.tmx", scale=MAP_SCALE)
 platforms = level["platforms"]
 # each slope tile has two custom properties set in Tiled:
 #   left_height  - how high the ground is at the left edge of the tile
@@ -28,12 +13,24 @@ platforms = level["platforms"]
 # both are measured up from the bottom of the tile, in tileset pixels (0 to 64)
 slopes = level["slopes"]
 
+# Pygame Constants - compute with level dimensions
+WIDTH = level.cols * level.tile_width
+HEIGHT = level.rows * level.tile_height
+TITLE = "Platformer Slopes"
+
 # define Sprites
 fox_idle = Sprite("fox", frame_width=24, frame_height=16, row=0, frames=5, fps=5)
 fox_walk = Sprite("fox", frame_width=24, frame_height=16, row=2, frames=8, fps=10)
 
 # define the Actor
 fox = Actor(fox_idle)
+
+# global variables
+gravity = 1
+# the tallest ledge the fox can walk up without jumping, in pixels
+# (where a slope meets a block, the fox's feet end up a little below the block)
+STEP_UP_HEIGHT = 16
+show_slope_lines = False
 
 
 # runs once at beginning before draw()/update()
@@ -52,8 +49,8 @@ def start():
 # the ground on a slope is a straight line, so we can use rise over run
 def ground_y_on_slope(tile, x):
     # height of the ground at each edge, converted to screen pixels
-    left_height = tile.properties["left_height"] * SCALE
-    right_height = tile.properties["right_height"] * SCALE
+    left_height = tile.properties["left_height"] * MAP_SCALE
+    right_height = tile.properties["right_height"] * MAP_SCALE
     # a tile flipped in Tiled slopes the other way, so swap the edges
     if tile.flip_h:
         left_height, right_height = right_height, left_height

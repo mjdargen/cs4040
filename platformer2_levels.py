@@ -1,25 +1,19 @@
 import pgzrun
 from pgzero.builtins import *
 
-# our tile map constants
-TILE_SIZE = 18
-MAP_WIDTH = 30
-MAP_HEIGHT = 20
-SCALE = 2
+# tile map scale
+MAP_SCALE = 2
 
-# Pygame Constants
-WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
-HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
-TITLE = "Platformer Levels"
-
-# global variables
-gravity = 1
-
-# build world from Tiled tile map
-level = load_tile_map("pl1.tmx", scale=SCALE)
+# load world from Tiled tile map
+level = load_tile_map("pl1.tmx", scale=MAP_SCALE)
 platforms = level["platforms"]
 hazards = level["hazards"]
 collectables = level["collectables"]
+
+# Pygame Constants - compute with level dimensions
+WIDTH = level.cols * level.tile_width
+HEIGHT = level.rows * level.tile_height
+TITLE = "Platformer Levels"
 
 # define Sprites
 fox_idle = Sprite("fox", frame_width=24, frame_height=16, row=1, frames=14, fps=2)
@@ -27,6 +21,9 @@ fox_walk = Sprite("fox", frame_width=24, frame_height=16, row=2, frames=8, fps=1
 
 # define the Actor
 fox = Actor(fox_idle)
+
+# global variables
+gravity = 1
 
 
 # runs once at beginning before draw()/update()
@@ -138,7 +135,7 @@ def level_transition():
         game.level = 2
         fox.bottomleft = (0, HEIGHT - 40)
         # build level 2 tile map
-        level = load_tile_map("pl2.tmx", scale=SCALE)
+        level = load_tile_map("pl2.tmx", scale=MAP_SCALE)
         platforms = level["platforms"]
         hazards = level["hazards"]
         collectables = level["collectables"]

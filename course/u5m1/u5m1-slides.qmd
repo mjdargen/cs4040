@@ -107,18 +107,18 @@ Give the Actor a Sprite. Set `actor.sprite` to switch animations.
 
 {{< include concepts/_tile-files.qmd >}}
 
-## Tile Map Constants
-
-Make your own constants and use them to compute the window size!
-
-```{.python include="code/rabbit_game.py" snippet="constants"}
-```
-
 ## Loading a Tilemap
 
 {{< include concepts/_load-tile-map.qmd >}}
 
 ```{.python include="code/rabbit_game.py" snippet="layers"}
+```
+
+## Window Size from the Map
+
+Load the map first, then use its size to compute the window size!
+
+```{.python include="code/rabbit_game.py" snippet="constants"}
 ```
 
 ## Map, Layers, and Tiles

@@ -1,23 +1,20 @@
 import pgzrun
 from pgzero.builtins import *
 
-# our tile map constants
-TILE_SIZE = 16
-MAP_WIDTH = 30
-MAP_HEIGHT = 20
-SCALE = 2
+# tile map scale
+MAP_SCALE = 2
 
-# Pygame Constants
-WIDTH = TILE_SIZE * MAP_WIDTH * SCALE
-HEIGHT = TILE_SIZE * MAP_HEIGHT * SCALE
-TITLE = "Top-Down Levels"
-
-# build world from Tiled tile map
-level = load_tile_map("tl1.tmx", scale=SCALE)
+# load world from Tiled tile map
+level = load_tile_map("tl1.tmx", scale=MAP_SCALE)
 ground = level["ground"]
 walls = level["walls"]
 hazards = level["hazards"]
 collectables = level["collectables"]
+
+# Pygame Constants - compute with level dimensions
+WIDTH = level.cols * level.tile_width
+HEIGHT = level.rows * level.tile_height
+TITLE = "Top-Down Levels"
 
 # define Sprites
 idle = Sprite("rabbit", frame_width=16, frame_height=16, row=0, frames=2, fps=3)
@@ -32,7 +29,7 @@ rabbit = Actor(idle)
 
 # runs once at beginning before draw()/update()
 def start():
-    rabbit.scale = SCALE
+    rabbit.scale = MAP_SCALE
     rabbit.pos = (200, HEIGHT / 2)
     rabbit.alive = True
     rabbit.velocity = 4
@@ -139,7 +136,7 @@ def level_transition():
         game.level = 2
         rabbit.pos = (0, rabbit.y)
         # build level 2 tile map
-        level = load_tile_map("tl2.tmx", scale=SCALE)
+        level = load_tile_map("tl2.tmx", scale=MAP_SCALE)
         ground = level["ground"]
         walls = level["walls"]
         hazards = level["hazards"]
