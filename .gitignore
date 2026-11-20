@@ -10,8 +10,12 @@
 /p[0-9]*.py
 /project[0-9]*.py
 /kc*.py
-/topdown*.py
-/platformer*.py
+# /topdown*.py
+/topdown*_old.py
+/topdown*_alt.py
+# /platformer*.py
+/platformer*_old.py
+/platformer*_alt.py
 depr_*.*
 TODO.md
 
