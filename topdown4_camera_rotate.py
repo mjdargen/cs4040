@@ -145,7 +145,7 @@ def on_key_down(key):
     # around the rabbit every time R is pressed. The rabbit stays where it is
     # and stays upright; every layer of the map turns around it.
     if key == keys.R and game.state == "playing":
-        level.rotate(level.angle + 2, around=rabbit)
+        level.rotate(90, around=rabbit)
         # the turned map has a different shape on the screen, so scroll it
         # again to keep the rabbit in the middle without showing past the edges
         level.follow(rabbit)
