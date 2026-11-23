@@ -223,4 +223,4 @@ def on_key_down(key):
         show_slope_lines = not show_slope_lines
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

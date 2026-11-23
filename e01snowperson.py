@@ -70,4 +70,4 @@ def update():
     pass  # pass means do nothing, used because we can't have empty function
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

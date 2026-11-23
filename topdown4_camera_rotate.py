@@ -148,4 +148,4 @@ def on_key_down(key):
         level.follow(rabbit)
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

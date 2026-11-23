@@ -36,4 +36,4 @@ def move_character():
     robot.y = random.randint(50, HEIGHT - 50)
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

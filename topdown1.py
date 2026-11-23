@@ -128,4 +128,4 @@ def update():
         game.win()
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

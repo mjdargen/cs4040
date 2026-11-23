@@ -53,4 +53,4 @@ def update():
     alien.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

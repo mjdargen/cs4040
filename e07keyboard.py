@@ -75,4 +75,4 @@ def on_key_up(key):
         robot.image = "robot_idle"
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

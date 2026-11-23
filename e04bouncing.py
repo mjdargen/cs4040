@@ -54,4 +54,4 @@ def update():
         alien.velocity_y = -alien.velocity_y
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

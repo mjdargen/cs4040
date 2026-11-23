@@ -54,4 +54,4 @@ def update():
             state = 0  # change to next state
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

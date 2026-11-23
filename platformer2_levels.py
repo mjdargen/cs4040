@@ -152,4 +152,4 @@ def on_key_down(key):
         fox.velocity_y = fox.jump_velocity
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

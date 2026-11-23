@@ -1,4 +1,3 @@
-# Sprite Source: https://elthen.itch.io/2d-pixel-art-fox-sprites
 import pgzrun
 from pgzero.builtins import *
 
@@ -7,6 +6,7 @@ WIDTH = 800
 HEIGHT = 400
 TITLE = "Actors using Sprites!"
 
+# Sprite Source: https://elthen.itch.io/2d-pixel-art-fox-sprites
 # A Sprite is one animation cut from a sprite sheet:
 #   "fox"            name of the sprite sheet, stored in the "sprites" folder
 #   frame_width      width of each frame, in pixels
@@ -14,10 +14,8 @@ TITLE = "Actors using Sprites!"
 #   row              which row of the sheet the animation is on (top row is 0)
 #   frames           number of frames in the animation
 #   fps              how many frames to show each second
-
 # Fox idle animation (row 1, shows ~2 frames per second)
 fox_idle = Sprite("fox", frame_width=24, frame_height=16, row=1, frames=14, fps=2)
-
 # Fox walking animation (row 2, shows ~10 frames per second)
 fox_walk = Sprite("fox", frame_width=24, frame_height=16, row=2, frames=8, fps=10)
 
@@ -85,4 +83,4 @@ def on_key_up(key):
         fox.sprite = fox_idle
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

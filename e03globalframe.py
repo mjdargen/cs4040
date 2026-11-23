@@ -40,4 +40,4 @@ def update():
     frame += 1
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()

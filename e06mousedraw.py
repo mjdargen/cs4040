@@ -45,4 +45,4 @@ def on_mouse_down(pos, button):
         previous_point = (0, 0)
 
 
-pgzrun.go()  # program must always end with this
+pgzrun.go()
